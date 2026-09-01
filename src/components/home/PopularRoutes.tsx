@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { MapPin, Clock, ArrowRight, MessageCircle, Navigation, ShieldCheck } from 'lucide-react';
 import { popularRoutesData } from '@/data/routes';
-import { createRouteInquiryUrl } from '@/lib/whatsapp';
+import { siteConfig } from '@/data/siteConfig';
 
 interface PopularRoutesProps {
   onOpenBookingModal: (pickupCity?: string, dropCity?: string) => void;
@@ -12,8 +12,10 @@ interface PopularRoutesProps {
 
 export const PopularRoutes: React.FC<PopularRoutesProps> = ({ onOpenBookingModal }) => {
   const handleWhatsAppRoute = (from: string, to: string, distance: number, price: number) => {
-    const url = createRouteInquiryUrl(from, to, distance, price);
-    window.open(url, '_blank', 'noopener,noreferrer');
+    const text = encodeURIComponent(
+      `Hello ${siteConfig.name}! 👋 I am interested in booking a ride for *${from} → ${to}* (${distance} km, Est. ₹${price}). Please share available cab options.`
+    );
+    window.open(`https://wa.me/${siteConfig.whatsappNumber}?text=${text}`, '_blank', 'noopener,noreferrer');
   };
 
   return (
@@ -47,7 +49,7 @@ export const PopularRoutes: React.FC<PopularRoutesProps> = ({ onOpenBookingModal
                 flexDirection: 'column',
               }}
             >
-              {/* Image & Badges */}
+              {/* Route Image with Tag */}
               <div style={{ position: 'relative', height: '180px', width: '100%' }}>
                 <img
                   src={route.image}
@@ -56,111 +58,94 @@ export const PopularRoutes: React.FC<PopularRoutesProps> = ({ onOpenBookingModal
                 />
                 <div style={{
                   position: 'absolute',
-                  inset: 0,
-                  background: 'linear-gradient(to top, rgba(15, 23, 42, 0.8) 0%, transparent 60%)',
-                }} />
-
-                <div style={{
-                  position: 'absolute',
                   top: '12px',
                   right: '12px',
-                  backgroundColor: 'rgba(15, 23, 42, 0.85)',
-                  backdropFilter: 'blur(4px)',
-                  color: '#34d399',
-                  padding: '4px 10px',
-                  borderRadius: '6px',
-                  fontSize: '0.78rem',
-                  fontWeight: 700,
-                }}>
-                  {route.distanceKm} KM • ~{route.durationHours} hrs
-                </div>
-
-                <div style={{
-                  position: 'absolute',
-                  bottom: '12px',
-                  left: '16px',
+                  backgroundColor: 'rgba(15, 23, 42, 0.8)',
+                  backdropFilter: 'blur(6px)',
                   color: '#ffffff',
+                  fontSize: '0.72rem',
+                  fontWeight: 700,
+                  padding: '4px 10px',
+                  borderRadius: '9999px',
                 }}>
-                  <div style={{ fontSize: '1.2rem', fontWeight: 800 }}>
-                    {route.fromCity} <span style={{ color: '#34d399' }}>→</span> {route.toCity}
-                  </div>
+                  {route.durationHours} hrs • {route.distanceKm} km
                 </div>
               </div>
 
-              {/* Body */}
-              <div style={{ padding: '18px 20px', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                <div style={{ fontSize: '0.8rem', color: '#64748b', marginBottom: '10px' }}>
-                  Popular Choice: <strong style={{ color: '#0f172a' }}>{route.popularCab}</strong>
+              {/* Card Body */}
+              <div style={{ padding: '20px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                  <span style={{ fontWeight: 800, color: '#0f172a', fontSize: '1.05rem' }}>{route.fromCity}</span>
+                  <ArrowRight size={16} color="#1b4332" />
+                  <span style={{ fontWeight: 800, color: '#1b4332', fontSize: '1.05rem' }}>{route.toCity}</span>
                 </div>
 
-                {/* Key stops */}
-                <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '16px', flex: 1 }}>
-                  {route.keyAttractions.map((att, idx) => (
-                    <span
-                      key={idx}
-                      style={{
-                        fontSize: '0.72rem',
-                        padding: '3px 8px',
-                        borderRadius: '4px',
-                        backgroundColor: '#f1f5f9',
-                        color: '#475569',
-                      }}
-                    >
-                      {att}
+                <div style={{ fontSize: '0.8rem', color: '#64748b', marginBottom: '14px' }}>
+                  Popular: {route.popularCab}
+                </div>
+
+                {/* Key Attractions tags */}
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '18px' }}>
+                  {route.keyAttractions.slice(0, 3).map((spot, i) => (
+                    <span key={i} style={{
+                      backgroundColor: '#f1f5f9',
+                      fontSize: '0.72rem',
+                      color: '#475569',
+                      padding: '2px 8px',
+                      borderRadius: '6px',
+                    }}>
+                      {spot}
                     </span>
                   ))}
                 </div>
 
-                {/* Price & Action Row */}
+                {/* Bottom Pricing & Action */}
                 <div style={{
+                  marginTop: 'auto',
                   borderTop: '1px solid #f1f5f9',
                   paddingTop: '14px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
-                  marginTop: 'auto',
                 }}>
                   <div>
                     <div style={{ fontSize: '0.72rem', color: '#64748b' }}>Fares from</div>
-                    <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#059669' }}>
-                      ₹{route.startingPrice.toLocaleString('en-IN')}{' '}
-                      <span style={{ fontSize: '0.72rem', fontWeight: 500, color: '#64748b' }}>All-Incl.</span>
+                    <div style={{ fontSize: '1.25rem', fontWeight: 900, color: '#0f172a' }}>
+                      ₹{route.startingPrice.toLocaleString('en-IN')}
                     </div>
                   </div>
 
-                  <div style={{ display: 'flex', gap: '6px' }}>
+                  <div style={{ display: 'flex', gap: '8px' }}>
                     <button
                       onClick={() => handleWhatsAppRoute(route.fromCity, route.toCity, route.distanceKm, route.startingPrice)}
-                      className="btn btn-whatsapp"
-                      style={{ padding: '8px 10px', borderRadius: '8px' }}
-                      title="WhatsApp Route Booking"
+                      style={{
+                        padding: '8px 12px',
+                        backgroundColor: '#ebf5f0',
+                        color: '#1b4332',
+                        border: '1px solid #d4e8dd',
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      title="Inquire on WhatsApp"
                     >
                       <MessageCircle size={16} />
                     </button>
 
                     <button
                       onClick={() => onOpenBookingModal(route.fromCity, route.toCity)}
-                      className="btn btn-primary btn-sm"
+                      className="btn btn-forest"
+                      style={{ padding: '8px 16px', fontSize: '0.82rem' }}
                     >
-                      <span>Book Cab</span>
+                      <span>Book</span>
                     </button>
                   </div>
                 </div>
               </div>
             </div>
           ))}
-        </div>
-
-        {/* View All Routes link */}
-        <div style={{ textAlign: 'center' }}>
-          <Link
-            href="/routes"
-            className="btn btn-outline"
-            style={{ display: 'inline-flex', gap: '8px' }}
-          >
-            <span>View 120+ Intercity Tourist Routes</span>
-            <ArrowRight size={16} />
-          </Link>
         </div>
       </div>
     </section>
