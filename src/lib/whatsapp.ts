@@ -7,7 +7,7 @@ export function createWhatsAppBookingUrl(
   packageName?: string,
   estimatedPrice?: number
 ): string {
-  const phone = siteConfig.whatsappNumber; // '919011657355'
+  const phone = siteConfig.whatsappNumber;
 
   let message = `Hello *${siteConfig.name}*! 👋\n\n`;
   message += `I would like to inquire/book a ride with you:\n`;
@@ -100,6 +100,20 @@ export function createPackageInquiryUrl(packageTitle: string, duration?: string,
     message += ` starting at ₹${pricePerPerson.toLocaleString('en-IN')}/person`;
   }
   message += `.\n\nPlease share the detailed itinerary, customized dates, and booking process.`;
+  return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+}
+
+export function createRouteInquiryUrl(from: string, to: string, distance?: number, price?: number): string {
+  const phone = siteConfig.whatsappNumber;
+  let message = `Hello *${siteConfig.name}*! 👋\n\n`;
+  message += `I am interested in booking a ride for *${from} → ${to}*`;
+  if (distance) {
+    message += ` (${distance} km)`;
+  }
+  if (price) {
+    message += ` (Est. ₹${price.toLocaleString('en-IN')})`;
+  }
+  message += `.\n\nPlease share available cab options and final rate.`;
   return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
 }
 
