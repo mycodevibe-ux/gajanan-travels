@@ -16,7 +16,7 @@ export const vehiclesData: Vehicle[] = [
     minKmPerDay: 250,
     driverAllowancePerDay: 350,
     extraHourRate: 150,
-    image: '/api/vehicles/swift-dzire',
+    image: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=600&q=80',
     features: [
       'Chilled Climate Control AC',
       'Comfortable Rear Legroom',
@@ -43,7 +43,7 @@ export const vehiclesData: Vehicle[] = [
     minKmPerDay: 250,
     driverAllowancePerDay: 400,
     extraHourRate: 180,
-    image: '/api/vehicles/ertiga',
+    image: 'https://images.unsplash.com/photo-1550355291-bbee04a92027?auto=format&fit=crop&w=600&q=80',
     features: [
       'Dual AC with Rear Air Vents',
       'Foldable Rear 3rd Row Seats',
@@ -70,7 +70,7 @@ export const vehiclesData: Vehicle[] = [
     minKmPerDay: 250,
     driverAllowancePerDay: 400,
     extraHourRate: 200,
-    image: '/api/vehicles/innova-crysta',
+    image: 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=600&q=80',
     features: [
       'Plush Reclining Captain Seats',
       'Dual Automatic Climate Control',
@@ -97,7 +97,7 @@ export const vehiclesData: Vehicle[] = [
     minKmPerDay: 250,
     driverAllowancePerDay: 500,
     extraHourRate: 300,
-    image: '/api/vehicles/tata-17-seater',
+    image: 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=600&q=80',
     features: [
       '2x1 Pushback Maharaja Recliner Seats',
       'Individual AC Vents for All Rows',
@@ -124,7 +124,7 @@ export const vehiclesData: Vehicle[] = [
     minKmPerDay: 250,
     driverAllowancePerDay: 500,
     extraHourRate: 350,
-    image: '/api/vehicles/tata-20-seater',
+    image: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=600&q=80',
     features: [
       'High-deck Pushback Seating',
       'Powerful Dual AC Compressor',
