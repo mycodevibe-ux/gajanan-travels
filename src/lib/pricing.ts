@@ -131,7 +131,7 @@ export function calculateEstimatedPrice(formData: Partial<BookingFormData>): Pri
 
     case 'outstation_roundtrip':
     default: {
-      const minDailyKm = vehicle.minKmPerDay || 250;
+      const minDailyKm = vehicle.minKmPerDay || 300;
       const actualDistance = oneWayKm * 2;
       const minBillableKm = minDailyKm * days;
       totalDistanceKm = Math.max(actualDistance, minBillableKm);

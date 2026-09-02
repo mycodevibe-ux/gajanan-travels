@@ -1,23 +1,30 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { 
   Phone, 
   Mail, 
   MapPin, 
-  Clock
+  Clock,
+  Navigation,
+  Compass,
+  Gauge,
+  ExternalLink,
+  ShieldCheck
 } from 'lucide-react';
 import { siteConfig } from '@/data/siteConfig';
 import { WhatsAppOriginalIcon } from '@/components/vehicles/VehicleIcons';
 import { useLanguage } from '@/context/LanguageContext';
 import { toMarathiDigits, formatMarathiDate } from '@/lib/marathiNumbers';
+import { getRouteEstimate, getCabFareEstimate } from '@/lib/routeCalculator';
 
 export const HomeContactSection: React.FC = () => {
   const { language, t } = useLanguage();
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
-    date: new Date().toISOString().split('T')[0],
+    startDate: new Date(Date.now() + 86400000).toISOString().split('T')[0],
+    endDate: new Date(Date.now() + 172800000).toISOString().split('T')[0],
     pickup: '',
     destination: '',
     vehicle: 'Sedan',
@@ -25,6 +32,53 @@ export const HomeContactSection: React.FC = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Calculate number of trip days between startDate and endDate
+  const tripDays = useMemo(() => {
+    if (formData.startDate && formData.endDate) {
+      const start = new Date(formData.startDate);
+      const end = new Date(formData.endDate);
+      if (!isNaN(start.getTime()) && !isNaN(end.getTime())) {
+        const diffTime = end.getTime() - start.getTime();
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+        return Math.max(1, diffDays);
+      }
+    }
+    return 1;
+  }, [formData.startDate, formData.endDate]);
+
+  // Dynamic route distance, time & toll calculation
+  const routeEstimate = useMemo(() => {
+    return getRouteEstimate(formData.pickup, formData.destination);
+  }, [formData.pickup, formData.destination]);
+
+  const cabFare = useMemo(() => {
+    return getCabFareEstimate(formData.vehicle, routeEstimate.distanceKm, tripDays);
+  }, [formData.vehicle, routeEstimate.distanceKm, tripDays]);
+
+  const hasRouteInput = Boolean(formData.pickup.trim() || formData.destination.trim());
+
+  // Dynamic Google Map Query
+  const mapSearchQuery = useMemo(() => {
+    const p = formData.pickup.trim();
+    const d = formData.destination.trim();
+    if (p && d) {
+      return `${p} to ${d}`;
+    }
+    if (d) {
+      return `Pune to ${d}`;
+    }
+    if (p) {
+      return `${p}, Pune`;
+    }
+    return 'Pune, Maharashtra';
+  }, [formData.pickup, formData.destination]);
+
+  const googleMapsDirectionsUrl = useMemo(() => {
+    const p = encodeURIComponent(formData.pickup.trim() || 'Pune');
+    const d = encodeURIComponent(formData.destination.trim() || 'Pune');
+    return `https://www.google.com/maps/dir/?api=1&origin=${p}&destination=${d}`;
+  }, [formData.pickup, formData.destination]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,7 +102,13 @@ export const HomeContactSection: React.FC = () => {
           'Pickup Location': formData.pickup || 'Pune',
           'Destination': formData.destination || 'Not specified',
           'Vehicle Preference': formData.vehicle,
-          'Pickup Date': formData.date,
+          'Start Date': formData.startDate,
+          'End Date': formData.endDate,
+          'Total Trip Days': `${tripDays} Day(s)`,
+          'Distance Est': `${routeEstimate.distanceKm} KM`,
+          'Travel Time Est': routeEstimate.durationText.en,
+          'Toll Est': `₹${routeEstimate.tollEstimate}`,
+          'Cab Fare Est': `₹${cabFare.toLocaleString('en-IN')}`,
           'Notes': formData.notes || 'Enquiry from Plan Your Trip form',
         }),
       });
@@ -56,9 +116,13 @@ export const HomeContactSection: React.FC = () => {
       console.error(err);
     }
 
-    // Direct WhatsApp dispatch to 9011657355
+    // Direct WhatsApp dispatch with route, toll & fare breakdown
+    const routeSummary = hasRouteInput 
+      ? `\n🛣️ *Route:* ${routeEstimate.routeTitle} (~${routeEstimate.distanceKm} KM)\n⏱️ *Est. Time:* ${routeEstimate.durationText.en}\n💳 *FastTag Toll:* ₹${routeEstimate.tollEstimate}\n💰 *Est. Total Fare:* ₹${cabFare.toLocaleString('en-IN')} (${tripDays} Day${tripDays > 1 ? 's' : ''} Roundtrip)`
+      : '';
+
     const message = encodeURIComponent(
-      `Hello ${siteConfig.name}! 🚗\n\n*New Trip Booking Enquiry:*\n👤 *Name:* ${formData.name}\n📱 *Phone:* ${formData.phone}\n📅 *Date:* ${formData.date}\n📍 *Pickup:* ${formData.pickup || 'Pune'}\n🏁 *Destination:* ${formData.destination || 'Not specified'}\n🚘 *Vehicle:* ${formData.vehicle}\n💬 *Notes:* ${formData.notes || 'Please confirm ride & rates.'}`
+      `Hello ${siteConfig.name}! 🚗\n\n*New Trip Booking Enquiry:*\n👤 *Name:* ${formData.name}\n📱 *Phone:* ${formData.phone}\n📅 *Dates:* ${formData.startDate} to ${formData.endDate} (${tripDays} Day${tripDays > 1 ? 's' : ''} Trip)\n📍 *Pickup:* ${formData.pickup || 'Pune'}\n🏁 *Destination:* ${formData.destination || 'Not specified'}\n🚘 *Vehicle:* ${formData.vehicle}${routeSummary}\n💬 *Notes:* ${formData.notes || 'Please confirm ride & availability.'}`
     );
 
     setIsSubmitting(false);
@@ -107,138 +171,295 @@ export const HomeContactSection: React.FC = () => {
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
               {/* Row 1: Name & Phone */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }} className="contact-grid-row">
-                <input
-                  type="text"
-                  placeholder={language === 'mr' ? 'तुमचे नाव' : 'Your name'}
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  style={{
-                    width: '100%',
-                    padding: '11px 14px',
-                    borderRadius: '8px',
-                    border: '1px solid #cbd5e1',
-                    fontSize: '0.88rem',
-                    outline: 'none',
-                    backgroundColor: '#ffffff',
-                    color: '#0c2338',
-                  }}
-                  required
-                />
-                <input
-                  type="tel"
-                  placeholder={language === 'mr' ? 'मोबाईल नंबर' : 'Phone number'}
-                  value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  style={{
-                    width: '100%',
-                    padding: '11px 14px',
-                    borderRadius: '8px',
-                    border: '1px solid #cbd5e1',
-                    fontSize: '0.88rem',
-                    outline: 'none',
-                    backgroundColor: '#ffffff',
-                    color: '#0c2338',
-                  }}
-                  required
-                />
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.74rem', color: '#64748b', fontWeight: 'normal', marginBottom: '4px' }}>
+                    {language === 'mr' ? 'तुमचे नाव *' : 'Your Name *'}
+                  </label>
+                  <input
+                    type="text"
+                    placeholder={language === 'mr' ? 'उदा. राहुल कदम' : 'e.g. Rahul Kadam'}
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    style={{
+                      width: '100%',
+                      padding: '10px 14px',
+                      borderRadius: '8px',
+                      border: '1px solid #cbd5e1',
+                      fontSize: '0.88rem',
+                      outline: 'none',
+                      backgroundColor: '#ffffff',
+                      color: '#0c2338',
+                    }}
+                    required
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.74rem', color: '#64748b', fontWeight: 'normal', marginBottom: '4px' }}>
+                    {language === 'mr' ? 'मोबाईल नंबर *' : 'Mobile Number *'}
+                  </label>
+                  <input
+                    type="tel"
+                    placeholder={language === 'mr' ? 'उदा. ९०११६५७३५५' : 'e.g. 9011657355'}
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    style={{
+                      width: '100%',
+                      padding: '10px 14px',
+                      borderRadius: '8px',
+                      border: '1px solid #cbd5e1',
+                      fontSize: '0.88rem',
+                      outline: 'none',
+                      backgroundColor: '#ffffff',
+                      color: '#0c2338',
+                    }}
+                    required
+                  />
+                </div>
               </div>
 
-              {/* Row 2: Date & Pickup */}
+              {/* Row 2: Pickup Location & Destination */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }} className="contact-grid-row">
-                <input
-                  type="date"
-                  value={formData.date}
-                  onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                  style={{
-                    width: '100%',
-                    padding: '11px 14px',
-                    borderRadius: '8px',
-                    border: '1px solid #cbd5e1',
-                    fontSize: '0.88rem',
-                    outline: 'none',
-                    backgroundColor: '#ffffff',
-                    color: '#0c2338',
-                  }}
-                  required
-                />
-                <input
-                  type="text"
-                  placeholder={language === 'mr' ? 'पिकअप ठिकाण' : 'Pickup location'}
-                  value={formData.pickup}
-                  onChange={(e) => setFormData({ ...formData, pickup: e.target.value })}
-                  style={{
-                    width: '100%',
-                    padding: '11px 14px',
-                    borderRadius: '8px',
-                    border: '1px solid #cbd5e1',
-                    fontSize: '0.88rem',
-                    outline: 'none',
-                    backgroundColor: '#ffffff',
-                    color: '#0c2338',
-                  }}
-                />
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.74rem', color: '#64748b', fontWeight: 'normal', marginBottom: '4px' }}>
+                    {language === 'mr' ? 'पिकअप ठिकाण' : 'Pickup Location'}
+                  </label>
+                  <input
+                    type="text"
+                    placeholder={language === 'mr' ? 'उदा. पुणे, कात्रज, स्वारगेट' : 'e.g. Pune, Katraj, Swargate'}
+                    value={formData.pickup}
+                    onChange={(e) => setFormData({ ...formData, pickup: e.target.value })}
+                    style={{
+                      width: '100%',
+                      padding: '10px 14px',
+                      borderRadius: '8px',
+                      border: '1px solid #cbd5e1',
+                      fontSize: '0.88rem',
+                      outline: 'none',
+                      backgroundColor: '#ffffff',
+                      color: '#0c2338',
+                    }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.74rem', color: '#64748b', fontWeight: 'normal', marginBottom: '4px' }}>
+                    {language === 'mr' ? 'जाण्याचे ठिकाण' : 'Drop Destination'}
+                  </label>
+                  <input
+                    type="text"
+                    placeholder={language === 'mr' ? 'उदा. दापोली, महाबळेश्वर, गोवा' : 'e.g. Dapoli, Mahabaleshwar, Goa'}
+                    value={formData.destination}
+                    onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
+                    style={{
+                      width: '100%',
+                      padding: '10px 14px',
+                      borderRadius: '8px',
+                      border: '1px solid #cbd5e1',
+                      fontSize: '0.88rem',
+                      outline: 'none',
+                      backgroundColor: '#ffffff',
+                      color: '#0c2338',
+                    }}
+                  />
+                </div>
               </div>
 
-              {/* Row 3: Destination & Vehicle */}
+              {/* Row 3: Start Date & End Date */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }} className="contact-grid-row">
-                <input
-                  type="text"
-                  placeholder={language === 'mr' ? 'जाण्याचे ठिकाण' : 'Destination'}
-                  value={formData.destination}
-                  onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
-                  style={{
-                    width: '100%',
-                    padding: '11px 14px',
-                    borderRadius: '8px',
-                    border: '1px solid #cbd5e1',
-                    fontSize: '0.88rem',
-                    outline: 'none',
-                    backgroundColor: '#ffffff',
-                    color: '#0c2338',
-                  }}
-                />
-                <select
-                  value={formData.vehicle}
-                  onChange={(e) => setFormData({ ...formData, vehicle: e.target.value })}
-                  style={{
-                    width: '100%',
-                    padding: '11px 14px',
-                    borderRadius: '8px',
-                    border: '1px solid #cbd5e1',
-                    fontSize: '0.88rem',
-                    outline: 'none',
-                    backgroundColor: '#ffffff',
-                    color: '#0c2338',
-                    cursor: 'pointer',
-                  }}
-                >
-                  <option value="Sedan">{language === 'mr' ? 'सेडान (Swift Dzire)' : 'Sedan (Swift Dzire)'}</option>
-                  <option value="SUV">{language === 'mr' ? 'एसयूव्ही (Maruti Ertiga)' : 'SUV (Maruti Ertiga)'}</option>
-                  <option value="Luxury SUV">{language === 'mr' ? 'लक्झरी एसयूव्ही (Innova Crysta)' : 'Luxury SUV (Innova Crysta)'}</option>
-                  <option value="Tempo Traveller">{language === 'mr' ? 'टेम्पो ट्रॅव्हलर (१७ सीटर)' : 'Tempo Traveller (17 Seater TT)'}</option>
-                  <option value="Tourist Bus">{language === 'mr' ? 'टूरिस्ट बस (२० सीटर)' : 'Tourist Coach Bus (20 Seater)'}</option>
-                </select>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.74rem', color: '#64748b', fontWeight: 'normal', marginBottom: '4px' }}>
+                    {language === 'mr' ? 'प्रवासाची तारीख (Start Date)' : 'Start Date (Pickup)'}
+                  </label>
+                  <input
+                    type="date"
+                    value={formData.startDate}
+                    min={new Date().toISOString().split('T')[0]}
+                    onChange={(e) => {
+                      const newStart = e.target.value;
+                      setFormData((prev) => ({
+                        ...prev,
+                        startDate: newStart,
+                        endDate: prev.endDate < newStart ? newStart : prev.endDate,
+                      }));
+                    }}
+                    style={{
+                      width: '100%',
+                      padding: '10px 14px',
+                      borderRadius: '8px',
+                      border: '1px solid #cbd5e1',
+                      fontSize: '0.88rem',
+                      outline: 'none',
+                      backgroundColor: '#ffffff',
+                      color: '#0c2338',
+                    }}
+                    required
+                  />
+                </div>
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                    <label style={{ fontSize: '0.74rem', color: '#64748b', fontWeight: 'normal' }}>
+                      {language === 'mr' ? 'परतीची तारीख (End Date)' : 'End Date (Return)'}
+                    </label>
+                    <span style={{ fontSize: '0.68rem', color: '#047857', fontWeight: 'normal' }}>
+                      {language === 'mr' ? `(${toMarathiDigits(tripDays)} दिवस)` : `(${tripDays} Day${tripDays > 1 ? 's' : ''})`}
+                    </span>
+                  </div>
+                  <input
+                    type="date"
+                    value={formData.endDate}
+                    min={formData.startDate || new Date().toISOString().split('T')[0]}
+                    onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
+                    style={{
+                      width: '100%',
+                      padding: '10px 14px',
+                      borderRadius: '8px',
+                      border: '1px solid #cbd5e1',
+                      fontSize: '0.88rem',
+                      outline: 'none',
+                      backgroundColor: '#ffffff',
+                      color: '#0c2338',
+                    }}
+                    required
+                  />
+                </div>
               </div>
 
-              {/* Row 4: Notes */}
-              <div>
-                <textarea
-                  rows={3}
-                  placeholder={language === 'mr' ? 'काही विशेष सूचना किंवा माहिती?' : 'Anything else we should know?'}
-                  value={formData.notes}
-                  onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                  style={{
-                    width: '100%',
-                    padding: '11px 14px',
-                    borderRadius: '8px',
-                    border: '1px solid #cbd5e1',
-                    fontSize: '0.88rem',
-                    outline: 'none',
-                    backgroundColor: '#ffffff',
-                    color: '#0c2338',
-                    resize: 'vertical',
-                  }}
-                />
+              {/* Row 4: Vehicle & Notes */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }} className="contact-grid-row">
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.74rem', color: '#64748b', fontWeight: 'normal', marginBottom: '4px' }}>
+                    {language === 'mr' ? 'पसंतीची गाडी' : 'Vehicle Preference'}
+                  </label>
+                  <select
+                    value={formData.vehicle}
+                    onChange={(e) => setFormData({ ...formData, vehicle: e.target.value })}
+                    style={{
+                      width: '100%',
+                      padding: '10px 14px',
+                      borderRadius: '8px',
+                      border: '1px solid #cbd5e1',
+                      fontSize: '0.88rem',
+                      outline: 'none',
+                      backgroundColor: '#ffffff',
+                      color: '#0c2338',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <option value="Sedan">{language === 'mr' ? 'सेडान (Swift Dzire)' : 'Sedan (Swift Dzire)'}</option>
+                    <option value="SUV">{language === 'mr' ? 'एसयूव्ही (Maruti Ertiga)' : 'SUV (Maruti Ertiga)'}</option>
+                    <option value="Luxury SUV">{language === 'mr' ? 'लक्झरी एसयूव्ही (Innova Crysta)' : 'Luxury SUV (Innova Crysta)'}</option>
+                    <option value="Tempo Traveller">{language === 'mr' ? 'टेम्पो ट्रॅव्हलर (१७ सीटर)' : 'Tempo Traveller (17 Seater TT)'}</option>
+                    <option value="Tourist Bus">{language === 'mr' ? 'टूरिस्ट बस (२० सीटर)' : 'Tourist Coach Bus (20 Seater)'}</option>
+                  </select>
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.74rem', color: '#64748b', fontWeight: 'normal', marginBottom: '4px' }}>
+                    {language === 'mr' ? 'काही विशेष सूचना?' : 'Special Notes'}
+                  </label>
+                  <input
+                    type="text"
+                    placeholder={language === 'mr' ? 'उदा. सकाळी ६ वाजता पिकअप' : 'e.g. Morning 6 AM pickup'}
+                    value={formData.notes}
+                    onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                    style={{
+                      width: '100%',
+                      padding: '10px 14px',
+                      borderRadius: '8px',
+                      border: '1px solid #cbd5e1',
+                      fontSize: '0.88rem',
+                      outline: 'none',
+                      backgroundColor: '#ffffff',
+                      color: '#0c2338',
+                    }}
+                  />
+                </div>
+              </div>
+
+              {/* Dynamic Live Route, Distance, Toll & Time Calculation Box */}
+              <div style={{
+                backgroundColor: '#f8fafc',
+                border: '1.5px solid #e2e8f0',
+                borderRadius: '12px',
+                padding: '14px',
+              }}>
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginBottom: '10px',
+                  borderBottom: '1px solid #e2e8f0',
+                  paddingBottom: '8px',
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <Navigation size={14} color="#f97316" />
+                    <span style={{ fontSize: '0.82rem', fontWeight: 'normal', color: '#0c2338', fontFamily: 'var(--font-heading)' }}>
+                      {language === 'mr' ? 'थेट अंतर, टोल व वेळ अंदाज' : 'Live Route, Toll & Time Estimate'}
+                    </span>
+                  </div>
+                  <span style={{ fontSize: '0.72rem', color: '#047857', backgroundColor: '#eaf5ee', padding: '2px 8px', borderRadius: '9999px', fontWeight: 'normal' }}>
+                    {routeEstimate.routeTitle}
+                  </span>
+                </div>
+
+                {/* 4 Metrics Grid */}
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(2, 1fr)',
+                  gap: '8px',
+                  marginBottom: '10px',
+                }}>
+                  {/* 1. Distance */}
+                  <div style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '8px', padding: '8px 10px' }}>
+                    <div style={{ fontSize: '0.68rem', color: '#64748b' }}>
+                      {language === 'mr' ? '📍 एकूण अंतर' : '📍 Distance'}
+                    </div>
+                    <div style={{ fontSize: '1.05rem', color: '#0c2338', fontWeight: 'normal', fontFamily: 'var(--font-heading)', marginTop: '2px' }}>
+                      {language === 'mr' ? toMarathiDigits(routeEstimate.distanceKm) : routeEstimate.distanceKm} <span style={{ fontSize: '0.72rem', fontWeight: 'normal', color: '#64748b' }}>{language === 'mr' ? 'किमी' : 'KM'}</span>
+                    </div>
+                  </div>
+
+                  {/* 2. Travel Time */}
+                  <div style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '8px', padding: '8px 10px' }}>
+                    <div style={{ fontSize: '0.68rem', color: '#64748b' }}>
+                      {language === 'mr' ? '⏱️ अंदाजे प्रवास वेळ' : '⏱️ Travel Time'}
+                    </div>
+                    <div style={{ fontSize: '0.96rem', color: '#0c2338', fontWeight: 'normal', fontFamily: 'var(--font-heading)', marginTop: '2px' }}>
+                      {language === 'mr' ? toMarathiDigits(routeEstimate.durationText.mr) : routeEstimate.durationText.en}
+                    </div>
+                  </div>
+
+                  {/* 3. FastTag Toll */}
+                  <div style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '8px', padding: '8px 10px' }}>
+                    <div style={{ fontSize: '0.68rem', color: '#64748b' }}>
+                      {language === 'mr' ? '🛣️ FastTag टोल' : '🛣️ FastTag Toll'}
+                    </div>
+                    <div style={{ fontSize: '1.05rem', color: '#f97316', fontWeight: 'normal', fontFamily: 'var(--font-heading)', marginTop: '2px' }}>
+                      ₹{language === 'mr' ? toMarathiDigits(routeEstimate.tollEstimate) : routeEstimate.tollEstimate} <span style={{ fontSize: '0.7rem', fontWeight: 'normal', color: '#64748b' }}>{language === 'mr' ? 'अंदाजे' : 'approx.'}</span>
+                    </div>
+                  </div>
+
+                  {/* 4. Estimated Fare */}
+                  <div style={{ backgroundColor: '#eaf5ee', border: '1px solid #bde4ca', borderRadius: '8px', padding: '8px 10px' }}>
+                    <div style={{ fontSize: '0.68rem', color: '#1b4332' }}>
+                      {language === 'mr' ? '💰 अंदाजे प्रवास भाडे' : '💰 Est. Cab Fare'}
+                    </div>
+                    <div style={{ fontSize: '1.05rem', color: '#1b4332', fontWeight: 'normal', fontFamily: 'var(--font-heading)', marginTop: '2px' }}>
+                      ₹{language === 'mr' ? toMarathiDigits(cabFare.toLocaleString('en-IN')) : cabFare.toLocaleString('en-IN')} <span style={{ fontSize: '0.7rem', fontWeight: 'normal', color: '#047857' }}>{language === 'mr' ? `(${toMarathiDigits(tripDays)} दिवस)` : `(${tripDays} Day${tripDays > 1 ? 's' : ''})`}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.72rem', color: '#64748b' }}>
+                  <span>✓ {language === 'mr' ? 'सर्वोत्तम हायवे मार्ग व टोल समाविष्ट' : 'Best highway route & tolls included'}</span>
+                  <a 
+                    href={googleMapsDirectionsUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    style={{ color: '#0284c7', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '3px' }}
+                  >
+                    <span>{language === 'mr' ? 'मॅप उघडा' : 'View on Maps'}</span>
+                    <ExternalLink size={11} />
+                  </a>
+                </div>
               </div>
 
               {/* Full-width Green WhatsApp Button matching mockup */}
@@ -264,7 +485,7 @@ export const HomeContactSection: React.FC = () => {
             </form>
           </div>
 
-          {/* Right Column: Info Box + Map matching mockup */}
+          {/* Right Column: Info Box + Live Dynamic Map */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             {/* Soft Blue Info Box */}
             <div style={{
@@ -385,24 +606,58 @@ export const HomeContactSection: React.FC = () => {
               </div>
             </div>
 
-            {/* Embedded Live Map Box matching mockup */}
+            {/* Embedded Live Route Map with Dynamic Path */}
             <div style={{
               borderRadius: '16px',
               overflow: 'hidden',
-              height: '145px',
-              border: '1px solid #e2e8f0',
-              boxShadow: '0 2px 10px rgba(0,0,0,0.04)',
+              border: '1px solid #cbd5e1',
+              backgroundColor: '#ffffff',
+              boxShadow: '0 4px 16px rgba(0,0,0,0.06)',
             }}>
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d121059.04360438186!2d73.79292679237691!3d18.524616458039755!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2bf2e67461101%3A0x828d43bf9d9ee343!2sPune%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen={false}
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                title={`${siteConfig.name} Pune Location`}
-              />
+              <div style={{
+                padding: '10px 14px',
+                backgroundColor: '#0c2338',
+                color: '#ffffff',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                fontSize: '0.8rem',
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <Compass size={14} color="#f97316" />
+                  <span style={{ fontFamily: 'var(--font-heading)' }}>
+                    {language === 'mr' ? `मार्ग नकाशा: ${routeEstimate.routeTitle}` : `Route Map: ${routeEstimate.routeTitle}`}
+                  </span>
+                </div>
+                <a
+                  href={googleMapsDirectionsUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{
+                    color: '#f97316',
+                    textDecoration: 'none',
+                    fontSize: '0.74rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                  }}
+                >
+                  <span>{language === 'mr' ? 'मॅप्स दिशा ↗' : 'Directions ↗'}</span>
+                </a>
+              </div>
+              <div style={{ height: '240px', width: '100%' }}>
+                <iframe
+                  key={mapSearchQuery}
+                  src={`https://www.google.com/maps?q=${encodeURIComponent(mapSearchQuery)}&output=embed`}
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen={false}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title={`${siteConfig.name} Route Map`}
+                />
+              </div>
             </div>
           </div>
         </div>

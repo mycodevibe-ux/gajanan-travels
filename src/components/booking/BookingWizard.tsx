@@ -24,6 +24,7 @@ import { createWhatsAppBookingUrl } from '@/lib/whatsapp';
 import { siteConfig } from '@/data/siteConfig';
 import { useLanguage } from '@/context/LanguageContext';
 import { toMarathiDigits, formatMarathiDate } from '@/lib/marathiNumbers';
+import { getRouteEstimate } from '@/lib/routeCalculator';
 
 interface BookingWizardProps {
   initialTripType?: TripType;
@@ -87,6 +88,10 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
   const priceResult = useMemo(() => {
     return calculateEstimatedPrice(formData);
   }, [formData]);
+
+  const wizardRoute = useMemo(() => {
+    return getRouteEstimate(formData.pickupCity, formData.dropCity);
+  }, [formData.pickupCity, formData.dropCity]);
 
   // Auto-switch vehicle when passenger count changes
   const handlePassengersChange = (count: number) => {
@@ -570,9 +575,21 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
             color: '#1b4332',
             fontWeight: 'normal',
             marginBottom: '14px',
+            flexWrap: 'wrap',
+            gap: '6px',
           }}>
-            <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
               <span>📍 {language === 'mr' ? 'मार्ग:' : 'Route:'} <span style={{ fontWeight: 'normal' }}>{formData.pickupCity} → {formData.dropCity || (formData.tripType === 'local_rental' ? (language === 'mr' ? 'पुणे स्थानिक' : 'Pune Local') : 'City')}</span></span>
+              {formData.tripType !== 'local_rental' && (
+                <>
+                  <span style={{ color: '#94a3b8' }}>•</span>
+                  <span>~{language === 'mr' ? toMarathiDigits(wizardRoute.distanceKm) : wizardRoute.distanceKm} {language === 'mr' ? 'किमी' : 'KM'}</span>
+                  <span style={{ color: '#94a3b8' }}>•</span>
+                  <span>{language === 'mr' ? toMarathiDigits(wizardRoute.durationText.mr) : wizardRoute.durationText.en}</span>
+                  <span style={{ color: '#94a3b8' }}>•</span>
+                  <span>FastTag: ₹{language === 'mr' ? toMarathiDigits(wizardRoute.tollEstimate) : wizardRoute.tollEstimate}</span>
+                </>
+              )}
             </div>
             <span>✓ {language === 'mr' ? 'चालक व टोल समाविष्ट' : 'Includes Driver & Tolls'}</span>
           </div>
