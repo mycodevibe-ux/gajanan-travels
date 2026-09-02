@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { TripType, BookingFormData } from '@/types';
 import { siteConfig } from '@/data/siteConfig';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface HeroSectionProps {
   onOpenBookingModal: (tripType?: TripType, vehicleId?: string, initialData?: Partial<BookingFormData>) => void;
@@ -63,6 +64,7 @@ const tripSlides = [
 ];
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBookingModal }) => {
+  const { t } = useLanguage();
   const [pickupLocation, setPickupLocation] = useState('Pune');
   const [dropLocation, setDropLocation] = useState('');
   const [pickupDate, setPickupDate] = useState(
@@ -147,8 +149,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBookingModal }) 
               fontFamily: 'var(--font-heading)',
               textTransform: 'uppercase',
             }}>
-              Your journey,<br />
-              <span style={{ color: '#f97316' }}>our responsibility.</span>
+              {t.hero_title_1}<br />
+              <span style={{ color: '#f97316' }}>{t.hero_title_2}</span>
             </h1>
 
             <p style={{
@@ -158,7 +160,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBookingModal }) 
               marginBottom: '26px',
               maxWidth: '520px',
             }}>
-              Outstation trips, local city travel, and group tours – all at your service. Clean cars, transparent per-km billing, and drivers who know every turn.
+              {t.hero_subtitle}
             </p>
 
             {/* 2 Buttons: Orange + Green */}
@@ -168,7 +170,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBookingModal }) 
                 className="btn btn-orange"
                 style={{ padding: '12px 26px', fontSize: '0.94rem', fontWeight: 'normal' }}
               >
-                <span>Book your ride</span>
+                <span>{t.hero_btn_book}</span>
               </button>
 
               <a
@@ -185,17 +187,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBookingModal }) 
             <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
               <div className="hero-pill-badge">
                 <Car size={15} color="#f97316" />
-                <span>Clean sanitized vehicles</span>
+                <span>{t.hero_pill_clean}</span>
               </div>
 
               <div className="hero-pill-badge">
                 <UserCheck size={15} color="#f97316" />
-                <span>Road-tested drivers</span>
+                <span>{t.hero_pill_drivers}</span>
               </div>
 
               <div className="hero-pill-badge">
                 <Tag size={15} color="#f97316" />
-                <span>All-inclusive options</span>
+                <span>{t.hero_pill_inclusive}</span>
               </div>
             </div>
           </div>
@@ -465,7 +467,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBookingModal }) 
             fontFamily: 'var(--font-heading)',
             letterSpacing: '0.3px',
           }}>
-            Plan your ride
+            {t.search_title}
           </h2>
 
           <form onSubmit={handleSearchSubmit}>
@@ -479,11 +481,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBookingModal }) 
               {/* 1. Pickup location */}
               <div>
                 <label style={{ display: 'block', fontSize: '0.78rem', color: '#64748b', fontWeight: 'normal', marginBottom: '5px' }}>
-                  Pickup location
+                  {t.search_pickup}
                 </label>
                 <input
                   type="text"
-                  placeholder="Enter pickup location"
+                  placeholder={t.search_pickup_placeholder}
                   value={pickupLocation}
                   onChange={(e) => setPickupLocation(e.target.value)}
                   style={{
@@ -504,11 +506,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBookingModal }) 
               {/* 2. Drop location */}
               <div>
                 <label style={{ display: 'block', fontSize: '0.78rem', color: '#64748b', fontWeight: 'normal', marginBottom: '5px' }}>
-                  Drop location
+                  {t.search_drop}
                 </label>
                 <input
                   type="text"
-                  placeholder="Enter drop location"
+                  placeholder={t.search_drop_placeholder}
                   value={dropLocation}
                   onChange={(e) => setDropLocation(e.target.value)}
                   style={{
@@ -529,7 +531,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBookingModal }) 
               {/* 3. Pickup date */}
               <div>
                 <label style={{ display: 'block', fontSize: '0.78rem', color: '#64748b', fontWeight: 'normal', marginBottom: '5px' }}>
-                  Pickup date
+                  {t.search_pickup_date}
                 </label>
                 <input
                   type="date"
@@ -554,7 +556,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBookingModal }) 
               {/* 4. Drop date (NEW) */}
               <div>
                 <label style={{ display: 'block', fontSize: '0.78rem', color: '#64748b', fontWeight: 'normal', marginBottom: '5px' }}>
-                  Drop date
+                  {t.search_drop_date}
                 </label>
                 <input
                   type="date"
@@ -579,7 +581,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBookingModal }) 
               {/* 5. Passengers */}
               <div>
                 <label style={{ display: 'block', fontSize: '0.78rem', color: '#64748b', fontWeight: 'normal', marginBottom: '5px' }}>
-                  Passengers
+                  {t.search_passengers}
                 </label>
                 <select
                   value={passengers}
@@ -607,7 +609,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBookingModal }) 
               {/* 6. Vehicle type */}
               <div>
                 <label style={{ display: 'block', fontSize: '0.78rem', color: '#64748b', fontWeight: 'normal', marginBottom: '5px' }}>
-                  Vehicle type
+                  {t.search_vehicle_type}
                 </label>
                 <select
                   value={vehicleType}
@@ -648,7 +650,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBookingModal }) 
                   }}
                 >
                   <Search size={15} />
-                  <span>Search</span>
+                  <span>{t.search_btn}</span>
                 </button>
               </div>
             </div>

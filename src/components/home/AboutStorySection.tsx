@@ -3,8 +3,11 @@
 import React from 'react';
 import { ShieldCheck, Star, Clock } from 'lucide-react';
 import { siteConfig } from '@/data/siteConfig';
+import { useLanguage } from '@/context/LanguageContext';
 
 export const AboutStorySection: React.FC = () => {
+  const { t } = useLanguage();
+
   return (
     <section id="about" style={{
       backgroundColor: '#f0f7fc',
@@ -29,7 +32,7 @@ export const AboutStorySection: React.FC = () => {
               fontFamily: 'var(--font-heading)',
               letterSpacing: '0.3px',
             }}>
-              Built by drivers who love the road
+              {t.about_title}
             </h2>
 
             <p style={{
@@ -38,7 +41,7 @@ export const AboutStorySection: React.FC = () => {
               lineHeight: 1.7,
               marginBottom: '24px',
             }}>
-              {siteConfig.name} started with a simple belief: long drives should be a pleasure, not a stress. We began with two cars and a commitment to transparency — no surprise surge pricing, no hidden driver charges, and never a vehicle that hasn't been thoroughly cleaned and checked.
+              {t.about_desc}
             </p>
 
             {/* 3 Milestones */}

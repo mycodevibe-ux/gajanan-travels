@@ -1,14 +1,16 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Phone, Menu, X } from 'lucide-react';
+import { Phone, Menu, X, Globe } from 'lucide-react';
 import { siteConfig } from '@/data/siteConfig';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface NavbarProps {
   onOpenBookingModal?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ onOpenBookingModal }) => {
+  const { language, setLanguage, t } = useLanguage();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
@@ -38,12 +40,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBookingModal }) => {
   }, []);
 
   const navLinks = [
-    { name: 'HOME', href: '#home', id: 'home' },
-    { name: 'ABOUT', href: '#about', id: 'about' },
-    { name: 'FLEET', href: '#fleet', id: 'fleet' },
-    { name: 'SERVICES', href: '#services', id: 'services' },
-    { name: 'REVIEWS', href: '#reviews', id: 'reviews' },
-    { name: 'CONTACT', href: '#contact', id: 'contact' },
+    { name: t.nav_home, href: '#home', id: 'home' },
+    { name: t.nav_about, href: '#about', id: 'about' },
+    { name: t.nav_fleet, href: '#fleet', id: 'fleet' },
+    { name: t.nav_services, href: '#services', id: 'services' },
+    { name: t.nav_reviews, href: '#reviews', id: 'reviews' },
+    { name: t.nav_contact, href: '#contact', id: 'contact' },
   ];
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -127,7 +129,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBookingModal }) => {
               const isActive = activeSection === link.id;
               return (
                 <a
-                  key={link.name}
+                  key={link.id}
                   href={link.href}
                   onClick={(e) => handleNavClick(e, link.href)}
                   style={{
@@ -161,8 +163,54 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBookingModal }) => {
             })}
           </nav>
 
-          {/* Right Phone Pill + Orange Book Now Button */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+          {/* Right Action Cluster: Language Switcher + Phone Pill + Orange Book Now Button */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            {/* Language Switcher Pill (EN | मराठी) */}
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              backgroundColor: '#f1f5f9',
+              borderRadius: '9999px',
+              padding: '3px',
+              border: '1px solid #e2e8f0',
+              gap: '2px',
+            }}>
+              <button
+                type="button"
+                onClick={() => setLanguage('en')}
+                style={{
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: '4px 10px',
+                  borderRadius: '9999px',
+                  fontSize: '0.74rem',
+                  fontWeight: 'normal',
+                  backgroundColor: language === 'en' ? '#0c2338' : 'transparent',
+                  color: language === 'en' ? '#ffffff' : '#64748b',
+                  transition: 'all 0.2s',
+                }}
+              >
+                EN
+              </button>
+              <button
+                type="button"
+                onClick={() => setLanguage('mr')}
+                style={{
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: '4px 10px',
+                  borderRadius: '9999px',
+                  fontSize: '0.74rem',
+                  fontWeight: 'normal',
+                  backgroundColor: language === 'mr' ? '#0c2338' : 'transparent',
+                  color: language === 'mr' ? '#ffffff' : '#64748b',
+                  transition: 'all 0.2s',
+                }}
+              >
+                मराठी
+              </button>
+            </div>
+
             <a 
               href={`tel:${siteConfig.phone}`}
               style={{
@@ -192,14 +240,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBookingModal }) => {
               onClick={onOpenBookingModal}
               className="btn btn-orange"
               style={{
-                padding: '9px 20px',
+                padding: '9px 18px',
                 fontSize: '0.84rem',
                 fontWeight: 'normal',
                 letterSpacing: '0.3px',
                 borderRadius: '8px',
               }}
             >
-              <span>BOOK NOW</span>
+              <span>{t.nav_book_now}</span>
             </button>
 
             {/* Mobile Hamburger */}
@@ -276,12 +324,61 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBookingModal }) => {
                 </button>
               </div>
 
+              {/* Mobile Drawer Language Switcher */}
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: '#f1f5f9',
+                borderRadius: '8px',
+                padding: '4px',
+                marginBottom: '16px',
+                gap: '6px',
+              }}>
+                <button
+                  type="button"
+                  onClick={() => setLanguage('en')}
+                  style={{
+                    flex: 1,
+                    border: 'none',
+                    padding: '8px 0',
+                    borderRadius: '6px',
+                    fontSize: '0.85rem',
+                    fontWeight: 'normal',
+                    cursor: 'pointer',
+                    backgroundColor: language === 'en' ? '#0c2338' : 'transparent',
+                    color: language === 'en' ? '#ffffff' : '#64748b',
+                    transition: 'all 0.2s',
+                  }}
+                >
+                  English
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setLanguage('mr')}
+                  style={{
+                    flex: 1,
+                    border: 'none',
+                    padding: '8px 0',
+                    borderRadius: '6px',
+                    fontSize: '0.85rem',
+                    fontWeight: 'normal',
+                    cursor: 'pointer',
+                    backgroundColor: language === 'mr' ? '#0c2338' : 'transparent',
+                    color: language === 'mr' ? '#ffffff' : '#64748b',
+                    transition: 'all 0.2s',
+                  }}
+                >
+                  मराठी
+                </button>
+              </div>
+
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 {navLinks.map((link) => {
                   const isActive = activeSection === link.id;
                   return (
                     <a
-                      key={link.name}
+                      key={link.id}
                       href={link.href}
                       onClick={(e) => handleNavClick(e, link.href)}
                       style={{
@@ -318,7 +415,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBookingModal }) => {
                 className="btn btn-orange"
                 style={{ width: '100%', padding: '10px' }}
               >
-                <span>BOOK NOW</span>
+                <span>{t.nav_book_now}</span>
               </button>
             </div>
           </div>

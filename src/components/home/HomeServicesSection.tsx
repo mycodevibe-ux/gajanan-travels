@@ -11,52 +11,55 @@ import {
   ArrowRight
 } from 'lucide-react';
 import { TripType } from '@/types';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface HomeServicesSectionProps {
   onOpenBookingModal?: (type?: TripType) => void;
 }
 
 export const HomeServicesSection: React.FC<HomeServicesSectionProps> = ({ onOpenBookingModal = () => {} }) => {
+  const { t } = useLanguage();
+
   const offerings = [
     {
       id: 'outstation',
-      title: 'Outstation trips',
-      desc: 'Goa, Mahabaleshwar, Shirdi, Konkan and all outstation destinations.',
+      title: t.service_outstation_title,
+      desc: t.service_outstation_desc,
       icon: Compass,
       tripType: 'outstation_roundtrip' as TripType,
     },
     {
       id: 'local',
-      title: 'Local rental',
-      desc: 'Flexible hourly or full-day sanitized cab rentals within Pune.',
+      title: t.service_local_title,
+      desc: t.service_local_desc,
       icon: Clock,
       tripType: 'local_rental' as TripType,
     },
     {
       id: 'group',
-      title: 'Group travel',
-      desc: '17 to 20 seater luxury tempo travellers & buses for group tours.',
+      title: t.service_group_title,
+      desc: t.service_group_desc,
       icon: Users,
       tripType: 'outstation_roundtrip' as TripType,
     },
     {
       id: 'corporate',
-      title: 'Corporate travel',
-      desc: 'Reliable executive employee transit and VIP corporate travel.',
+      title: t.service_corporate_title,
+      desc: t.service_corporate_desc,
       icon: Briefcase,
       tripType: 'local_rental' as TripType,
     },
     {
       id: 'family',
-      title: 'Family tours',
-      desc: 'Comfortable, spacious AC rides with courteous verified drivers.',
+      title: t.service_family_title,
+      desc: t.service_family_desc,
       icon: HeartHandshake,
       tripType: 'outstation_roundtrip' as TripType,
     },
     {
       id: 'support',
-      title: '24/7 support',
-      desc: "Instant booking confirmation and dedicated round-the-clock support.",
+      title: t.service_support_title,
+      desc: t.service_support_desc,
       icon: Headphones,
       tripType: 'outstation_roundtrip' as TripType,
     },
@@ -80,14 +83,14 @@ export const HomeServicesSection: React.FC<HomeServicesSectionProps> = ({ onOpen
             marginBottom: '6px',
             letterSpacing: '0.3px',
           }}>
-            What we offer
+            {t.services_title}
           </h2>
           <p style={{
             fontSize: '0.96rem',
             color: '#64748b',
             margin: 0,
           }}>
-            From local city rentals to multi-day outstation family tours, we handle it all.
+            {t.services_subtitle}
           </p>
         </div>
 

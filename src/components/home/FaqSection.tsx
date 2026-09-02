@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { Plus, Minus } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface FaqItem {
   question: string;
@@ -9,9 +10,10 @@ interface FaqItem {
 }
 
 export const FaqSection: React.FC = () => {
+  const { language, t } = useLanguage();
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
-  const faqs: FaqItem[] = [
+  const faqsEn: FaqItem[] = [
     {
       question: 'How much advance payment is required?',
       answer: 'Most bookings need a 20% advance to confirm the vehicle; the rest is paid at the end of the trip.',
@@ -29,6 +31,27 @@ export const FaqSection: React.FC = () => {
       answer: 'Standard quotes include driver charges and fuel. Tolls, state taxes, and parking can be bundled into all-inclusive packages or billed at actuals.',
     },
   ];
+
+  const faqsMr: FaqItem[] = [
+    {
+      question: 'बुकिंगसाठी किती अ‍ॅडव्हान्स रक्कम द्यावी लागते?',
+      answer: 'गाडी कन्फर्म करण्यासाठी फक्त २०% अ‍ॅडव्हान्स आवश्यक असतो; उर्वरित रक्कम प्रवास संपल्यावर द्यावी.',
+    },
+    {
+      question: 'कॅन्सलेशन आणि रिफंडचे नियम काय आहेत?',
+      answer: 'प्रवासाच्या ६ तास आधीपर्यंत कोणतेही कॅन्सलेशन शुल्क आकारले जात नाही. १००% सुलभ रिफंडची हमी.',
+    },
+    {
+      question: 'तुम्ही सेल्फ-ड्राइव्ह गाड्या देता का?',
+      answer: 'नाही, प्रवाशांच्या सुरक्षिततेसाठी आमच्या सर्व गाड्यांसोबत अनुभवी आणि प्रशिक्षित व्यावसायिक चालक असतात.',
+    },
+    {
+      question: 'टोल आणि पार्किंगचे शुल्क समाविष्ट आहे का?',
+      answer: 'आमच्या दरांमध्ये ड्रायव्हर भत्ता आणि इंधन समाविष्ट असते. टोल आणि पार्किंग प्रत्यक्ष पावतीनुसार किंवा सर्वसमावेशक पॅकेजमध्ये घेता येते.',
+    },
+  ];
+
+  const faqs = language === 'mr' ? faqsMr : faqsEn;
 
   const toggleFaq = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -52,7 +75,7 @@ export const FaqSection: React.FC = () => {
             marginBottom: '6px',
             letterSpacing: '0.3px',
           }}>
-            Common questions
+            {t.faq_title}
           </h2>
         </div>
 

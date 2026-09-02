@@ -4,8 +4,10 @@ import React, { useState, useEffect } from 'react';
 import { Star, MessageSquareQuote, PenLine, ChevronLeft, ChevronRight } from 'lucide-react';
 import { initialReviewsData, ReviewItem } from '@/data/reviews';
 import { WriteReviewModal } from './WriteReviewModal';
+import { useLanguage } from '@/context/LanguageContext';
 
 export const CustomerReviewsSlider: React.FC = () => {
+  const { t } = useLanguage();
   const [reviewsList, setReviewsList] = useState<ReviewItem[]>(initialReviewsData);
   const [isWriteModalOpen, setIsWriteModalOpen] = useState(false);
 
@@ -126,7 +128,7 @@ export const CustomerReviewsSlider: React.FC = () => {
               marginBottom: '10px',
               letterSpacing: '0.3px',
             }}>
-              What our customers say
+              {t.reviews_title}
             </h2>
 
             {/* Google Rating Pill matching mockup */}

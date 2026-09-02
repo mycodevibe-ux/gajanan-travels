@@ -8,6 +8,7 @@ import { BookingModal } from '@/components/booking/BookingModal';
 import { VehicleDetailModal } from '@/components/vehicles/VehicleDetailModal';
 import { PackageDetailModal } from '@/components/packages/PackageDetailModal';
 import { Vehicle, TourPackage, TripType, BookingFormData } from '@/types';
+import { LanguageProvider } from '@/context/LanguageContext';
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -50,49 +51,51 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      <Navbar onOpenBookingModal={() => handleOpenBooking()} />
+    <LanguageProvider>
+      <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+        <Navbar onOpenBookingModal={() => handleOpenBooking()} />
 
-      <main style={{ flex: 1 }}>
-        {React.isValidElement(children)
-          ? React.cloneElement(children as React.ReactElement<any>, {
-              onOpenBookingModal: handleOpenBooking,
-              onSelectVehicle: handleBookVehicle,
-              onOpenVehicleDetails: (v: Vehicle) => setSelectedVehicleForModal(v),
-              onOpenPackageDetails: (pkg: TourPackage) => setSelectedPackageForModal(pkg),
-              onBookPackage: handleBookPackage,
-            })
-          : children}
-      </main>
+        <main style={{ flex: 1 }}>
+          {React.isValidElement(children)
+            ? React.cloneElement(children as React.ReactElement<any>, {
+                onOpenBookingModal: handleOpenBooking,
+                onSelectVehicle: handleBookVehicle,
+                onOpenVehicleDetails: (v: Vehicle) => setSelectedVehicleForModal(v),
+                onOpenPackageDetails: (pkg: TourPackage) => setSelectedPackageForModal(pkg),
+                onBookPackage: handleBookPackage,
+              })
+            : children}
+        </main>
 
-      <Footer />
-      
-      {/* Floating circular WhatsApp Button (No bottom strip/patti) */}
-      <WhatsAppWidget />
+        <Footer />
+        
+        {/* Floating circular WhatsApp Button (No bottom strip/patti) */}
+        <WhatsAppWidget />
 
-      {/* Global Booking Modal */}
-      <BookingModal
-        isOpen={bookingModalOpen}
-        onClose={() => setBookingModalOpen(false)}
-        initialTripType={bookingInitialTripType}
-        initialVehicleId={bookingVehicleId}
-        initialPackageId={bookingPackageId}
-        initialData={bookingInitialData}
-      />
+        {/* Global Booking Modal */}
+        <BookingModal
+          isOpen={bookingModalOpen}
+          onClose={() => setBookingModalOpen(false)}
+          initialTripType={bookingInitialTripType}
+          initialVehicleId={bookingVehicleId}
+          initialPackageId={bookingPackageId}
+          initialData={bookingInitialData}
+        />
 
-      {/* Global Vehicle Detail Modal */}
-      <VehicleDetailModal
-        vehicle={selectedVehicleForModal}
-        onClose={() => setSelectedVehicleForModal(null)}
-        onBookVehicle={(v) => handleBookVehicle(v)}
-      />
+        {/* Global Vehicle Detail Modal */}
+        <VehicleDetailModal
+          vehicle={selectedVehicleForModal}
+          onClose={() => setSelectedVehicleForModal(null)}
+          onBookVehicle={(v) => handleBookVehicle(v)}
+        />
 
-      {/* Global Package Detail Modal */}
-      <PackageDetailModal
-        pkg={selectedPackageForModal}
-        onClose={() => setSelectedPackageForModal(null)}
-        onBookPackage={(pkg) => handleBookPackage(pkg)}
-      />
-    </div>
+        {/* Global Package Detail Modal */}
+        <PackageDetailModal
+          pkg={selectedPackageForModal}
+          onClose={() => setSelectedPackageForModal(null)}
+          onBookPackage={(pkg) => handleBookPackage(pkg)}
+        />
+      </div>
+    </LanguageProvider>
   );
 };

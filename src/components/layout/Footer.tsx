@@ -4,8 +4,11 @@ import React from 'react';
 import { Facebook, Instagram, Phone, Mail, MapPin } from 'lucide-react';
 import { siteConfig } from '@/data/siteConfig';
 import { WhatsAppOriginalIcon } from '@/components/vehicles/VehicleIcons';
+import { useLanguage } from '@/context/LanguageContext';
 
 export const Footer: React.FC = () => {
+  const { t } = useLanguage();
+
   const handleScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
     e.preventDefault();
     const element = document.getElementById(targetId);
@@ -75,7 +78,7 @@ export const Footer: React.FC = () => {
             </div>
 
             <p style={{ fontSize: '0.86rem', color: '#94a3b8', lineHeight: 1.6, marginBottom: '18px' }}>
-              Pune's premier tourist taxi and bus rental service for outstation tours, local travel and group trips.
+              {t.footer_tagline}
             </p>
 
             <div style={{ display: 'flex', gap: '8px' }}>
@@ -107,16 +110,16 @@ export const Footer: React.FC = () => {
           {/* Col 2: Quick Links */}
           <div>
             <h3 style={{ fontSize: '0.94rem', fontWeight: 'normal', color: '#ffffff', marginBottom: '14px', letterSpacing: '0.3px', fontFamily: 'var(--font-heading)' }}>
-              Quick links
+              {t.footer_quick_links}
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.86rem' }}>
               {[
-                { name: 'Home', id: 'home' },
-                { name: 'About', id: 'about' },
-                { name: 'Fleet', id: 'fleet' },
-                { name: 'Services', id: 'services' },
-                { name: 'Reviews', id: 'reviews' },
-                { name: 'Contact', id: 'contact' },
+                { name: t.nav_home, id: 'home' },
+                { name: t.nav_about, id: 'about' },
+                { name: t.nav_fleet, id: 'fleet' },
+                { name: t.nav_services, id: 'services' },
+                { name: t.nav_reviews, id: 'reviews' },
+                { name: t.nav_contact, id: 'contact' },
               ].map((item) => (
                 <a
                   key={item.name}

@@ -9,8 +9,10 @@ import {
 } from 'lucide-react';
 import { siteConfig } from '@/data/siteConfig';
 import { WhatsAppOriginalIcon } from '@/components/vehicles/VehicleIcons';
+import { useLanguage } from '@/context/LanguageContext';
 
 export const HomeContactSection: React.FC = () => {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -75,14 +77,14 @@ export const HomeContactSection: React.FC = () => {
             marginBottom: '6px',
             letterSpacing: '0.3px',
           }}>
-            Plan your trip
+            {t.contact_title}
           </h2>
           <p style={{
             fontSize: '0.96rem',
             color: '#64748b',
             margin: 0,
           }}>
-            Send us your travel details and we'll confirm your ride on WhatsApp.
+            {t.contact_subtitle}
           </p>
         </div>
 
