@@ -72,10 +72,6 @@ export function calculateEstimatedPrice(formData: Partial<BookingFormData>): Pri
       addOnsAmount += 400;
       breakdownNotes.push('Child Safety Seat: ₹400');
     }
-    if (formData.addOns.englishDriver) {
-      addOnsAmount += 300;
-      breakdownNotes.push('English / Marathi Speaking Driver: ₹300');
-    }
     if (formData.addOns.roofCarrier) {
       addOnsAmount += 500;
       breakdownNotes.push('Luggage Roof Carrier: ₹500');

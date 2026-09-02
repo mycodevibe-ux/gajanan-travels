@@ -5,6 +5,8 @@ import { X, Users, Briefcase, Fuel, ShieldCheck, CheckCircle2, CalendarCheck, St
 import { Vehicle } from '@/types';
 import { createVehicleInquiryUrl } from '@/lib/whatsapp';
 import { getVehicleIcon, WhatsAppOriginalIcon } from '@/components/vehicles/VehicleIcons';
+import { useLanguage } from '@/context/LanguageContext';
+import { toMarathiDigits } from '@/lib/marathiNumbers';
 
 interface VehicleDetailModalProps {
   vehicle: Vehicle | null;
@@ -17,6 +19,8 @@ export const VehicleDetailModal: React.FC<VehicleDetailModalProps> = ({
   onClose,
   onBookVehicle,
 }) => {
+  const { language } = useLanguage();
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -101,114 +105,89 @@ export const VehicleDetailModal: React.FC<VehicleDetailModalProps> = ({
               alignItems: 'center',
               justifyContent: 'center',
               cursor: 'pointer',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
               zIndex: 10,
             }}
+            aria-label="Close"
           >
-            <X size={20} />
+            <X size={18} />
           </button>
-
-          {/* Overlay Title & Category on Top Left */}
-          <div style={{
-            position: 'absolute',
-            top: '18px',
-            left: '20px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '6px',
-          }}>
-            <span style={{
-              backgroundColor: '#1b4332',
-              color: '#ffffff',
-              padding: '4px 10px',
-              borderRadius: '8px',
-              fontSize: '0.74rem',
-              fontWeight: 'normal',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              width: 'fit-content',
-              boxShadow: '0 2px 6px rgba(27, 67, 50, 0.25)',
-            }}>
-              {getVehicleIcon(vehicle.id || vehicle.category, 14, '#ffffff')}
-              <span>{vehicle.category}</span>
-            </span>
-          </div>
-
-          {/* Name & Tagline at Bottom */}
-          <div style={{
-            position: 'absolute',
-            bottom: '14px',
-            left: '20px',
-            right: '20px',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'flex-end',
-          }}>
-            <div>
-              <h2 style={{ fontSize: '1.6rem', fontWeight: 'normal', color: '#0c2338', margin: 0, fontFamily: 'var(--font-heading)', letterSpacing: '0.3px' }}>
-                {vehicle.name}
-              </h2>
-              <span style={{ fontSize: '0.8rem', color: '#64748b' }}>
-                {vehicle.tagline}
-              </span>
-            </div>
-
-            <div style={{
-              backgroundColor: 'rgba(255,255,255,0.92)',
-              padding: '4px 10px',
-              borderRadius: '8px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '5px',
-              fontSize: '0.82rem',
-              fontWeight: 'normal',
-              color: '#0f172a',
-              boxShadow: '0 2px 6px rgba(0,0,0,0.06)',
-            }}>
-              <Star size={14} color="#f59e0b" fill="#f59e0b" />
-              <span>{vehicle.rating}</span>
-              <span style={{ color: '#64748b', fontSize: '0.74rem', fontWeight: 'normal' }}>({vehicle.reviewsCount} reviews)</span>
-            </div>
-          </div>
         </div>
 
-        {/* Content Body */}
+        {/* Vehicle Content Body */}
         <div style={{ padding: '24px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px', flexWrap: 'wrap', gap: '10px' }}>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                <span style={{
+                  backgroundColor: '#ebf5f0',
+                  color: '#1b4332',
+                  padding: '3px 8px',
+                  borderRadius: '6px',
+                  fontSize: '0.74rem',
+                  fontWeight: 'normal',
+                }}>
+                  {vehicle.category}
+                </span>
+                <span style={{
+                  backgroundColor: '#f1f5f9',
+                  color: '#475569',
+                  padding: '3px 8px',
+                  borderRadius: '6px',
+                  fontSize: '0.74rem',
+                  fontWeight: 'normal',
+                }}>
+                  {vehicle.fuelType}
+                </span>
+              </div>
+              <h3 style={{ fontSize: '1.6rem', fontWeight: 'normal', color: '#0c2338', margin: 0, fontFamily: 'var(--font-heading)', letterSpacing: '0.3px' }}>
+                {vehicle.name}
+              </h3>
+            </div>
+
+            <div style={{ textAlign: 'right' }}>
+              <div style={{ fontSize: '1.5rem', fontWeight: 'normal', fontFamily: 'var(--font-heading)', color: '#f97316', lineHeight: 1 }}>
+                ₹{language === 'mr' ? toMarathiDigits(vehicle.pricePerKm) : vehicle.pricePerKm} <span style={{ fontSize: '0.85rem', fontWeight: 'normal', color: '#64748b' }}>{language === 'mr' ? '/किमी' : '/ KM'}</span>
+              </div>
+              <div style={{ fontSize: '0.76rem', color: '#64748b' }}>
+                {language === 'mr' ? 'निश्चित वाजवी दर' : 'Fixed honest tariff'}
+              </div>
+            </div>
+          </div>
+
           {/* Quick Specs Strip */}
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))',
-            gap: '10px',
-            backgroundColor: '#ebf5f0',
-            border: '1px solid #c2e2d0',
+            gap: '12px',
+            backgroundColor: '#f8fafc',
+            padding: '12px 16px',
             borderRadius: '12px',
-            padding: '14px',
             marginBottom: '20px',
-            textAlign: 'center',
+            border: '1px solid #e2e8f0',
           }}>
             <div>
-              <div style={{ fontSize: '0.72rem', color: '#64748b' }}>Seating Capacity</div>
-              <div style={{ fontSize: '1rem', fontWeight: 'normal', color: '#0f172a' }}>{vehicle.passengerCapacity} Passengers</div>
+              <div style={{ fontSize: '0.72rem', color: '#64748b' }}>{language === 'mr' ? 'आसने' : 'Passenger Capacity'}</div>
+              <div style={{ fontSize: '1rem', fontWeight: 'normal', color: '#0f172a' }}>{language === 'mr' ? toMarathiDigits(vehicle.passengerCapacity) : vehicle.passengerCapacity} {language === 'mr' ? 'प्रवासी' : 'Guests'}</div>
             </div>
             <div>
-              <div style={{ fontSize: '0.72rem', color: '#64748b' }}>Luggage Space</div>
-              <div style={{ fontSize: '1rem', fontWeight: 'normal', color: '#0f172a' }}>{vehicle.luggageCapacity} Large Bags</div>
+              <div style={{ fontSize: '0.72rem', color: '#64748b' }}>{language === 'mr' ? 'बॅग्स' : 'Luggage Space'}</div>
+              <div style={{ fontSize: '1rem', fontWeight: 'normal', color: '#0f172a' }}>{language === 'mr' ? toMarathiDigits(vehicle.luggageCapacity) : vehicle.luggageCapacity} {language === 'mr' ? 'बॅगा' : 'Bags'}</div>
             </div>
             <div>
-              <div style={{ fontSize: '0.72rem', color: '#64748b' }}>Fuel / Transmission</div>
+              <div style={{ fontSize: '0.72rem', color: '#64748b' }}>{language === 'mr' ? 'इंधन' : 'Fuel & Drive'}</div>
               <div style={{ fontSize: '1rem', fontWeight: 'normal', color: '#0f172a' }}>{vehicle.fuelType} ({vehicle.transmission})</div>
             </div>
             <div>
-              <div style={{ fontSize: '0.72rem', color: '#64748b' }}>Air Conditioning</div>
-              <div style={{ fontSize: '1rem', fontWeight: 'normal', color: '#1b4332' }}>Chilled Dual AC</div>
+              <div style={{ fontSize: '0.72rem', color: '#64748b' }}>{language === 'mr' ? 'वातानुकूलन' : 'Air Conditioning'}</div>
+              <div style={{ fontSize: '1rem', fontWeight: 'normal', color: '#1b4332' }}>{language === 'mr' ? 'थंडगार ड्युअल एसी' : 'Chilled Dual AC'}</div>
             </div>
           </div>
 
           {/* Features List */}
           <div style={{ marginBottom: '24px' }}>
             <h4 style={{ fontSize: '1rem', fontWeight: 'normal', color: '#0f172a', marginBottom: '10px', fontFamily: 'var(--font-heading)', letterSpacing: '0.3px' }}>
-              Included Comforts & Amenities:
+              {language === 'mr' ? 'समाविष्ट सुविधा व आराम:' : 'Included Comforts & Amenities:'}
             </h4>
             <div style={{
               display: 'grid',
@@ -227,29 +206,29 @@ export const VehicleDetailModal: React.FC<VehicleDetailModalProps> = ({
           {/* Tariff Breakdown Table */}
           <div style={{ marginBottom: '24px' }}>
             <h4 style={{ fontSize: '1rem', fontWeight: 'normal', color: '#0f172a', marginBottom: '10px', fontFamily: 'var(--font-heading)', letterSpacing: '0.3px' }}>
-              Transparent Tariff & Billing Terms:
+              {language === 'mr' ? 'पारदर्शक दरपत्रक व बिलिंग नियम:' : 'Transparent Tariff & Billing Terms:'}
             </h4>
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.88rem' }}>
               <tbody>
                 <tr style={{ borderBottom: '1px solid #f1f5f9' }}>
-                  <td style={{ padding: '8px 0', color: '#64748b' }}>Base Outstation Rate</td>
-                  <td style={{ padding: '8px 0', fontWeight: 'normal', color: '#1b4332', textAlign: 'right' }}>₹{vehicle.pricePerKm} / KM</td>
+                  <td style={{ padding: '8px 0', color: '#64748b' }}>{language === 'mr' ? 'मूळ आऊटस्टेशन दर' : 'Base Outstation Rate'}</td>
+                  <td style={{ padding: '8px 0', fontWeight: 'normal', color: '#1b4332', textAlign: 'right' }}>₹{language === 'mr' ? toMarathiDigits(vehicle.pricePerKm) : vehicle.pricePerKm} {language === 'mr' ? '/ किमी' : '/ KM'}</td>
                 </tr>
                 <tr style={{ borderBottom: '1px solid #f1f5f9' }}>
-                  <td style={{ padding: '8px 0', color: '#64748b' }}>Minimum Distance Billed</td>
-                  <td style={{ padding: '8px 0', fontWeight: 'normal', color: '#0f172a', textAlign: 'right' }}>{vehicle.minKmPerDay} KM / Day</td>
+                  <td style={{ padding: '8px 0', color: '#64748b' }}>{language === 'mr' ? 'किमान बिलिंग अंतर' : 'Minimum Distance Billed'}</td>
+                  <td style={{ padding: '8px 0', fontWeight: 'normal', color: '#0f172a', textAlign: 'right' }}>{language === 'mr' ? toMarathiDigits(vehicle.minKmPerDay) : vehicle.minKmPerDay} {language === 'mr' ? 'किमी / दिवस' : 'KM / Day'}</td>
                 </tr>
                 <tr style={{ borderBottom: '1px solid #f1f5f9' }}>
-                  <td style={{ padding: '8px 0', color: '#64748b' }}>Driver Night Allowance (10 PM - 6 AM)</td>
-                  <td style={{ padding: '8px 0', fontWeight: 'normal', color: '#0f172a', textAlign: 'right' }}>₹{vehicle.driverAllowancePerDay} / Night</td>
+                  <td style={{ padding: '8px 0', color: '#64748b' }}>{language === 'mr' ? 'चालक नाईट भत्ता (रात्री १० ते स. ६)' : 'Driver Night Allowance (10 PM - 6 AM)'}</td>
+                  <td style={{ padding: '8px 0', fontWeight: 'normal', color: '#0f172a', textAlign: 'right' }}>₹{language === 'mr' ? toMarathiDigits(vehicle.driverAllowancePerDay) : vehicle.driverAllowancePerDay} {language === 'mr' ? '/ रात्र' : '/ Night'}</td>
                 </tr>
                 <tr style={{ borderBottom: '1px solid #f1f5f9' }}>
-                  <td style={{ padding: '8px 0', color: '#64748b' }}>Extra Hour Rate (Local Rentals)</td>
-                  <td style={{ padding: '8px 0', fontWeight: 'normal', color: '#0f172a', textAlign: 'right' }}>₹{vehicle.extraHourRate} / Hour</td>
+                  <td style={{ padding: '8px 0', color: '#64748b' }}>{language === 'mr' ? 'अतिरिक्त तास दर (Extra Hour)' : 'Extra Hour Rate (Local Rentals)'}</td>
+                  <td style={{ padding: '8px 0', fontWeight: 'normal', color: '#0f172a', textAlign: 'right' }}>₹{language === 'mr' ? toMarathiDigits(vehicle.extraHourRate) : vehicle.extraHourRate} {language === 'mr' ? '/ तास' : '/ Hour'}</td>
                 </tr>
                 <tr>
-                  <td style={{ padding: '8px 0', color: '#64748b' }}>Tolls, State Border Tax & Parking</td>
-                  <td style={{ padding: '8px 0', fontWeight: 'normal', color: '#0f172a', textAlign: 'right' }}>Clear transparent billing (Actuals)</td>
+                  <td style={{ padding: '8px 0', color: '#64748b' }}>{language === 'mr' ? 'टोल, राज्य टॅक्स आणि पार्किंग' : 'Tolls, State Border Tax & Parking'}</td>
+                  <td style={{ padding: '8px 0', fontWeight: 'normal', color: '#0f172a', textAlign: 'right' }}>{language === 'mr' ? 'पारदर्शक बिलिंग (पावतीनुसार)' : 'Clear transparent billing (Actuals)'}</td>
                 </tr>
               </tbody>
             </table>
@@ -266,9 +245,9 @@ export const VehicleDetailModal: React.FC<VehicleDetailModalProps> = ({
             paddingTop: '18px',
           }}>
             <div>
-              <div style={{ fontSize: '0.75rem', color: '#64748b' }}>Starting from</div>
+              <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{language === 'mr' ? 'सुरुवातीचे दर' : 'Starting from'}</div>
               <div style={{ fontSize: '1.4rem', fontWeight: 'normal', fontFamily: 'var(--font-heading)', color: '#1b4332' }}>
-                ₹{vehicle.baseFarePerDay} <span style={{ fontSize: '0.8rem', fontWeight: 'normal', color: '#64748b' }}>/ Full Day Package</span>
+                ₹{language === 'mr' ? toMarathiDigits(vehicle.baseFarePerDay) : vehicle.baseFarePerDay} <span style={{ fontSize: '0.8rem', fontWeight: 'normal', color: '#64748b' }}>{language === 'mr' ? '/ संपूर्ण दिवस पॅकेज' : '/ Full Day Package'}</span>
               </div>
             </div>
 
@@ -279,7 +258,7 @@ export const VehicleDetailModal: React.FC<VehicleDetailModalProps> = ({
                 style={{ padding: '10px 18px', borderRadius: '10px', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
               >
                 <WhatsAppOriginalIcon size={18} color="#ffffff" />
-                <span>WhatsApp Inquiry</span>
+                <span>{language === 'mr' ? 'व्हॉट्सॲप चौकशी' : 'WhatsApp Inquiry'}</span>
               </button>
               <button
                 onClick={() => {
@@ -290,7 +269,7 @@ export const VehicleDetailModal: React.FC<VehicleDetailModalProps> = ({
                 style={{ padding: '10px 22px', borderRadius: '10px' }}
               >
                 <CalendarCheck size={18} />
-                <span>Book This Cab</span>
+                <span>{language === 'mr' ? 'ही गाडी बुक करा' : 'Book This Cab'}</span>
               </button>
             </div>
           </div>

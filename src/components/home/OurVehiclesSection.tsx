@@ -6,13 +6,14 @@ import { Vehicle } from '@/types';
 import { vehiclesData } from '@/data/vehicles';
 import { getVehicleIcon } from '@/components/vehicles/VehicleIcons';
 import { useLanguage } from '@/context/LanguageContext';
+import { toMarathiDigits } from '@/lib/marathiNumbers';
 
 interface OurVehiclesSectionProps {
   onSelectVehicle: (vehicle: Vehicle) => void;
 }
 
 export const OurVehiclesSection: React.FC<OurVehiclesSectionProps> = ({ onSelectVehicle }) => {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
   const [filter, setFilter] = useState<'all' | 'cars' | 'tempo_bus'>('all');
 
   const filteredVehicles = vehiclesData.filter((v) => {
@@ -20,6 +21,15 @@ export const OurVehiclesSection: React.FC<OurVehiclesSectionProps> = ({ onSelect
     if (filter === 'tempo_bus') return v.category.includes('Tempo') || v.category.includes('Bus') || v.category.includes('Van');
     return true;
   });
+
+  const vehicleTaglinesMr: Record<string, string> = {
+    'swift-dzire': 'लहान कुटुंबासाठी आरामदायी व किफायतशीर एसी सेडान.',
+    'ertiga': '६-७ व्यक्तींसाठी प्रशस्त, आरामदायी आणि भरपूर जागेसह दर्जेदार गाडी.',
+    'innova-crysta': 'लांबच्या आऊटस्टेशन व कौटुंबिक प्रवासासाठी सर्वोत्तम लक्झरी गाडी.',
+    'tata-17-seater': 'ग्रुप व तीर्थक्षेत्र सहलींसाठी १७ सीटर लक्झरी टेम्पो ट्रॅव्हलर.',
+    'tata-20-seater': 'कौटुंबिक कार्यक्रम व ग्रुप सहलींसाठी २० सीटर टूरिस्ट बस.',
+    'urbania': 'अत्याधुनिक इंटिरिअर असलेली अल्ट्रा-लक्झरी एक्झिक्युटिव्ह व्हॅन.',
+  };
 
   return (
     <section id="fleet" style={{ backgroundColor: '#ffffff', padding: '80px 0 70px 0' }}>
@@ -235,7 +245,7 @@ export const OurVehiclesSection: React.FC<OurVehiclesSectionProps> = ({ onSelect
                     color: '#f97316',
                     lineHeight: 1,
                   }}>
-                    ₹{vehicle.pricePerKm}<span style={{ fontSize: '0.75rem', fontWeight: 'normal', color: '#64748b' }}>{t.fleet_per_km}</span>
+                    ₹{language === 'mr' ? toMarathiDigits(vehicle.pricePerKm) : vehicle.pricePerKm}<span style={{ fontSize: '0.75rem', fontWeight: 'normal', color: '#64748b' }}>{t.fleet_per_km}</span>
                   </div>
                 </div>
               </div>
@@ -248,7 +258,7 @@ export const OurVehiclesSection: React.FC<OurVehiclesSectionProps> = ({ onSelect
                 marginBottom: '12px',
                 minHeight: '34px',
               }}>
-                {vehicle.tagline}
+                {language === 'mr' ? (vehicleTaglinesMr[vehicle.id] || vehicle.tagline) : vehicle.tagline}
               </p>
 
               {/* Specs Badges */}
@@ -265,15 +275,15 @@ export const OurVehiclesSection: React.FC<OurVehiclesSectionProps> = ({ onSelect
               }}>
                 <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontWeight: 'normal' }}>
                   <Users size={13} color="#1b4332" />
-                  <span>{vehicle.passengerCapacity} {t.fleet_seating}</span>
+                  <span>{language === 'mr' ? toMarathiDigits(vehicle.passengerCapacity) : vehicle.passengerCapacity} {t.fleet_seating}</span>
                 </span>
                 <span style={{ color: '#cbd5e1' }}>|</span>
                 <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontWeight: 'normal' }}>
                   <Briefcase size={13} color="#1b4332" />
-                  <span>{vehicle.luggageCapacity} {t.fleet_luggage}</span>
+                  <span>{language === 'mr' ? toMarathiDigits(vehicle.luggageCapacity) : vehicle.luggageCapacity} {t.fleet_luggage}</span>
                 </span>
                 <span style={{ color: '#cbd5e1' }}>|</span>
-                <span style={{ color: '#1b4332', fontWeight: 'normal' }}>Dual AC</span>
+                <span style={{ color: '#1b4332', fontWeight: 'normal' }}>{language === 'mr' ? 'ड्युअल एसी' : 'Dual AC'}</span>
               </div>
 
               {/* Book now Button */}

@@ -7,7 +7,7 @@ import { WriteReviewModal } from './WriteReviewModal';
 import { useLanguage } from '@/context/LanguageContext';
 
 export const CustomerReviewsSlider: React.FC = () => {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
   const [reviewsList, setReviewsList] = useState<ReviewItem[]>(initialReviewsData);
   const [isWriteModalOpen, setIsWriteModalOpen] = useState(false);
 
@@ -167,7 +167,7 @@ export const CustomerReviewsSlider: React.FC = () => {
               </div>
 
               <span style={{ fontSize: '0.76rem', color: '#64748b', fontWeight: 'normal', borderLeft: '1px solid #cbd5e1', paddingLeft: '8px' }}>
-                Based on 500+ Google reviews
+                {language === 'mr' ? '५००+ गुगल रिव्ह्यूजवर आधारित' : 'Based on 500+ Google reviews'}
               </span>
             </div>
           </div>
@@ -186,7 +186,7 @@ export const CustomerReviewsSlider: React.FC = () => {
               }}
             >
               <PenLine size={14} color="#f97316" />
-              <span>Write a Review</span>
+              <span>{language === 'mr' ? 'अभिप्राय द्या' : 'Write a Review'}</span>
             </button>
 
             {totalOriginal >= 4 && (

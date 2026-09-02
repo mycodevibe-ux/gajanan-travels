@@ -15,12 +15,13 @@ import {
 import { TripType, BookingFormData } from '@/types';
 import { siteConfig } from '@/data/siteConfig';
 import { useLanguage } from '@/context/LanguageContext';
+import { toMarathiDigits, formatMarathiDate } from '@/lib/marathiNumbers';
 
 interface HeroSectionProps {
   onOpenBookingModal: (tripType?: TripType, vehicleId?: string, initialData?: Partial<BookingFormData>) => void;
 }
 
-const tripSlides = [
+const tripSlidesEn = [
   {
     id: 1,
     image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1000&q=85',
@@ -63,9 +64,53 @@ const tripSlides = [
   },
 ];
 
+const tripSlidesMr = [
+  {
+    id: 1,
+    image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1000&q=85',
+    destination: 'महाबळेश्वर व पाचगणी',
+    distance: 'पुण्यापासून १२० किमी',
+    tag: 'निसर्गरम्य थंड हवेचे ठिकाण',
+    title: 'धुके, हिरवेगार घाट आणि निसर्ग सफर',
+  },
+  {
+    id: 2,
+    image: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1000&q=85',
+    destination: 'गोवा सागरी महामार्ग',
+    distance: 'पुण्यापासून ४४० किमी',
+    tag: 'समुद्रकिनारा व निसर्ग सफर',
+    title: 'सुखद सागरी प्रवास आणि निसर्ग सौंदर्य',
+  },
+  {
+    id: 3,
+    image: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1000&q=85',
+    destination: 'लोणावळा व खंडाळा घाट',
+    distance: 'पुण्यापासून ६५ किमी',
+    tag: 'पावसाळी वीकेंड सहल',
+    title: 'हिरवेगार डोंगर, धबधबे आणि किल्ले',
+  },
+  {
+    id: 4,
+    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=85',
+    destination: 'शिर्डी साई दर्शन मार्ग',
+    distance: 'पुण्यापासून १८५ किमी',
+    tag: 'पवित्र तीर्थक्षेत्र यात्रा',
+    title: 'सुखकर व सुरक्षित कौटुंबिक दर्शन प्रवास',
+  },
+  {
+    id: 5,
+    image: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&w=1000&q=85',
+    destination: 'महाराष्ट्र आऊटस्टेशन नेटवर्क',
+    distance: '२४/७ सॅनिटाईझ्ड गाड्या',
+    tag: 'विश्वासू चालक सेवा',
+    title: 'स्वच्छ गाड्या आणि अनुभवी चालकांचा ताफा',
+  },
+];
+
 export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBookingModal }) => {
-  const { t } = useLanguage();
-  const [pickupLocation, setPickupLocation] = useState('Pune');
+  const { language, t } = useLanguage();
+  const tripSlides = language === 'mr' ? tripSlidesMr : tripSlidesEn;
+  const [pickupLocation, setPickupLocation] = useState('');
   const [dropLocation, setDropLocation] = useState('');
   const [pickupDate, setPickupDate] = useState(
     new Date(Date.now() + 86400000).toISOString().split('T')[0]
@@ -75,6 +120,14 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBookingModal }) 
   );
   const [passengers, setPassengers] = useState('1-4');
   const [vehicleType, setVehicleType] = useState('Sedan');
+
+  const handlePassengerSelect = (val: string) => {
+    setPassengers(val);
+    if (val === '1-4') setVehicleType('Sedan');
+    else if (val === '5-7') setVehicleType('SUV (Ertiga)');
+    else if (val === '8-17') setVehicleType('Tempo (17 Seater)');
+    else if (val === '18-20+') setVehicleType('Bus (20 Seater)');
+  };
 
   // Hero Trip Slider State
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -86,7 +139,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBookingModal }) 
       setCurrentSlide((prev) => (prev + 1) % tripSlides.length);
     }, 4500);
     return () => clearInterval(interval);
-  }, [isHovered]);
+  }, [isHovered, tripSlides.length]);
 
   const handlePrevSlide = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -303,7 +356,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBookingModal }) 
                   boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                 }}>
                   <Sparkles size={12} color="#f97316" />
-                  <span>500+ Happy Trips</span>
+                  <span>{language === 'mr' ? '५००+ आनंदी सहली' : '500+ Happy Trips'}</span>
                 </div>
               </div>
 
@@ -585,7 +638,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBookingModal }) 
                 </label>
                 <select
                   value={passengers}
-                  onChange={(e) => setPassengers(e.target.value)}
+                  onChange={(e) => handlePassengerSelect(e.target.value)}
                   style={{
                     width: '100%',
                     padding: '10px 12px',
@@ -599,10 +652,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBookingModal }) 
                     cursor: 'pointer',
                   }}
                 >
-                  <option value="1-4">1-4</option>
-                  <option value="5-7">5-7</option>
-                  <option value="8-17">8-17</option>
-                  <option value="18-20+">18-20+</option>
+                  <option value="1-4">{language === 'mr' ? '१ - ४' : '1-4'}</option>
+                  <option value="5-7">{language === 'mr' ? '५ - ७' : '5-7'}</option>
+                  <option value="8-17">{language === 'mr' ? '८ - १७' : '8-17'}</option>
+                  <option value="18-20+">{language === 'mr' ? '१८ - २०+' : '18-20+'}</option>
                 </select>
               </div>
 

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Phone, Menu, X, Globe } from 'lucide-react';
 import { siteConfig } from '@/data/siteConfig';
 import { useLanguage } from '@/context/LanguageContext';
+import { toMarathiDigits } from '@/lib/marathiNumbers';
 
 interface NavbarProps {
   onOpenBookingModal?: () => void;
@@ -232,7 +233,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBookingModal }) => {
               onMouseOut={(e) => (e.currentTarget.style.borderColor = '#cbd5e1')}
             >
               <Phone size={13} color="#f97316" />
-              <span>{siteConfig.phone}</span>
+              <span>{language === 'mr' ? toMarathiDigits(siteConfig.phone) : siteConfig.phone}</span>
             </a>
 
             {/* Vibrant Orange Book Now Button */}
@@ -405,7 +406,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBookingModal }) => {
                 style={{ width: '100%', padding: '10px' }}
               >
                 <Phone size={15} color="#f97316" />
-                <span>{siteConfig.phone}</span>
+                <span>{language === 'mr' ? toMarathiDigits(siteConfig.phone) : siteConfig.phone}</span>
               </a>
               <button
                 onClick={() => {

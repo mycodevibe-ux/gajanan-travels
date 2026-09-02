@@ -5,9 +5,10 @@ import { Facebook, Instagram, Phone, Mail, MapPin } from 'lucide-react';
 import { siteConfig } from '@/data/siteConfig';
 import { WhatsAppOriginalIcon } from '@/components/vehicles/VehicleIcons';
 import { useLanguage } from '@/context/LanguageContext';
+import { toMarathiDigits } from '@/lib/marathiNumbers';
 
 export const Footer: React.FC = () => {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
 
   const handleScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
     e.preventDefault();
@@ -25,6 +26,24 @@ export const Footer: React.FC = () => {
   };
 
   const firstLetter = (siteConfig?.name || 'G').charAt(0).toUpperCase();
+
+  const popularRoutesEn = [
+    'Pune to Mahabaleshwar',
+    'Pune to Goa',
+    'Pune to Shirdi',
+    'Pune to Mumbai',
+    'Pune Local rentals',
+  ];
+
+  const popularRoutesMr = [
+    'पुणे ते महाबळेश्वर',
+    'पुणे ते गोवा',
+    'पुणे ते शिर्डी',
+    'पुणे ते मुंबई',
+    'पुणे स्थानिक भाडेतत्त्व',
+  ];
+
+  const popularRoutes = language === 'mr' ? popularRoutesMr : popularRoutesEn;
 
   return (
     <footer style={{
@@ -91,7 +110,7 @@ export const Footer: React.FC = () => {
                 fontWeight: 'normal',
                 border: '1px solid rgba(255, 255, 255, 0.1)',
               }}>
-                24/7 Service
+                {language === 'mr' ? '२४/७ अखंड सेवा' : '24/7 Service'}
               </span>
               <span style={{
                 backgroundColor: 'rgba(255, 255, 255, 0.08)',
@@ -102,7 +121,7 @@ export const Footer: React.FC = () => {
                 fontWeight: 'normal',
                 border: '1px solid rgba(255, 255, 255, 0.1)',
               }}>
-                Verified Fleet
+                {language === 'mr' ? 'तपासलेला सुरक्षित ताफा' : 'Verified Fleet'}
               </span>
             </div>
           </div>
@@ -122,7 +141,7 @@ export const Footer: React.FC = () => {
                 { name: t.nav_contact, id: 'contact' },
               ].map((item) => (
                 <a
-                  key={item.name}
+                  key={item.id}
                   href={`#${item.id}`}
                   onClick={(e) => handleScrollTo(e, item.id)}
                   style={{ color: '#94a3b8', textDecoration: 'none', transition: 'color 0.2s' }}
@@ -138,16 +157,10 @@ export const Footer: React.FC = () => {
           {/* Col 3: Popular Routes */}
           <div>
             <h3 style={{ fontSize: '0.94rem', fontWeight: 'normal', color: '#ffffff', marginBottom: '14px', letterSpacing: '0.3px', fontFamily: 'var(--font-heading)' }}>
-              Popular routes
+              {language === 'mr' ? 'लोकप्रिय पर्यटन मार्ग' : 'Popular routes'}
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.86rem' }}>
-              {[
-                'Pune to Mahabaleshwar',
-                'Pune to Goa',
-                'Pune to Shirdi',
-                'Pune to Mumbai',
-                'Pune Local rentals',
-              ].map((route) => (
+              {popularRoutes.map((route) => (
                 <a
                   key={route}
                   href="#contact"
@@ -165,13 +178,13 @@ export const Footer: React.FC = () => {
           {/* Col 4: Contact Us + Social Icons matching EXACT screenshot */}
           <div>
             <h3 style={{ fontSize: '0.94rem', fontWeight: 'normal', color: '#ffffff', marginBottom: '14px', letterSpacing: '0.3px', fontFamily: 'var(--font-heading)' }}>
-              Contact us
+              {language === 'mr' ? 'आमच्याशी संपर्क' : 'Contact us'}
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.86rem', color: '#94a3b8', marginBottom: '18px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <Phone size={14} color="#f97316" />
                 <a href={`tel:${siteConfig.phone}`} style={{ color: '#94a3b8', textDecoration: 'none' }}>
-                  {siteConfig.phone}
+                  {language === 'mr' ? toMarathiDigits(siteConfig.phone) : siteConfig.phone}
                 </a>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -182,7 +195,9 @@ export const Footer: React.FC = () => {
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <MapPin size={15} color="#7dd3fc" />
-                <span style={{ color: '#e2e8f0', fontWeight: 'normal' }}>Pune, Maharashtra</span>
+                <span style={{ color: '#e2e8f0', fontWeight: 'normal' }}>
+                  {language === 'mr' ? 'पुणे, महाराष्ट्र, भारत' : 'Pune, Maharashtra'}
+                </span>
               </div>
             </div>
 
@@ -293,10 +308,10 @@ export const Footer: React.FC = () => {
           color: '#64748b',
         }}>
           <div>
-            © 2026 {siteConfig.name}. All rights reserved.
+            {language === 'mr' ? `© २०२६ गजानन ट्रॅव्हल्स. सर्व हक्क राखीव.` : `© 2026 ${siteConfig.name}. All rights reserved.`}
           </div>
           <div>
-            Designed by Spider
+            {language === 'mr' ? 'डिझाईन: स्पायडर' : 'Designed by Spider'}
           </div>
         </div>
       </div>

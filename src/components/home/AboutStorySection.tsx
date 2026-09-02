@@ -6,7 +6,7 @@ import { siteConfig } from '@/data/siteConfig';
 import { useLanguage } from '@/context/LanguageContext';
 
 export const AboutStorySection: React.FC = () => {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
 
   return (
     <section id="about" style={{
@@ -54,10 +54,12 @@ export const AboutStorySection: React.FC = () => {
                   fontFamily: 'var(--font-heading)',
                   minWidth: '50px',
                 }}>
-                  2014
+                  {language === 'mr' ? '२०१४' : '2014'}
                 </span>
                 <span style={{ fontSize: '0.9rem', color: '#334155', lineHeight: 1.5 }}>
-                  Started with 2 cars doing Mumbai-Pune expressway runs.
+                  {language === 'mr' 
+                    ? 'मुंबई-पुणे एक्सप्रेसवेवर २ गाड्यांसह प्रवासाची सुरुवात.' 
+                    : 'Started with 2 cars doing Mumbai-Pune expressway runs.'}
                 </span>
               </div>
 
@@ -69,10 +71,12 @@ export const AboutStorySection: React.FC = () => {
                   fontFamily: 'var(--font-heading)',
                   minWidth: '50px',
                 }}>
-                  2019
+                  {language === 'mr' ? '२०१९' : '2019'}
                 </span>
                 <span style={{ fontSize: '0.9rem', color: '#334155', lineHeight: 1.5 }}>
-                  Expanded to 30+ vehicles covering all of Maharashtra & Goa.
+                  {language === 'mr' 
+                    ? 'संपूर्ण महाराष्ट्र व गोव्यात ३०+ गाड्यांचा यशस्वी विस्तार.' 
+                    : 'Expanded to 30+ vehicles covering all of Maharashtra & Goa.'}
                 </span>
               </div>
 
@@ -84,10 +88,12 @@ export const AboutStorySection: React.FC = () => {
                   fontFamily: 'var(--font-heading)',
                   minWidth: '50px',
                 }}>
-                  Today
+                  {language === 'mr' ? 'आज' : 'Today'}
                 </span>
                 <span style={{ fontSize: '0.9rem', color: '#334155', lineHeight: 1.5 }}>
-                  500+ monthly trips, 12 years of safe accident-free commercial driving.
+                  {language === 'mr' 
+                    ? 'दरमहा ५००+ सहली, १२ वर्षांचा सुरक्षित आणि विश्वासू अनुभव.' 
+                    : '500+ monthly trips, 12 years of safe accident-free commercial driving.'}
                 </span>
               </div>
             </div>
@@ -105,15 +111,15 @@ export const AboutStorySection: React.FC = () => {
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <ShieldCheck size={16} color="#f97316" />
-                <span>All-commercial tourist fleet</span>
+                <span>{language === 'mr' ? '१००% व्यावसायिक टूरिस्ट ताफा' : 'All-commercial tourist fleet'}</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <Star size={16} color="#f97316" fill="#f97316" />
-                <span>4.8/5 on Google</span>
+                <span>{language === 'mr' ? 'गुगलवर ४.८/५ रेटिंग' : '4.8/5 on Google'}</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <Clock size={16} color="#f97316" />
-                <span>24/7 Pune-based desk</span>
+                <span>{language === 'mr' ? '२४/७ पुणे नियंत्रण कक्ष' : '24/7 Pune-based desk'}</span>
               </div>
             </div>
           </div>

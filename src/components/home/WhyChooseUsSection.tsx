@@ -9,9 +9,12 @@ import {
   Headphones 
 } from 'lucide-react';
 import { siteConfig } from '@/data/siteConfig';
+import { useLanguage } from '@/context/LanguageContext';
 
 export const WhyChooseUsSection: React.FC = () => {
-  const highlights = [
+  const { language } = useLanguage();
+
+  const highlightsEn = [
     {
       id: 'clean-vehicles',
       title: 'Clean vehicles',
@@ -39,6 +42,36 @@ export const WhyChooseUsSection: React.FC = () => {
     },
   ];
 
+  const highlightsMr = [
+    {
+      id: 'clean-vehicles',
+      title: 'स्वच्छ व सॅनिटाईझ्ड गाड्या',
+      icon: Sparkles,
+    },
+    {
+      id: 'experienced-drivers',
+      title: 'अनुभवी व विश्वासू चालक',
+      icon: UserCheck,
+    },
+    {
+      id: 'on-time-pickup',
+      title: 'वेळेवर पिकअप',
+      icon: Clock,
+    },
+    {
+      id: 'transparent-pricing',
+      title: 'पारदर्शक दरपत्रक',
+      icon: ReceiptText,
+    },
+    {
+      id: '24-7-support',
+      title: '२४ तास ग्राहक सेवा',
+      icon: Headphones,
+    },
+  ];
+
+  const highlights = language === 'mr' ? highlightsMr : highlightsEn;
+
   return (
     <section id="why-us" style={{
       backgroundColor: '#0c2338',
@@ -56,7 +89,7 @@ export const WhyChooseUsSection: React.FC = () => {
           marginBottom: '38px',
           letterSpacing: '0.3px',
         }}>
-          Why choose {siteConfig.name}
+          {language === 'mr' ? 'गजानन ट्रॅव्हल्स का निवडावे?' : `Why choose ${siteConfig.name}`}
         </h2>
 
         {/* 5 Circular Badges Strip matching mockup */}

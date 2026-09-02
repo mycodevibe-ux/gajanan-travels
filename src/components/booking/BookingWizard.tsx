@@ -22,6 +22,8 @@ import { getVehicleIcon, WhatsAppOriginalIcon } from '@/components/vehicles/Vehi
 import { calculateEstimatedPrice } from '@/lib/pricing';
 import { createWhatsAppBookingUrl } from '@/lib/whatsapp';
 import { siteConfig } from '@/data/siteConfig';
+import { useLanguage } from '@/context/LanguageContext';
+import { toMarathiDigits, formatMarathiDate } from '@/lib/marathiNumbers';
 
 interface BookingWizardProps {
   initialTripType?: TripType;
@@ -36,6 +38,7 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
   initialData,
   onSuccessClose,
 }) => {
+  const { language, t } = useLanguage();
   const [formData, setFormData] = useState<BookingFormData>({
     tripType: initialTripType === 'tour_package' ? 'outstation_roundtrip' : initialTripType,
     pickupCity: initialData?.pickupCity || 'Pune',
@@ -53,7 +56,7 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
     specialRequests: '',
     addOns: {
       childSeat: false,
-      englishDriver: true,
+      englishDriver: false,
       roofCarrier: false,
       petFriendly: false,
     },
@@ -84,6 +87,30 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
   const priceResult = useMemo(() => {
     return calculateEstimatedPrice(formData);
   }, [formData]);
+
+  // Auto-switch vehicle when passenger count changes
+  const handlePassengersChange = (count: number) => {
+    const validCount = Math.max(1, count);
+    let autoVehicleId = formData.selectedVehicleId;
+
+    if (validCount <= 4) {
+      autoVehicleId = 'swift-dzire';
+    } else if (validCount <= 7) {
+      autoVehicleId = 'ertiga';
+    } else if (validCount <= 13) {
+      autoVehicleId = 'force-urbania';
+    } else if (validCount <= 17) {
+      autoVehicleId = 'tata-17-seater';
+    } else {
+      autoVehicleId = 'tata-20-seater';
+    }
+
+    setFormData((prev) => ({
+      ...prev,
+      passengers: validCount,
+      selectedVehicleId: autoVehicleId,
+    }));
+  };
 
   const handleTripTypeChange = (type: TripType) => {
     setFormData(prev => ({
@@ -206,7 +233,7 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
       {/* 1-Row Compact Trip Type Selector */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(4, 1fr)',
+        gridTemplateColumns: 'repeat(3, 1fr)',
         gap: '6px',
         backgroundColor: '#f8fafc',
         padding: '4px',
@@ -215,10 +242,9 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
         border: '1px solid #e2e8f0',
       }}>
         {[
-          { type: 'outstation_roundtrip', label: 'Roundtrip', icon: Compass },
-          { type: 'outstation_oneway', label: 'One-Way', icon: ArrowRight },
-          { type: 'local_rental', label: 'Local Rental', icon: Clock },
-          { type: 'airport_transfer', label: 'Airport Drop', icon: PlaneTakeoff },
+          { type: 'outstation_roundtrip', label: language === 'mr' ? 'येणे-जाणे (Roundtrip)' : 'Roundtrip', icon: Compass },
+          { type: 'outstation_oneway', label: language === 'mr' ? 'वन-वे ड्रॉप' : 'One-Way', icon: ArrowRight },
+          { type: 'local_rental', label: language === 'mr' ? 'स्थानिक भाडे' : 'Local Rental', icon: Clock },
         ].map((tab) => {
           const IconComp = tab.icon;
           const isActive = formData.tripType === tab.type;
@@ -262,12 +288,12 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
             {/* Pickup */}
             <div>
               <label style={{ display: 'block', fontSize: '0.72rem', color: '#64748b', fontWeight: 'normal', marginBottom: '3px' }}>
-                Pickup Location
+                {language === 'mr' ? 'पिकअप ठिकाण' : 'Pickup Location'}
               </label>
               <div style={{ position: 'relative' }}>
                 <input
                   type="text"
-                  placeholder="e.g. Pune"
+                  placeholder={language === 'mr' ? 'उदा. पुणे' : 'e.g. Pune'}
                   value={formData.pickupCity}
                   onChange={(e) => setFormData({ ...formData, pickupCity: e.target.value })}
                   style={{
@@ -290,12 +316,12 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
             {formData.tripType !== 'local_rental' ? (
               <div>
                 <label style={{ display: 'block', fontSize: '0.72rem', color: '#64748b', fontWeight: 'normal', marginBottom: '3px' }}>
-                  Drop Destination
+                  {language === 'mr' ? 'जाण्याचे ठिकाण' : 'Drop Destination'}
                 </label>
                 <div style={{ position: 'relative' }}>
                   <input
                     type="text"
-                    placeholder="e.g. Mahabaleshwar"
+                    placeholder={language === 'mr' ? 'उदा. महाबळेश्वर' : 'e.g. Mahabaleshwar'}
                     value={formData.dropCity}
                     onChange={(e) => setFormData({ ...formData, dropCity: e.target.value })}
                     style={{
@@ -316,7 +342,7 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
             ) : (
               <div>
                 <label style={{ display: 'block', fontSize: '0.72rem', color: '#64748b', fontWeight: 'normal', marginBottom: '3px' }}>
-                  Rental Package
+                  {language === 'mr' ? 'तास व किमी पॅकेज' : 'Rental Package'}
                 </label>
                 <select
                   value={formData.rentalPackageHours}
@@ -333,9 +359,9 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
                     cursor: 'pointer',
                   }}
                 >
-                  <option value="4hr40km">4 Hr / 40 KM</option>
-                  <option value="8hr80km">8 Hr / 80 KM (Full Day)</option>
-                  <option value="12hr120km">12 Hr / 120 KM</option>
+                  <option value="4hr40km">{language === 'mr' ? '४ तास / ४० किमी' : '4 Hr / 40 KM'}</option>
+                  <option value="8hr80km">{language === 'mr' ? '८ तास / ८० किमी (पूर्ण दिवस)' : '8 Hr / 80 KM (Full Day)'}</option>
+                  <option value="12hr120km">{language === 'mr' ? '१२ तास / १२० किमी' : '12 Hr / 120 KM'}</option>
                 </select>
               </div>
             )}
@@ -343,7 +369,7 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
             {/* Pickup Date */}
             <div>
               <label style={{ display: 'block', fontSize: '0.72rem', color: '#64748b', fontWeight: 'normal', marginBottom: '3px' }}>
-                Pickup Date
+                {language === 'mr' ? 'पिकअप तारीख' : 'Pickup Date'}
               </label>
               <input
                 type="date"
@@ -368,7 +394,7 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
             {formData.tripType === 'outstation_roundtrip' && (
               <div>
                 <label style={{ display: 'block', fontSize: '0.72rem', color: '#64748b', fontWeight: 'normal', marginBottom: '3px' }}>
-                  Return Date
+                  {language === 'mr' ? 'परतीची तारीख' : 'Return Date'}
                 </label>
                 <input
                   type="date"
@@ -394,10 +420,10 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
           <div style={{ marginBottom: '14px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
               <label style={{ fontSize: '0.74rem', color: '#1b4332', fontWeight: 'normal' }}>
-                Select Preferred Cab / Vehicle
+                {language === 'mr' ? 'पसंतीची गाडी निवडा' : 'Select Preferred Cab / Vehicle'}
               </label>
               <span style={{ fontSize: '0.7rem', color: '#64748b' }}>
-                {selectedVehicle.name} • {selectedVehicle.passengerCapacity} Seats
+                {selectedVehicle.name} • {language === 'mr' ? toMarathiDigits(selectedVehicle.passengerCapacity) : selectedVehicle.passengerCapacity} {language === 'mr' ? 'आसने' : 'Seats'}
               </span>
             </div>
 
@@ -488,7 +514,7 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
 
                     {/* Rate & Capacity */}
                     <div style={{ fontSize: '0.68rem', color: isSelected ? '#047857' : '#64748b', fontWeight: 'normal', marginTop: '2px' }}>
-                      ₹{v.pricePerKm}/km • {v.passengerCapacity}S
+                      ₹{language === 'mr' ? toMarathiDigits(v.pricePerKm) : v.pricePerKm}{language === 'mr' ? '/किमी' : '/km'} • {language === 'mr' ? toMarathiDigits(v.passengerCapacity) : v.passengerCapacity}{language === 'mr' ? 'सीट' : 'S'}
                     </div>
                   </button>
                 );
@@ -496,64 +522,38 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
             </div>
           </div>
 
-          {/* Inline Passengers & Add-ons Row */}
+          {/* Passengers Input with Auto Vehicle Matching */}
           <div style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: '10px',
             marginBottom: '12px',
           }}>
-            {/* Passengers */}
-            <div>
-              <label style={{ display: 'block', fontSize: '0.72rem', color: '#64748b', fontWeight: 'normal', marginBottom: '3px' }}>
-                Total Passengers
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+              <label style={{ fontSize: '0.74rem', color: '#475569', fontWeight: 'normal' }}>
+                {language === 'mr' ? 'एकूण प्रवासी संख्या' : 'Total Passengers'}
               </label>
-              <div style={{ position: 'relative' }}>
-                <input
-                  type="number"
-                  min="1"
-                  max="50"
-                  value={formData.passengers}
-                  onChange={(e) => setFormData({ ...formData, passengers: Number(e.target.value) || 1 })}
-                  style={{
-                    width: '100%',
-                    padding: '8px 8px 8px 26px',
-                    borderRadius: '6px',
-                    border: '1px solid #cbd5e1',
-                    fontSize: '0.82rem',
-                    fontWeight: 'normal',
-                    outline: 'none',
-                    color: '#0f172a',
-                  }}
-                />
-                <Users size={13} color="#1b4332" style={{ position: 'absolute', left: '8px', top: '10px' }} />
-              </div>
+              <span style={{ fontSize: '0.72rem', color: '#047857', fontWeight: 'normal' }}>
+                ✓ {language === 'mr' ? `निवडलेली गाडी: ${selectedVehicle.name}` : `Matched Cab: ${selectedVehicle.name}`}
+              </span>
             </div>
-
-            {/* Luggage Bags */}
-            <div>
-              <label style={{ display: 'block', fontSize: '0.72rem', color: '#64748b', fontWeight: 'normal', marginBottom: '3px' }}>
-                Luggage Bags
-              </label>
-              <select
-                value={formData.luggage}
-                onChange={(e) => setFormData({ ...formData, luggage: Number(e.target.value) })}
+            <div style={{ position: 'relative' }}>
+              <input
+                type="number"
+                min="1"
+                max="50"
+                value={formData.passengers}
+                onChange={(e) => handlePassengersChange(parseInt(e.target.value, 10) || 1)}
                 style={{
                   width: '100%',
-                  padding: '8px 10px',
-                  borderRadius: '6px',
+                  padding: '9px 12px 9px 32px',
+                  borderRadius: '8px',
                   border: '1px solid #cbd5e1',
-                  fontSize: '0.82rem',
+                  fontSize: '0.88rem',
                   fontWeight: 'normal',
                   outline: 'none',
                   color: '#0f172a',
                   backgroundColor: '#ffffff',
                 }}
-              >
-                <option value={1}>1-2 Bags (Small)</option>
-                <option value={3}>3-4 Bags (Medium)</option>
-                <option value={6}>5+ Bags (Heavy)</option>
-              </select>
+              />
+              <Users size={15} color="#1b4332" style={{ position: 'absolute', left: '10px', top: '11px' }} />
             </div>
           </div>
 
@@ -562,22 +562,19 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
             backgroundColor: '#ebf5f0',
             border: '1px solid #c2e2d0',
             borderRadius: '8px',
-            padding: '7px 12px',
+            padding: '8px 14px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            fontSize: '0.76rem',
+            fontSize: '0.78rem',
             color: '#1b4332',
             fontWeight: 'normal',
             marginBottom: '14px',
           }}>
             <div>
-              <span>📍 Route: <span>{formData.pickupCity} → {formData.dropCity || 'City'}</span></span>
-              <span style={{ marginLeft: '10px', color: '#475569' }}>
-                ({priceResult.breakdownNotes[0] || 'Approx distance estimate'})
-              </span>
+              <span>📍 {language === 'mr' ? 'मार्ग:' : 'Route:'} <span style={{ fontWeight: 'normal' }}>{formData.pickupCity} → {formData.dropCity || (formData.tripType === 'local_rental' ? (language === 'mr' ? 'पुणे स्थानिक' : 'Pune Local') : 'City')}</span></span>
             </div>
-            <span>✓ Includes Driver & Tolls</span>
+            <span>✓ {language === 'mr' ? 'चालक व टोल समाविष्ट' : 'Includes Driver & Tolls'}</span>
           </div>
 
           {/* Compact Bottom Price & Action Strip */}
@@ -593,11 +590,11 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
           }}>
             <div>
               <div style={{ fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.3px', color: '#a7f3d0' }}>
-                Estimated Total Fare
+                {language === 'mr' ? 'अंदाजे एकूण भाडे' : 'Estimated Total Fare'}
               </div>
               <div style={{ fontSize: '1.45rem', fontWeight: 'normal', fontFamily: 'var(--font-heading)', color: '#ffffff', lineHeight: 1 }}>
-                ₹{priceResult.totalEstimate.toLocaleString('en-IN')}{' '}
-                <span style={{ fontSize: '0.72rem', color: '#d1fae5', fontWeight: 'normal' }}>approx.</span>
+                ₹{language === 'mr' ? toMarathiDigits(priceResult.totalEstimate.toLocaleString('en-IN')) : priceResult.totalEstimate.toLocaleString('en-IN')}{' '}
+                <span style={{ fontSize: '0.72rem', color: '#d1fae5', fontWeight: 'normal' }}>{language === 'mr' ? 'अंदाजे' : 'approx.'}</span>
               </div>
             </div>
 
@@ -616,7 +613,7 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
                   borderRadius: '6px',
                 }}
               >
-                <span>Proceed</span>
+                <span>{language === 'mr' ? 'पुढे जा' : 'Proceed'}</span>
                 <ArrowRight size={14} />
               </button>
 
@@ -627,7 +624,7 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
                 style={{ padding: '8px 14px', fontSize: '0.82rem', borderRadius: '6px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
               >
                 <WhatsAppOriginalIcon size={16} color="#ffffff" />
-                <span>Instant WhatsApp</span>
+                <span>{language === 'mr' ? 'व्हॉट्सॲपवर पाठवा' : 'Instant WhatsApp'}</span>
               </button>
             </div>
           </div>
@@ -651,7 +648,7 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
               <span style={{ color: '#64748b', marginLeft: '6px' }}>({selectedVehicle.name})</span>
             </div>
             <div style={{ fontWeight: 'normal', color: '#1b4332', fontSize: '1.1rem', fontFamily: 'var(--font-heading)' }}>
-              ₹{priceResult.totalEstimate.toLocaleString('en-IN')}
+              ₹{language === 'mr' ? toMarathiDigits(priceResult.totalEstimate.toLocaleString('en-IN')) : priceResult.totalEstimate.toLocaleString('en-IN')}
             </div>
           </div>
 
@@ -663,11 +660,11 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
           }}>
             <div>
               <label style={{ display: 'block', fontSize: '0.72rem', color: '#64748b', fontWeight: 'normal', marginBottom: '3px' }}>
-                Your Name *
+                {language === 'mr' ? 'तुमचे नाव *' : 'Your Name *'}
               </label>
               <input
                 type="text"
-                placeholder="e.g. Rahul Mehta"
+                placeholder={language === 'mr' ? 'उदा. राहुल कदम' : 'e.g. Rahul Mehta'}
                 value={formData.fullName}
                 onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
                 style={{
@@ -685,11 +682,11 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
 
             <div>
               <label style={{ display: 'block', fontSize: '0.72rem', color: '#64748b', fontWeight: 'normal', marginBottom: '3px' }}>
-                WhatsApp Mobile Number *
+                {language === 'mr' ? 'व्हॉट्सॲप मोबाईल नंबर *' : 'WhatsApp Mobile Number *'}
               </label>
               <input
                 type="tel"
-                placeholder="e.g. 9011657355"
+                placeholder={language === 'mr' ? 'उदा. ९०११६५७३५५' : 'e.g. 9011657355'}
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                 style={{
@@ -708,11 +705,11 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
 
           <div style={{ marginBottom: '14px' }}>
             <label style={{ display: 'block', fontSize: '0.72rem', color: '#64748b', fontWeight: 'normal', marginBottom: '3px' }}>
-              Special Notes / Pickup Address
+              {language === 'mr' ? 'पिकअप पत्ता किंवा विशेष सूचना' : 'Special Notes / Pickup Address'}
             </label>
             <input
               type="text"
-              placeholder="e.g. Pickup at Swargate Pune at 7 AM"
+              placeholder={language === 'mr' ? 'उदा. स्वारगेट, पुणे येथून सकाळी ७ वाजता' : 'e.g. Pickup at Swargate Pune at 7 AM'}
               value={formData.specialRequests}
               onChange={(e) => setFormData({ ...formData, specialRequests: e.target.value })}
               style={{
@@ -742,7 +739,7 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
                 color: '#475569',
               }}
             >
-              ← Back
+              {language === 'mr' ? '← मागे जा' : '← Back'}
             </button>
 
             <div style={{ display: 'flex', gap: '8px' }}>
@@ -753,7 +750,7 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
                 style={{ padding: '8px 16px', fontSize: '0.82rem', borderRadius: '6px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
               >
                 <WhatsAppOriginalIcon size={16} color="#ffffff" />
-                <span>Send to WhatsApp ({siteConfig.phone})</span>
+                <span>{language === 'mr' ? 'व्हॉट्सॲपवर पाठवा' : `Send to WhatsApp (${siteConfig.phone})`}</span>
               </button>
 
               <button
@@ -765,12 +762,12 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
                 {isSubmitting ? (
                   <>
                     <Loader2 size={14} className="animate-spin" />
-                    <span>Sending...</span>
+                    <span>{language === 'mr' ? 'पाठवत आहे...' : 'Sending...'}</span>
                   </>
                 ) : (
                   <>
                     <CheckCircle2 size={15} />
-                    <span>Submit Request</span>
+                    <span>{language === 'mr' ? 'बुकिंग पाठवा' : 'Submit Request'}</span>
                   </>
                 )}
               </button>

@@ -1,14 +1,28 @@
+'use client';
+
 import React from 'react';
 import { Users, Car, MapPin, Award, Star } from 'lucide-react';
 import { siteConfig } from '@/data/siteConfig';
+import { useLanguage } from '@/context/LanguageContext';
 
 export const StatsCounter: React.FC = () => {
-  const stats = [
+  const { language } = useLanguage();
+
+  const statsEn = [
     { label: 'Happy Tourists Served', value: '50,000+', icon: Users, color: '#34d399' },
     { label: 'Luxury & Commercial Fleet', value: '250+', icon: Car, color: '#f59e0b' },
     { label: 'Popular Intercity Routes', value: '120+', icon: MapPin, color: '#38bdf8' },
     { label: 'Years of Excellence', value: '12+', icon: Award, color: '#a78bfa' },
   ];
+
+  const statsMr = [
+    { label: 'आनंदी पर्यटक व प्रवासी', value: '५०,०००+', icon: Users, color: '#34d399' },
+    { label: 'लक्झरी व सुरक्षित गाड्या', value: '२५०+', icon: Car, color: '#f59e0b' },
+    { label: 'लोकप्रिय आंतरशहरीय मार्ग', value: '१२०+', icon: MapPin, color: '#38bdf8' },
+    { label: 'उत्कृष्ट सेवेची वर्षे', value: '१२+', icon: Award, color: '#a78bfa' },
+  ];
+
+  const stats = language === 'mr' ? statsMr : statsEn;
 
   return (
     <section style={{

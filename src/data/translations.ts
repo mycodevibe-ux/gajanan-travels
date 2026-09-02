@@ -247,7 +247,7 @@ export const translations: Record<Language, Translations> = {
     // Navigation
     nav_home: 'मुख्यपृष्ठ',
     nav_about: 'आमच्याबद्दल',
-    nav_fleet: 'गाड्या (FLEET)',
+    nav_fleet: 'आमचा ताफा',
     nav_services: 'आमच्या सेवा',
     nav_reviews: 'अभिप्राय',
     nav_contact: 'संपर्क',
@@ -288,14 +288,14 @@ export const translations: Record<Language, Translations> = {
     about_feat_3_desc: 'संपूर्ण प्रवासात थेट संपर्क आणि सुरक्षा सहाय्य.',
 
     // Vehicles Fleet
-    fleet_tag: 'आमचा ताफा (FLEET)',
+    fleet_tag: 'आमचा ताफा',
     fleet_title: 'आमच्या उपलब्ध गाड्या',
     fleet_subtitle: 'सेडान पासून २०-सीटर लक्झरी बसेस — सर्व सुस्थितीत आणि एसी सज्ज.',
     fleet_tab_all: 'सर्व गाड्या',
     fleet_tab_sedan: 'सेडान (Dzire)',
     fleet_tab_suv: 'एसयूव्ही (Ertiga/Innova)',
-    fleet_tab_tempo: 'टेम्पो ट्रॅव्हलर (17 Seater)',
-    fleet_tab_bus: 'टूरिस्ट बस (20 Seater)',
+    fleet_tab_tempo: 'टेम्पो ट्रॅव्हलर (१७ सीटर)',
+    fleet_tab_bus: 'टूरिस्ट बस (२० सीटर)',
     fleet_per_km: '/ किमी',
     fleet_starting_at: 'सुरुवातीचे दर',
     fleet_seating: 'आसने',

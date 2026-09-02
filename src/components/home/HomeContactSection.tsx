@@ -10,9 +10,10 @@ import {
 import { siteConfig } from '@/data/siteConfig';
 import { WhatsAppOriginalIcon } from '@/components/vehicles/VehicleIcons';
 import { useLanguage } from '@/context/LanguageContext';
+import { toMarathiDigits, formatMarathiDate } from '@/lib/marathiNumbers';
 
 export const HomeContactSection: React.FC = () => {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -108,7 +109,7 @@ export const HomeContactSection: React.FC = () => {
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }} className="contact-grid-row">
                 <input
                   type="text"
-                  placeholder="Your name"
+                  placeholder={language === 'mr' ? 'तुमचे नाव' : 'Your name'}
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   style={{
@@ -125,7 +126,7 @@ export const HomeContactSection: React.FC = () => {
                 />
                 <input
                   type="tel"
-                  placeholder="Phone number"
+                  placeholder={language === 'mr' ? 'मोबाईल नंबर' : 'Phone number'}
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                   style={{
@@ -162,7 +163,7 @@ export const HomeContactSection: React.FC = () => {
                 />
                 <input
                   type="text"
-                  placeholder="Pickup location"
+                  placeholder={language === 'mr' ? 'पिकअप ठिकाण' : 'Pickup location'}
                   value={formData.pickup}
                   onChange={(e) => setFormData({ ...formData, pickup: e.target.value })}
                   style={{
@@ -182,7 +183,7 @@ export const HomeContactSection: React.FC = () => {
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }} className="contact-grid-row">
                 <input
                   type="text"
-                  placeholder="Destination"
+                  placeholder={language === 'mr' ? 'जाण्याचे ठिकाण' : 'Destination'}
                   value={formData.destination}
                   onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
                   style={{
@@ -211,11 +212,11 @@ export const HomeContactSection: React.FC = () => {
                     cursor: 'pointer',
                   }}
                 >
-                  <option value="Sedan">Sedan (Swift Dzire)</option>
-                  <option value="SUV">SUV (Maruti Ertiga)</option>
-                  <option value="Luxury SUV">Luxury SUV (Innova Crysta)</option>
-                  <option value="Tempo Traveller">Tempo Traveller (17 Seater TT)</option>
-                  <option value="Tourist Bus">Tourist Coach Bus (20 Seater)</option>
+                  <option value="Sedan">{language === 'mr' ? 'सेडान (Swift Dzire)' : 'Sedan (Swift Dzire)'}</option>
+                  <option value="SUV">{language === 'mr' ? 'एसयूव्ही (Maruti Ertiga)' : 'SUV (Maruti Ertiga)'}</option>
+                  <option value="Luxury SUV">{language === 'mr' ? 'लक्झरी एसयूव्ही (Innova Crysta)' : 'Luxury SUV (Innova Crysta)'}</option>
+                  <option value="Tempo Traveller">{language === 'mr' ? 'टेम्पो ट्रॅव्हलर (१७ सीटर)' : 'Tempo Traveller (17 Seater TT)'}</option>
+                  <option value="Tourist Bus">{language === 'mr' ? 'टूरिस्ट बस (२० सीटर)' : 'Tourist Coach Bus (20 Seater)'}</option>
                 </select>
               </div>
 
@@ -223,7 +224,7 @@ export const HomeContactSection: React.FC = () => {
               <div>
                 <textarea
                   rows={3}
-                  placeholder="Anything else we should know?"
+                  placeholder={language === 'mr' ? 'काही विशेष सूचना किंवा माहिती?' : 'Anything else we should know?'}
                   value={formData.notes}
                   onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                   style={{
@@ -258,7 +259,7 @@ export const HomeContactSection: React.FC = () => {
                 }}
               >
                 <WhatsAppOriginalIcon size={20} color="#ffffff" />
-                <span>Send enquiry on WhatsApp</span>
+                <span>{language === 'mr' ? 'व्हॉट्सॲपवर चौकशी पाठवा' : 'Send enquiry on WhatsApp'}</span>
               </button>
             </form>
           </div>
@@ -292,10 +293,12 @@ export const HomeContactSection: React.FC = () => {
                   <Phone size={16} color="#0c2338" />
                 </div>
                 <div>
-                  <div style={{ fontWeight: 'normal', fontSize: '0.86rem', color: '#0c2338' }}>Call us</div>
+                  <div style={{ fontWeight: 'normal', fontSize: '0.86rem', color: '#0c2338' }}>
+                    {language === 'mr' ? 'थेट फोन करा' : 'Call us'}
+                  </div>
                   <div style={{ fontSize: '0.84rem', color: '#475569' }}>
                     <a href={`tel:${siteConfig.phone}`} style={{ color: '#475569', textDecoration: 'none', fontWeight: 'normal' }}>
-                      {siteConfig.phone}
+                      {language === 'mr' ? toMarathiDigits(siteConfig.phone) : siteConfig.phone}
                     </a>
                   </div>
                 </div>
@@ -318,7 +321,9 @@ export const HomeContactSection: React.FC = () => {
                   <Mail size={16} color="#0c2338" />
                 </div>
                 <div>
-                  <div style={{ fontWeight: 'normal', fontSize: '0.86rem', color: '#0c2338' }}>Email</div>
+                  <div style={{ fontWeight: 'normal', fontSize: '0.86rem', color: '#0c2338' }}>
+                    {language === 'mr' ? 'ईमेल करा' : 'Email'}
+                  </div>
                   <div style={{ fontSize: '0.84rem', color: '#475569' }}>
                     <a href={`mailto:${siteConfig.email}`} style={{ color: '#475569', textDecoration: 'none', fontWeight: 'normal' }}>
                       {siteConfig.email}
@@ -344,9 +349,11 @@ export const HomeContactSection: React.FC = () => {
                   <MapPin size={16} color="#0c2338" />
                 </div>
                 <div>
-                  <div style={{ fontWeight: 'normal', fontSize: '0.86rem', color: '#0c2338' }}>Based in</div>
+                  <div style={{ fontWeight: 'normal', fontSize: '0.86rem', color: '#0c2338' }}>
+                    {language === 'mr' ? 'कार्यालय' : 'Based in'}
+                  </div>
                   <div style={{ fontSize: '0.84rem', color: '#475569', fontWeight: 'normal' }}>
-                    Pune, Maharashtra
+                    {language === 'mr' ? 'पुणे, महाराष्ट्र, भारत' : 'Pune, Maharashtra'}
                   </div>
                 </div>
               </div>
@@ -368,9 +375,11 @@ export const HomeContactSection: React.FC = () => {
                   <Clock size={16} color="#0c2338" />
                 </div>
                 <div>
-                  <div style={{ fontWeight: 'normal', fontSize: '0.86rem', color: '#0c2338' }}>Hours</div>
+                  <div style={{ fontWeight: 'normal', fontSize: '0.86rem', color: '#0c2338' }}>
+                    {language === 'mr' ? 'कार्यालयीन वेळ (Hours)' : 'Hours'}
+                  </div>
                   <div style={{ fontSize: '0.84rem', color: '#475569', fontWeight: 'normal' }}>
-                    Mon – Sun, 6 AM – 11 PM
+                    {language === 'mr' ? 'सोम – रवि, स. ६:०० ते रात्री ११:००' : 'Mon – Sun, 6 AM – 11 PM'}
                   </div>
                 </div>
               </div>

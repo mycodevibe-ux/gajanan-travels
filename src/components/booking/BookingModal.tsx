@@ -5,6 +5,7 @@ import { X } from 'lucide-react';
 import { BookingWizard } from './BookingWizard';
 import { TripType, BookingFormData } from '@/types';
 import { siteConfig } from '@/data/siteConfig';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -23,6 +24,8 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   initialPackageId,
   initialData,
 }) => {
+  const { language } = useLanguage();
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -65,10 +68,12 @@ export const BookingModal: React.FC<BookingModalProps> = ({
         }}>
           <div>
             <h3 style={{ fontSize: '1.35rem', color: '#ffffff', fontWeight: 'normal', margin: 0, fontFamily: 'var(--font-heading)', letterSpacing: '0.3px' }}>
-              Book Your Ride With {siteConfig.name}
+              {language === 'mr' ? 'गजानन ट्रॅव्हल्स सोबत गाडी बुक करा' : `Book Your Ride With ${siteConfig.name}`}
             </h3>
             <p style={{ fontSize: '0.74rem', color: '#cbd5e1', margin: 0, marginTop: '2px' }}>
-              Live transparent estimate • Clean AC cabs • 24/7 Verified Chauffeur
+              {language === 'mr' 
+                ? 'पारदर्शक थेट दर • स्वच्छ एसी गाड्या • २४ तास अनुभवी चालक' 
+                : 'Live transparent estimate • Clean AC cabs • 24/7 Verified Chauffeur'}
             </p>
           </div>
 
