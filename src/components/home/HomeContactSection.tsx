@@ -57,8 +57,8 @@ export const HomeContactSection: React.FC = () => {
   }, [routeEstimate.tollEstimate, tripDays]);
 
   const cabFare = useMemo(() => {
-    return getCabFareEstimate(formData.vehicle, routeEstimate.distanceKm, tripDays);
-  }, [formData.vehicle, routeEstimate.distanceKm, tripDays]);
+    return getCabFareEstimate(formData.vehicle, routeEstimate.distanceKm, tripDays, routeEstimate.isLocalTrip);
+  }, [formData.vehicle, routeEstimate.distanceKm, tripDays, routeEstimate.isLocalTrip]);
 
   const hasRouteInput = Boolean(formData.pickup.trim() || formData.destination.trim());
 
@@ -467,7 +467,11 @@ export const HomeContactSection: React.FC = () => {
                 </div>
 
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.72rem', color: '#64748b' }}>
-                  <span>✓ {language === 'mr' ? 'किमान ३०० किमी/दिवस पॅकेज • टोल व पार्किंग स्वतंत्र (पावतीनुसार)' : 'Min. 300 KM/Day package • Toll & Parking extra at actuals'}</span>
+                  <span>
+                    ✓ {routeEstimate.isLocalTrip 
+                      ? (language === 'mr' ? 'पुणे शहर स्थानिक दर • टोल नाही' : 'Pune Local City Tariff • No FastTag Toll')
+                      : (language === 'mr' ? 'किमान ३०० किमी/दिवस पॅकेज • टोल व पार्किंग स्वतंत्र (पावतीनुसार)' : 'Min. 300 KM/Day package • Toll & Parking extra at actuals')}
+                  </span>
                   <a 
                     href={googleMapsDirectionsUrl}
                     target="_blank"
