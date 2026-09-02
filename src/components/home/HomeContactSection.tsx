@@ -52,26 +52,30 @@ export const HomeContactSection: React.FC = () => {
     return getRouteEstimate(formData.pickup, formData.destination);
   }, [formData.pickup, formData.destination]);
 
+  const totalToll = useMemo(() => {
+    return (routeEstimate.tollEstimate || 0) * tripDays;
+  }, [routeEstimate.tollEstimate, tripDays]);
+
   const cabFare = useMemo(() => {
     return getCabFareEstimate(formData.vehicle, routeEstimate.distanceKm, tripDays);
   }, [formData.vehicle, routeEstimate.distanceKm, tripDays]);
 
   const hasRouteInput = Boolean(formData.pickup.trim() || formData.destination.trim());
 
-  // Dynamic Google Map Query
-  const mapSearchQuery = useMemo(() => {
+  // Dynamic Google Map Driving Route Embed URL
+  const mapEmbedUrl = useMemo(() => {
     const p = formData.pickup.trim();
     const d = formData.destination.trim();
     if (p && d) {
-      return `${p} to ${d}`;
+      return `https://maps.google.com/maps?saddr=${encodeURIComponent(p)}&daddr=${encodeURIComponent(d)}&output=embed`;
     }
     if (d) {
-      return `Pune to ${d}`;
+      return `https://maps.google.com/maps?saddr=Pune&daddr=${encodeURIComponent(d)}&output=embed`;
     }
     if (p) {
-      return `${p}, Pune`;
+      return `https://maps.google.com/maps?q=${encodeURIComponent(p + ', Pune')}&output=embed`;
     }
-    return 'Pune, Maharashtra';
+    return 'https://maps.google.com/maps?q=Pune%2C%20Maharashtra&output=embed';
   }, [formData.pickup, formData.destination]);
 
   const googleMapsDirectionsUrl = useMemo(() => {
@@ -107,7 +111,7 @@ export const HomeContactSection: React.FC = () => {
           'Total Trip Days': `${tripDays} Day(s)`,
           'Distance Est': `${routeEstimate.distanceKm} KM`,
           'Travel Time Est': routeEstimate.durationText.en,
-          'Toll Est': `₹${routeEstimate.tollEstimate}`,
+          'Toll Est': `₹${totalToll} (${tripDays} Days)`,
           'Cab Fare Est': `₹${cabFare.toLocaleString('en-IN')}`,
           'Notes': formData.notes || 'Enquiry from Plan Your Trip form',
         }),
@@ -118,7 +122,7 @@ export const HomeContactSection: React.FC = () => {
 
     // Direct WhatsApp dispatch with route, toll & fare breakdown
     const routeSummary = hasRouteInput 
-      ? `\n🛣️ *Route:* ${routeEstimate.routeTitle} (~${routeEstimate.distanceKm} KM)\n⏱️ *Est. Time:* ${routeEstimate.durationText.en}\n💳 *FastTag Toll:* ~₹${routeEstimate.tollEstimate} (स्वतंत्र / Extra as per actuals)\n💰 *Est. Cab Fare:* ₹${cabFare.toLocaleString('en-IN')} (${tripDays} Day${tripDays > 1 ? 's' : ''} Roundtrip)`
+      ? `\n🛣️ *Route:* ${routeEstimate.routeTitle} (~${routeEstimate.distanceKm} KM)\n⏱️ *Est. Time:* ${routeEstimate.durationText.en}\n💳 *FastTag Toll:* ~₹${totalToll} (${tripDays} Day${tripDays > 1 ? 's' : ''} - स्वतंत्र / Extra as per actuals)\n💰 *Est. Cab Fare:* ₹${cabFare.toLocaleString('en-IN')} (${tripDays} Day${tripDays > 1 ? 's' : ''} Roundtrip)`
       : '';
 
     const message = encodeURIComponent(
@@ -246,7 +250,7 @@ export const HomeContactSection: React.FC = () => {
                   </label>
                   <input
                     type="text"
-                    placeholder={language === 'mr' ? 'उदा. दापोली, महाबळेश्वर, गोवा' : 'e.g. Dapoli, Mahabaleshwar, Goa'}
+                    placeholder={language === 'mr' ? 'उदा. परभणी, दापोली, महाबळेश्वर, गोवा' : 'e.g. Parbhani, Dapoli, Mahabaleshwar, Goa'}
                     value={formData.destination}
                     onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
                     style={{
@@ -430,10 +434,14 @@ export const HomeContactSection: React.FC = () => {
                   {/* 3. FastTag Toll */}
                   <div style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '8px', padding: '8px 10px' }}>
                     <div style={{ fontSize: '0.68rem', color: '#64748b' }}>
-                      {language === 'mr' ? '🛣️ अंदाजे टोल (स्वतंत्र)' : '🛣️ Est. Toll (Extra)'}
+                      {language === 'mr' ? '🛣️ FastTag टोल (स्वतंत्र)' : '🛣️ FastTag Toll (Extra)'}
                     </div>
                     <div style={{ fontSize: '1.05rem', color: '#f97316', fontWeight: 'normal', fontFamily: 'var(--font-heading)', marginTop: '2px' }}>
-                      ₹{language === 'mr' ? toMarathiDigits(routeEstimate.tollEstimate) : routeEstimate.tollEstimate} <span style={{ fontSize: '0.7rem', fontWeight: 'normal', color: '#64748b' }}>{language === 'mr' ? '(पावतीनुसार)' : '(at actuals)'}</span>
+                      {routeEstimate.tollEstimate === 0 ? (
+                        <span style={{ color: '#047857' }}>₹{language === 'mr' ? '०' : '0'} <span style={{ fontSize: '0.7rem', fontWeight: 'normal', color: '#64748b' }}>{language === 'mr' ? '(टोल नाही)' : '(No Toll)'}</span></span>
+                      ) : (
+                        <>₹{language === 'mr' ? toMarathiDigits(totalToll) : totalToll} <span style={{ fontSize: '0.7rem', fontWeight: 'normal', color: '#64748b' }}>{language === 'mr' ? `(${toMarathiDigits(tripDays)} दिवस)` : `(${tripDays} Day${tripDays > 1 ? 's' : ''})`}</span></>
+                      )}
                     </div>
                   </div>
 
@@ -651,8 +659,8 @@ export const HomeContactSection: React.FC = () => {
               </div>
               <div style={{ flex: 1, width: '100%', minHeight: '300px' }}>
                 <iframe
-                  key={mapSearchQuery}
-                  src={`https://www.google.com/maps?q=${encodeURIComponent(mapSearchQuery)}&output=embed`}
+                  key={mapEmbedUrl}
+                  src={mapEmbedUrl}
                   width="100%"
                   height="100%"
                   style={{ border: 0, width: '100%', height: '100%', minHeight: '300px' }}

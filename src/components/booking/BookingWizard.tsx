@@ -89,9 +89,26 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
     return calculateEstimatedPrice(formData);
   }, [formData]);
 
+  const isRound = formData.tripType === 'outstation_roundtrip';
+  const wizardDays = useMemo(() => {
+    if (formData.pickupDate && formData.returnDate && isRound) {
+      const s = new Date(formData.pickupDate);
+      const e = new Date(formData.returnDate);
+      if (!isNaN(s.getTime()) && !isNaN(e.getTime())) {
+        const diff = Math.ceil((e.getTime() - s.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+        return Math.max(1, diff);
+      }
+    }
+    return 1;
+  }, [formData.pickupDate, formData.returnDate, isRound]);
+
   const wizardRoute = useMemo(() => {
-    return getRouteEstimate(formData.pickupCity, formData.dropCity);
-  }, [formData.pickupCity, formData.dropCity]);
+    return getRouteEstimate(formData.pickupCity, formData.dropCity, isRound);
+  }, [formData.pickupCity, formData.dropCity, isRound]);
+
+  const wizardTotalToll = useMemo(() => {
+    return (wizardRoute.tollEstimate || 0) * wizardDays;
+  }, [wizardRoute.tollEstimate, wizardDays]);
 
   // Auto-switch vehicle when passenger count changes
   const handlePassengersChange = (count: number) => {
@@ -587,7 +604,7 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
                   <span style={{ color: '#94a3b8' }}>•</span>
                   <span>{language === 'mr' ? toMarathiDigits(wizardRoute.durationText.mr) : wizardRoute.durationText.en}</span>
                   <span style={{ color: '#94a3b8' }}>•</span>
-                  <span>FastTag: ~₹{language === 'mr' ? toMarathiDigits(wizardRoute.tollEstimate) : wizardRoute.tollEstimate} (स्वतंत्र)</span>
+                  <span>FastTag: ~₹{language === 'mr' ? toMarathiDigits(wizardTotalToll) : wizardTotalToll} ({language === 'mr' ? `${toMarathiDigits(wizardDays)} दिवस` : `${wizardDays} Day${wizardDays > 1 ? 's' : ''}`} - स्वतंत्र)</span>
                 </>
               )}
             </div>
