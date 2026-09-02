@@ -11,6 +11,17 @@ const imageMap: Record<string, string> = {
   'urbania': 'C:\\Users\\Admin\\.gemini\\antigravity-ide\\brain\\9ee3a423-dafc-4d08-9103-353559d89983\\urbania_van_transparent_1788324365742.jpg',
 };
 
+export function generateStaticParams() {
+  return [
+    { vehicleId: 'swift-dzire' },
+    { vehicleId: 'ertiga' },
+    { vehicleId: 'innova-crysta' },
+    { vehicleId: 'tata-17-seater' },
+    { vehicleId: 'tata-20-seater' },
+    { vehicleId: 'urbania' },
+  ];
+}
+
 export async function GET(
   request: Request,
   { params }: { params: { vehicleId: string } }

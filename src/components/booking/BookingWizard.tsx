@@ -115,21 +115,24 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
     setIsSubmitting(true);
 
     try {
-      // Send real email lead to mycodvibe@gmail.com
-      await fetch('/api/contact', {
+      // Send real email lead to mycodevibe@gmail.com
+      await fetch('https://formsubmit.co/ajax/mycodevibe@gmail.com', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify({
-          name: formData.fullName,
-          phone: formData.phone,
-          email: formData.email,
-          tripType: formData.tripType,
-          pickupCity: formData.pickupCity,
-          dropCity: formData.dropCity || 'Local City',
-          vehicleName: selectedVehicle.name,
-          pickupDate: `${formData.pickupDate} ${formData.pickupTime}`,
-          estimatedFare: priceResult.totalEstimate,
-          message: formData.specialRequests || 'Standard Booking',
+          _subject: `🚗 New Booking Inquiry #${refNumber} - ${formData.fullName} (${formData.phone})`,
+          _captcha: 'false',
+          'Reference No': refNumber,
+          'Customer Name': formData.fullName,
+          'Phone Number': formData.phone,
+          'Customer Email': formData.email || 'N/A',
+          'Trip Type': formData.tripType,
+          'Pickup City': formData.pickupCity,
+          'Drop City': formData.dropCity || 'Local City',
+          'Selected Vehicle': selectedVehicle.name,
+          'Pickup Date & Time': `${formData.pickupDate} ${formData.pickupTime}`,
+          'Estimated Fare': `Rs. ${priceResult.totalEstimate}`,
+          'Special Requests': formData.specialRequests || 'None',
         }),
       });
     } catch (err) {

@@ -34,19 +34,19 @@ export const HomeContactSection: React.FC = () => {
 
     // Send email dispatch in background to mycodevibe@gmail.com
     try {
-      fetch('/api/contact', {
+      fetch('https://formsubmit.co/ajax/mycodevibe@gmail.com', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify({
-          name: formData.name,
-          phone: formData.phone,
-          email: 'N/A',
-          tripType: `Trip Enquiry (${formData.vehicle})`,
-          pickupCity: formData.pickup || 'Pune',
-          dropCity: formData.destination || 'Destination',
-          vehicleName: formData.vehicle,
-          pickupDate: formData.date,
-          message: formData.notes || 'Trip enquiry from Plan Your Trip form',
+          _subject: `🚗 New Cab Enquiry - ${formData.name} (${formData.phone})`,
+          _captcha: 'false',
+          'Customer Name': formData.name,
+          'Phone Number': formData.phone,
+          'Pickup Location': formData.pickup || 'Pune',
+          'Destination': formData.destination || 'Not specified',
+          'Vehicle Preference': formData.vehicle,
+          'Pickup Date': formData.date,
+          'Notes': formData.notes || 'Enquiry from Plan Your Trip form',
         }),
       });
     } catch (err) {
