@@ -1,14 +1,14 @@
-export type VehicleCategory = 'All' | 'Hatchback' | 'Sedan' | 'SUV' | 'Luxury' | 'Tempo' | 'Bus';
+export type VehicleCategory = 'All' | 'Hatchback' | 'Sedan' | 'SUV' | 'SUV / MUV' | 'Luxury' | 'Luxury SUV' | 'Tempo' | 'Tempo Traveller' | 'Bus' | 'Luxury Bus' | 'Luxury Van';
 
 export interface Vehicle {
   id: string;
   name: string;
-  category: Exclude<VehicleCategory, 'All'>;
+  category: string;
   tagline: string;
   passengerCapacity: number;
   luggageCapacity: number;
   ac: boolean;
-  fuelType: 'Diesel' | 'Petrol' | 'Electric' | 'CNG';
+  fuelType: string;
   transmission: 'Manual' | 'Automatic';
   pricePerKm: number;
   baseFarePerDay: number;

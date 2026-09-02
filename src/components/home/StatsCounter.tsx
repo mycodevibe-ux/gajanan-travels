@@ -46,8 +46,9 @@ export const StatsCounter: React.FC = () => {
 
                 <div style={{
                   fontSize: '2.4rem',
-                  fontWeight: 900,
+                  fontWeight: 'normal',
                   fontFamily: 'var(--font-heading)',
+                  letterSpacing: '0.3px',
                   color: '#ffffff',
                   lineHeight: 1.1,
                   marginBottom: '6px',
@@ -55,7 +56,7 @@ export const StatsCounter: React.FC = () => {
                   {stat.value}
                 </div>
 
-                <div style={{ fontSize: '0.88rem', color: '#94a3b8', fontWeight: 500 }}>
+                <div style={{ fontSize: '0.88rem', color: '#94a3b8', fontWeight: 'normal' }}>
                   {stat.label}
                 </div>
               </div>

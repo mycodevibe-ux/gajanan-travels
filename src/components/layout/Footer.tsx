@@ -1,8 +1,9 @@
 'use client';
 
 import React from 'react';
-import { Facebook, Instagram, MessageCircle, Phone, Mail, MapPin } from 'lucide-react';
+import { Facebook, Instagram, Phone, Mail, MapPin } from 'lucide-react';
 import { siteConfig } from '@/data/siteConfig';
+import { WhatsAppOriginalIcon } from '@/components/vehicles/VehicleIcons';
 
 export const Footer: React.FC = () => {
   const handleScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
@@ -52,8 +53,8 @@ export const Footer: React.FC = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 color: '#ffffff',
-                fontWeight: 900,
-                fontSize: '1.15rem',
+                fontWeight: 400,
+                fontSize: '1.35rem',
                 fontFamily: 'var(--font-heading)',
                 boxShadow: '0 4px 14px rgba(249, 115, 22, 0.45)',
               }}>
@@ -62,11 +63,11 @@ export const Footer: React.FC = () => {
 
               {/* Brand Name */}
               <span style={{
-                fontSize: '1.4rem',
-                fontWeight: 900,
+                fontSize: '1.75rem',
+                fontWeight: 'normal',
                 color: '#ffffff',
                 fontFamily: 'var(--font-heading)',
-                letterSpacing: '-0.3px',
+                letterSpacing: '0.3px',
                 lineHeight: 1,
               }}>
                 {siteConfig.name}
@@ -84,7 +85,7 @@ export const Footer: React.FC = () => {
                 padding: '4px 10px',
                 borderRadius: '6px',
                 fontSize: '0.72rem',
-                fontWeight: 700,
+                fontWeight: 'normal',
                 border: '1px solid rgba(255, 255, 255, 0.1)',
               }}>
                 24/7 Service
@@ -95,7 +96,7 @@ export const Footer: React.FC = () => {
                 padding: '4px 10px',
                 borderRadius: '6px',
                 fontSize: '0.72rem',
-                fontWeight: 700,
+                fontWeight: 'normal',
                 border: '1px solid rgba(255, 255, 255, 0.1)',
               }}>
                 Verified Fleet
@@ -105,7 +106,7 @@ export const Footer: React.FC = () => {
 
           {/* Col 2: Quick Links */}
           <div>
-            <h3 style={{ fontSize: '0.94rem', fontWeight: 800, color: '#ffffff', marginBottom: '14px', letterSpacing: '0.5px' }}>
+            <h3 style={{ fontSize: '0.94rem', fontWeight: 'normal', color: '#ffffff', marginBottom: '14px', letterSpacing: '0.3px', fontFamily: 'var(--font-heading)' }}>
               Quick links
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.86rem' }}>
@@ -114,7 +115,6 @@ export const Footer: React.FC = () => {
                 { name: 'About', id: 'about' },
                 { name: 'Fleet', id: 'fleet' },
                 { name: 'Services', id: 'services' },
-                { name: 'Packages', id: 'packages' },
                 { name: 'Reviews', id: 'reviews' },
                 { name: 'Contact', id: 'contact' },
               ].map((item) => (
@@ -134,7 +134,7 @@ export const Footer: React.FC = () => {
 
           {/* Col 3: Popular Routes */}
           <div>
-            <h3 style={{ fontSize: '0.94rem', fontWeight: 800, color: '#ffffff', marginBottom: '14px', letterSpacing: '0.5px' }}>
+            <h3 style={{ fontSize: '0.94rem', fontWeight: 'normal', color: '#ffffff', marginBottom: '14px', letterSpacing: '0.3px', fontFamily: 'var(--font-heading)' }}>
               Popular routes
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.86rem' }}>
@@ -161,7 +161,7 @@ export const Footer: React.FC = () => {
 
           {/* Col 4: Contact Us + Social Icons matching EXACT screenshot */}
           <div>
-            <h3 style={{ fontSize: '0.94rem', fontWeight: 800, color: '#ffffff', marginBottom: '14px', letterSpacing: '0.5px' }}>
+            <h3 style={{ fontSize: '0.94rem', fontWeight: 'normal', color: '#ffffff', marginBottom: '14px', letterSpacing: '0.3px', fontFamily: 'var(--font-heading)' }}>
               Contact us
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.86rem', color: '#94a3b8', marginBottom: '18px' }}>
@@ -179,7 +179,7 @@ export const Footer: React.FC = () => {
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <MapPin size={15} color="#7dd3fc" />
-                <span style={{ color: '#e2e8f0', fontWeight: 500 }}>Pune, Maharashtra</span>
+                <span style={{ color: '#e2e8f0', fontWeight: 'normal' }}>Pune, Maharashtra</span>
               </div>
             </div>
 
@@ -263,7 +263,7 @@ export const Footer: React.FC = () => {
                   textDecoration: 'none',
                 }}
                 onMouseOver={(e) => {
-                  e.currentTarget.style.backgroundColor = '#1e486b';
+                  e.currentTarget.style.backgroundColor = '#25D366';
                   e.currentTarget.style.transform = 'translateY(-2px)';
                 }}
                 onMouseOut={(e) => {
@@ -272,7 +272,7 @@ export const Footer: React.FC = () => {
                 }}
                 aria-label="WhatsApp"
               >
-                <MessageCircle size={18} color="#ffffff" />
+                <WhatsAppOriginalIcon size={20} color="#ffffff" />
               </a>
             </div>
           </div>
@@ -293,7 +293,7 @@ export const Footer: React.FC = () => {
             © 2026 {siteConfig.name}. All rights reserved.
           </div>
           <div>
-            Designed for smooth rides.
+            Designed by Spider
           </div>
         </div>
       </div>

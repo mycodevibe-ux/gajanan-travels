@@ -64,7 +64,7 @@ export const PopularRoutes: React.FC<PopularRoutesProps> = ({ onOpenBookingModal
                   backdropFilter: 'blur(6px)',
                   color: '#ffffff',
                   fontSize: '0.72rem',
-                  fontWeight: 700,
+                  fontWeight: 'normal',
                   padding: '4px 10px',
                   borderRadius: '9999px',
                 }}>
@@ -75,9 +75,9 @@ export const PopularRoutes: React.FC<PopularRoutesProps> = ({ onOpenBookingModal
               {/* Card Body */}
               <div style={{ padding: '20px', flex: 1, display: 'flex', flexDirection: 'column' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                  <span style={{ fontWeight: 800, color: '#0f172a', fontSize: '1.05rem' }}>{route.fromCity}</span>
+                  <span style={{ fontWeight: 'normal', color: '#0f172a', fontSize: '1.05rem', fontFamily: 'var(--font-heading)', letterSpacing: '0.3px' }}>{route.fromCity}</span>
                   <ArrowRight size={16} color="#1b4332" />
-                  <span style={{ fontWeight: 800, color: '#1b4332', fontSize: '1.05rem' }}>{route.toCity}</span>
+                  <span style={{ fontWeight: 'normal', color: '#1b4332', fontSize: '1.05rem', fontFamily: 'var(--font-heading)', letterSpacing: '0.3px' }}>{route.toCity}</span>
                 </div>
 
                 <div style={{ fontSize: '0.8rem', color: '#64748b', marginBottom: '14px' }}>
@@ -110,7 +110,7 @@ export const PopularRoutes: React.FC<PopularRoutesProps> = ({ onOpenBookingModal
                 }}>
                   <div>
                     <div style={{ fontSize: '0.72rem', color: '#64748b' }}>Fares from</div>
-                    <div style={{ fontSize: '1.25rem', fontWeight: 900, color: '#0f172a' }}>
+                    <div style={{ fontSize: '1.25rem', fontWeight: 'normal', fontFamily: 'var(--font-heading)', color: '#0f172a' }}>
                       ₹{route.startingPrice.toLocaleString('en-IN')}
                     </div>
                   </div>

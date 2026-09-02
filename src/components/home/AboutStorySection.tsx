@@ -22,12 +22,12 @@ export const AboutStorySection: React.FC = () => {
           <div>
             <h2 style={{
               fontSize: 'clamp(2rem, 3.5vw, 2.8rem)',
-              fontWeight: 900,
+              fontWeight: 'normal',
               color: '#0c2338',
               lineHeight: 1.2,
               marginBottom: '16px',
               fontFamily: 'var(--font-heading)',
-              letterSpacing: '-0.02em',
+              letterSpacing: '0.3px',
             }}>
               Built by drivers who love the road
             </h2>
@@ -46,8 +46,9 @@ export const AboutStorySection: React.FC = () => {
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
                 <span style={{
                   color: '#f97316',
-                  fontWeight: 900,
+                  fontWeight: 'normal',
                   fontSize: '0.94rem',
+                  fontFamily: 'var(--font-heading)',
                   minWidth: '50px',
                 }}>
                   2014
@@ -60,8 +61,9 @@ export const AboutStorySection: React.FC = () => {
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
                 <span style={{
                   color: '#f97316',
-                  fontWeight: 900,
+                  fontWeight: 'normal',
                   fontSize: '0.94rem',
+                  fontFamily: 'var(--font-heading)',
                   minWidth: '50px',
                 }}>
                   2019
@@ -74,8 +76,9 @@ export const AboutStorySection: React.FC = () => {
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
                 <span style={{
                   color: '#f97316',
-                  fontWeight: 900,
+                  fontWeight: 'normal',
                   fontSize: '0.94rem',
+                  fontFamily: 'var(--font-heading)',
                   minWidth: '50px',
                 }}>
                   Today
@@ -93,7 +96,7 @@ export const AboutStorySection: React.FC = () => {
               flexWrap: 'wrap',
               fontSize: '0.84rem',
               color: '#0c2338',
-              fontWeight: 700,
+              fontWeight: 'normal',
               borderTop: '1px solid #d4e3ef',
               paddingTop: '18px',
             }}>

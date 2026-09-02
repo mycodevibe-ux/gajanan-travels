@@ -1,8 +1,9 @@
 'use client';
 
 import React from 'react';
-import { MessageCircle, Luggage, ArrowRight } from 'lucide-react';
+import { Luggage, ArrowRight } from 'lucide-react';
 import { siteConfig } from '@/data/siteConfig';
+import { WhatsAppOriginalIcon } from '@/components/vehicles/VehicleIcons';
 
 interface CtaBannerProps {
   onOpenBookingModal: () => void;
@@ -63,12 +64,12 @@ export const CtaBanner: React.FC<CtaBannerProps> = ({ onOpenBookingModal }) => {
 
             <div>
               <h2 style={{
-                fontSize: '1.9rem',
-                fontWeight: 900,
+                fontSize: '2.1rem',
+                fontWeight: 'normal',
                 color: '#ffffff',
-                marginBottom: '6px',
+                marginBottom: '4px',
                 fontFamily: 'var(--font-heading)',
-                letterSpacing: '-0.02em',
+                letterSpacing: '0.3px',
               }}>
                 Planning a trip?
               </h2>
@@ -94,7 +95,7 @@ export const CtaBanner: React.FC<CtaBannerProps> = ({ onOpenBookingModal }) => {
                 padding: '12px 26px',
                 borderRadius: '10px',
                 fontSize: '0.94rem',
-                fontWeight: 800,
+                fontWeight: 'normal',
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '8px',
@@ -120,26 +121,26 @@ export const CtaBanner: React.FC<CtaBannerProps> = ({ onOpenBookingModal }) => {
                 borderRadius: '10px',
                 fontSize: '0.94rem',
                 gap: '8px',
-                backgroundColor: '#22c55e',
+                backgroundColor: '#25D366',
                 border: 'none',
                 color: '#ffffff',
-                fontWeight: 800,
+                fontWeight: 'normal',
                 display: 'inline-flex',
                 alignItems: 'center',
                 cursor: 'pointer',
-                boxShadow: '0 6px 20px rgba(34, 197, 94, 0.35)',
+                boxShadow: '0 6px 20px rgba(37, 211, 102, 0.35)',
                 transition: 'all 0.2s ease',
               }}
               onMouseOver={(e) => {
-                e.currentTarget.style.backgroundColor = '#16a34a';
+                e.currentTarget.style.backgroundColor = '#20ba5a';
                 e.currentTarget.style.transform = 'translateY(-2px)';
               }}
               onMouseOut={(e) => {
-                e.currentTarget.style.backgroundColor = '#22c55e';
+                e.currentTarget.style.backgroundColor = '#25D366';
                 e.currentTarget.style.transform = 'translateY(0)';
               }}
             >
-              <MessageCircle size={18} color="#ffffff" />
+              <WhatsAppOriginalIcon size={20} color="#ffffff" />
               <span>WhatsApp Us</span>
             </button>
           </div>

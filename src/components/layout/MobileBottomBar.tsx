@@ -1,8 +1,9 @@
 'use client';
 
 import React from 'react';
-import { Phone, MessageCircle, CalendarCheck } from 'lucide-react';
+import { Phone, CalendarCheck } from 'lucide-react';
 import { siteConfig } from '@/data/siteConfig';
+import { WhatsAppOriginalIcon } from '@/components/vehicles/VehicleIcons';
 
 interface MobileBottomBarProps {
   onOpenBookingModal: () => void;
@@ -39,7 +40,7 @@ export const MobileBottomBar: React.FC<MobileBottomBarProps> = ({ onOpenBookingM
           backgroundColor: '#f8fafc',
           color: '#0f172a',
           fontSize: '0.72rem',
-          fontWeight: 700,
+          fontWeight: 'normal',
           border: '1px solid #e2e8f0',
         }}
       >
@@ -63,10 +64,10 @@ export const MobileBottomBar: React.FC<MobileBottomBarProps> = ({ onOpenBookingM
           backgroundColor: '#25D366',
           color: '#ffffff',
           fontSize: '0.82rem',
-          fontWeight: 700,
+          fontWeight: 'normal',
         }}
       >
-        <MessageCircle size={17} />
+        <WhatsAppOriginalIcon size={17} color="#ffffff" />
         <span>WhatsApp</span>
       </a>
 
@@ -84,7 +85,7 @@ export const MobileBottomBar: React.FC<MobileBottomBarProps> = ({ onOpenBookingM
           backgroundColor: '#1b4332',
           color: '#ffffff',
           fontSize: '0.82rem',
-          fontWeight: 800,
+          fontWeight: 'normal',
           border: 'none',
           cursor: 'pointer',
         }}

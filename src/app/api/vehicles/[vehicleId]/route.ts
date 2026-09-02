@@ -3,11 +3,12 @@ import fs from 'fs';
 import path from 'path';
 
 const imageMap: Record<string, string> = {
-  'swift-dzire': 'C:\\Users\\Admin\\.gemini\\antigravity-ide\\brain\\019ffd7b-ec6d-4960-82be-a3e576829f8c\\white_swift_dzire_1788251432290.jpg',
-  'ertiga': 'C:\\Users\\Admin\\.gemini\\antigravity-ide\\brain\\019ffd7b-ec6d-4960-82be-a3e576829f8c\\white_maruti_ertiga_1788251450479.jpg',
-  'innova-crysta': 'C:\\Users\\Admin\\.gemini\\antigravity-ide\\brain\\019ffd7b-ec6d-4960-82be-a3e576829f8c\\white_innova_crysta_1788251468237.jpg',
-  'tata-17-seater': 'C:\\Users\\Admin\\.gemini\\antigravity-ide\\brain\\019ffd7b-ec6d-4960-82be-a3e576829f8c\\white_tempo_traveller_17_1788251488711.jpg',
-  'tata-20-seater': 'C:\\Users\\Admin\\.gemini\\antigravity-ide\\brain\\019ffd7b-ec6d-4960-82be-a3e576829f8c\\white_tourist_bus_20_1788251505865.jpg',
+  'swift-dzire': 'C:\\Users\\Admin\\.gemini\\antigravity-ide\\brain\\9ee3a423-dafc-4d08-9103-353559d89983\\swift_dzire_transparent_1788324291339.jpg',
+  'ertiga': 'C:\\Users\\Admin\\.gemini\\antigravity-ide\\brain\\9ee3a423-dafc-4d08-9103-353559d89983\\ertiga_transparent_1788324306358.jpg',
+  'innova-crysta': 'C:\\Users\\Admin\\.gemini\\antigravity-ide\\brain\\9ee3a423-dafc-4d08-9103-353559d89983\\innova_crysta_transparent_1788324321037.jpg',
+  'tata-17-seater': 'C:\\Users\\Admin\\.gemini\\antigravity-ide\\brain\\9ee3a423-dafc-4d08-9103-353559d89983\\tempo_traveller_transparent_1788324336068.jpg',
+  'tata-20-seater': 'C:\\Users\\Admin\\.gemini\\antigravity-ide\\brain\\9ee3a423-dafc-4d08-9103-353559d89983\\tourist_bus_transparent_1788324351105.jpg',
+  'urbania': 'C:\\Users\\Admin\\.gemini\\antigravity-ide\\brain\\9ee3a423-dafc-4d08-9103-353559d89983\\urbania_van_transparent_1788324365742.jpg',
 };
 
 export async function GET(
@@ -16,6 +17,20 @@ export async function GET(
 ) {
   const vehicleId = params.vehicleId;
   const imagePath = imageMap[vehicleId];
+
+  // Try to copy to public/images/vehicles directory if accessible
+  try {
+    const vehiclesDir = path.join(process.cwd(), 'public', 'images', 'vehicles');
+    if (!fs.existsSync(vehiclesDir)) {
+      fs.mkdirSync(vehiclesDir, { recursive: true });
+    }
+    const publicDest = path.join(vehiclesDir, `${vehicleId}.jpg`);
+    if (imagePath && fs.existsSync(imagePath) && !fs.existsSync(publicDest)) {
+      fs.copyFileSync(imagePath, publicDest);
+    }
+  } catch (err) {
+    // ignore copy error
+  }
 
   if (imagePath && fs.existsSync(imagePath)) {
     try {

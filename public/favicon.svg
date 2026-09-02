@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0c2338" />
+      <stop offset="100%" stop-color="#05121e" />
+    </linearGradient>
+    <linearGradient id="orangeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f97316" />
+      <stop offset="100%" stop-color="#ea580c" />
+    </linearGradient>
+  </defs>
+
+  <!-- Dark Navy Rounded Base -->
+  <rect width="64" height="64" rx="16" fill="url(#bgGrad)" />
+  <rect x="1.5" y="1.5" width="61" height="61" rx="14.5" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" />
+
+  <!-- Stylized Modern "G" Travel Monogram -->
+  <path 
+    d="M44 24 C41 18 36 15 29 15 C19 15 12 23 12 33 C12 43 19 50 29 50 C37 50 43 45 45 37 L30 37 L30 31 L52 31 C52.5 35 52.5 39 51 43 C47 53 39 57 29 57 C15 57 5 46 5 33 C5 19 15 8 29 8 C38 8 46 13 50 21 Z" 
+    fill="#ffffff" 
+  />
+
+  <!-- Vibrant Orange Accent Wing / Speed Dot -->
+  <circle cx="44" cy="22" r="5" fill="url(#orangeGrad)" />
+  <path d="M40 37 L56 37 L51 43 L40 43 Z" fill="url(#orangeGrad)" opacity="0.9" />
+</svg>

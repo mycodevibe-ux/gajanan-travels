@@ -19,31 +19,35 @@ export const FeaturedFleet: React.FC<FeaturedFleetProps> = ({
   const [activeCategory, setActiveCategory] = useState<VehicleCategory>('All');
 
   const categories: { label: string; value: VehicleCategory }[] = [
-    { label: 'All Cars', value: 'All' },
-    { label: 'SUVs & MUVs', value: 'SUV' },
+    { label: 'All Fleet', value: 'All' },
     { label: 'Sedans', value: 'Sedan' },
+    { label: 'SUVs & MUVs', value: 'SUV' },
     { label: 'Tempo Travellers', value: 'Tempo' },
-    { label: 'Luxury Convoys', value: 'Luxury' },
+    { label: 'Luxury Buses', value: 'Bus' },
   ];
 
   const filteredVehicles = vehiclesData.filter((v) => {
     if (activeCategory === 'All') return true;
-    return v.category === activeCategory;
+    if (activeCategory === 'Sedan') return v.category.includes('Sedan');
+    if (activeCategory === 'SUV') return v.category.includes('SUV') || v.category.includes('MUV');
+    if (activeCategory === 'Tempo') return v.category.includes('Tempo') || v.category.includes('Van');
+    if (activeCategory === 'Bus') return v.category.includes('Bus');
+    return v.category.includes(activeCategory);
   }).slice(0, 6);
 
   return (
     <section className="section-padding" style={{ backgroundColor: '#f8fafc' }}>
       <div className="container-custom">
         <div className="section-header">
-          <div className="section-tag">
+          <div className="section-tag" style={{ backgroundColor: '#ebf5f0', color: '#1b4332' }}>
             <Car size={14} />
-            <span>Drivewise Fleet</span>
+            <span>Tour Fleet Showcase</span>
           </div>
           <h2 className="section-title">
-            Explore Our Most Popular Rental Cars
+            Explore Our Clean & Verified Fleet
           </h2>
           <p className="section-subtitle">
-            Find the perfect vehicle for any trip. From economic city sedans to spacious 7-seater Innovas and luxury executive cars.
+            Find the perfect vehicle for any trip. From economic city sedans to spacious 7-seater Innovas and luxury executive tempo travellers.
           </p>
 
           {/* Filter Pills */}
@@ -67,12 +71,12 @@ export const FeaturedFleet: React.FC<FeaturedFleetProps> = ({
                   key={cat.value}
                   onClick={() => setActiveCategory(cat.value)}
                   style={{
-                    padding: '9px 20px',
+                    padding: '8px 18px',
                     borderRadius: '9999px',
-                    fontSize: '0.88rem',
+                    fontSize: '0.86rem',
                     fontWeight: isSelected ? 700 : 500,
                     border: 'none',
-                    backgroundColor: isSelected ? '#2563eb' : 'transparent',
+                    backgroundColor: isSelected ? '#1b4332' : 'transparent',
                     color: isSelected ? '#ffffff' : '#475569',
                     cursor: 'pointer',
                     transition: 'all 0.2s',
@@ -99,14 +103,14 @@ export const FeaturedFleet: React.FC<FeaturedFleetProps> = ({
 
         {/* Explore Full Fleet Link */}
         <div style={{ textAlign: 'center' }}>
-          <Link
-            href="/vehicles"
-            className="btn btn-outline btn-lg"
+          <a
+            href="#fleet"
+            className="btn btn-outline-forest btn-lg"
             style={{ display: 'inline-flex', gap: '8px' }}
           >
-            <span>View All Cars & Tariffs</span>
+            <span>Compare All Vehicles & Per-KM Rates</span>
             <ArrowRight size={18} />
-          </Link>
+          </a>
         </div>
       </div>
     </section>

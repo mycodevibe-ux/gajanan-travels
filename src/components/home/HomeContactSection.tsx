@@ -5,10 +5,10 @@ import {
   Phone, 
   Mail, 
   MapPin, 
-  Clock, 
-  MessageCircle
+  Clock
 } from 'lucide-react';
 import { siteConfig } from '@/data/siteConfig';
+import { WhatsAppOriginalIcon } from '@/components/vehicles/VehicleIcons';
 
 export const HomeContactSection: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -69,11 +69,11 @@ export const HomeContactSection: React.FC = () => {
         <div style={{ marginBottom: '34px' }}>
           <h2 style={{
             fontSize: '2.4rem',
-            fontWeight: 900,
+            fontWeight: 'normal',
             color: '#0c2338',
             fontFamily: 'var(--font-heading)',
             marginBottom: '6px',
-            letterSpacing: '-0.02em',
+            letterSpacing: '0.3px',
           }}>
             Plan your trip
           </h2>
@@ -247,11 +247,15 @@ export const HomeContactSection: React.FC = () => {
                   width: '100%',
                   padding: '13px 20px',
                   fontSize: '0.96rem',
-                  fontWeight: 800,
+                  fontWeight: 'normal',
                   borderRadius: '8px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
                 }}
               >
-                <MessageCircle size={18} />
+                <WhatsAppOriginalIcon size={20} color="#ffffff" />
                 <span>Send enquiry on WhatsApp</span>
               </button>
             </form>
@@ -286,9 +290,9 @@ export const HomeContactSection: React.FC = () => {
                   <Phone size={16} color="#0c2338" />
                 </div>
                 <div>
-                  <div style={{ fontWeight: 800, fontSize: '0.86rem', color: '#0c2338' }}>Call us</div>
+                  <div style={{ fontWeight: 'normal', fontSize: '0.86rem', color: '#0c2338' }}>Call us</div>
                   <div style={{ fontSize: '0.84rem', color: '#475569' }}>
-                    <a href={`tel:${siteConfig.phone}`} style={{ color: '#475569', textDecoration: 'none', fontWeight: 600 }}>
+                    <a href={`tel:${siteConfig.phone}`} style={{ color: '#475569', textDecoration: 'none', fontWeight: 'normal' }}>
                       {siteConfig.phone}
                     </a>
                   </div>
@@ -312,9 +316,9 @@ export const HomeContactSection: React.FC = () => {
                   <Mail size={16} color="#0c2338" />
                 </div>
                 <div>
-                  <div style={{ fontWeight: 800, fontSize: '0.86rem', color: '#0c2338' }}>Email</div>
+                  <div style={{ fontWeight: 'normal', fontSize: '0.86rem', color: '#0c2338' }}>Email</div>
                   <div style={{ fontSize: '0.84rem', color: '#475569' }}>
-                    <a href={`mailto:${siteConfig.email}`} style={{ color: '#475569', textDecoration: 'none', fontWeight: 600 }}>
+                    <a href={`mailto:${siteConfig.email}`} style={{ color: '#475569', textDecoration: 'none', fontWeight: 'normal' }}>
                       {siteConfig.email}
                     </a>
                   </div>
@@ -338,8 +342,8 @@ export const HomeContactSection: React.FC = () => {
                   <MapPin size={16} color="#0c2338" />
                 </div>
                 <div>
-                  <div style={{ fontWeight: 800, fontSize: '0.86rem', color: '#0c2338' }}>Based in</div>
-                  <div style={{ fontSize: '0.84rem', color: '#475569', fontWeight: 600 }}>
+                  <div style={{ fontWeight: 'normal', fontSize: '0.86rem', color: '#0c2338' }}>Based in</div>
+                  <div style={{ fontSize: '0.84rem', color: '#475569', fontWeight: 'normal' }}>
                     Pune, Maharashtra
                   </div>
                 </div>
@@ -362,8 +366,8 @@ export const HomeContactSection: React.FC = () => {
                   <Clock size={16} color="#0c2338" />
                 </div>
                 <div>
-                  <div style={{ fontWeight: 800, fontSize: '0.86rem', color: '#0c2338' }}>Hours</div>
-                  <div style={{ fontSize: '0.84rem', color: '#475569', fontWeight: 600 }}>
+                  <div style={{ fontWeight: 'normal', fontSize: '0.86rem', color: '#0c2338' }}>Hours</div>
+                  <div style={{ fontSize: '0.84rem', color: '#475569', fontWeight: 'normal' }}>
                     Mon – Sun, 6 AM – 11 PM
                   </div>
                 </div>

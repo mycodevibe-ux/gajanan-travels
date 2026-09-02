@@ -46,11 +46,11 @@ export const FaqSection: React.FC = () => {
         <div style={{ textAlign: 'center', marginBottom: '38px' }}>
           <h2 style={{
             fontSize: '2.4rem',
-            fontWeight: 900,
+            fontWeight: 'normal',
             color: '#0c2338',
             fontFamily: 'var(--font-heading)',
             marginBottom: '6px',
-            letterSpacing: '-0.02em',
+            letterSpacing: '0.3px',
           }}>
             Common questions
           </h2>
@@ -91,17 +91,17 @@ export const FaqSection: React.FC = () => {
                   aria-expanded={isOpen}
                 >
                   <span style={{
-                    fontSize: '1rem',
-                    fontWeight: 700,
+                    fontSize: '0.98rem',
+                    fontWeight: 'normal',
                     color: '#0c2338',
-                    fontFamily: 'var(--font-heading)',
+                    fontFamily: 'var(--font-body)',
                   }}>
                     {faq.question}
                   </span>
 
                   <span style={{
                     color: '#f97316',
-                    fontWeight: 800,
+                    fontWeight: 'normal',
                     fontSize: '1.2rem',
                     lineHeight: 1,
                   }}>

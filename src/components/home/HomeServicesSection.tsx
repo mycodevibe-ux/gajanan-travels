@@ -2,14 +2,12 @@
 
 import React from 'react';
 import { 
-  PlaneTakeoff, 
   Compass, 
   Clock, 
   Users, 
   Briefcase, 
   HeartHandshake, 
   Headphones, 
-  Sparkles,
   ArrowRight
 } from 'lucide-react';
 import { TripType } from '@/types';
@@ -21,58 +19,44 @@ interface HomeServicesSectionProps {
 export const HomeServicesSection: React.FC<HomeServicesSectionProps> = ({ onOpenBookingModal = () => {} }) => {
   const offerings = [
     {
-      id: 'airport',
-      title: 'Airport transfer',
-      desc: 'Reliable pickup and drop, tracked flight timing.',
-      icon: PlaneTakeoff,
-      tripType: 'airport_transfer' as TripType,
-    },
-    {
       id: 'outstation',
       title: 'Outstation trips',
-      desc: 'Goa, Mahabaleshwar, Shirdi and beyond.',
+      desc: 'Goa, Mahabaleshwar, Shirdi, Konkan and all outstation destinations.',
       icon: Compass,
       tripType: 'outstation_roundtrip' as TripType,
     },
     {
       id: 'local',
       title: 'Local rental',
-      desc: 'Hourly or full-day rentals within Pune.',
+      desc: 'Flexible hourly or full-day sanitized cab rentals within Pune.',
       icon: Clock,
       tripType: 'local_rental' as TripType,
     },
     {
       id: 'group',
       title: 'Group travel',
-      desc: 'Buses and tempo travellers for large groups.',
+      desc: '17 to 20 seater luxury tempo travellers & buses for group tours.',
       icon: Users,
       tripType: 'outstation_roundtrip' as TripType,
     },
     {
       id: 'corporate',
       title: 'Corporate travel',
-      desc: 'Employee transport and client pickups.',
+      desc: 'Reliable executive employee transit and VIP corporate travel.',
       icon: Briefcase,
       tripType: 'local_rental' as TripType,
     },
     {
-      id: 'wedding',
-      title: 'Wedding cars',
-      desc: 'Decorated vehicles for the big day.',
-      icon: Sparkles,
-      tripType: 'outstation_roundtrip' as TripType,
-    },
-    {
       id: 'family',
-      title: 'Family trips',
-      desc: 'Spacious, comfortable rides for families.',
+      title: 'Family tours',
+      desc: 'Comfortable, spacious AC rides with courteous verified drivers.',
       icon: HeartHandshake,
       tripType: 'outstation_roundtrip' as TripType,
     },
     {
       id: 'support',
       title: '24/7 support',
-      desc: "Someone's always available on call.",
+      desc: "Instant booking confirmation and dedicated round-the-clock support.",
       icon: Headphones,
       tripType: 'outstation_roundtrip' as TripType,
     },
@@ -90,11 +74,11 @@ export const HomeServicesSection: React.FC<HomeServicesSectionProps> = ({ onOpen
         <div style={{ marginBottom: '36px' }}>
           <h2 style={{
             fontSize: '2.4rem',
-            fontWeight: 900,
+            fontWeight: 'normal',
             color: '#0c2338',
             fontFamily: 'var(--font-heading)',
             marginBottom: '6px',
-            letterSpacing: '-0.02em',
+            letterSpacing: '0.3px',
           }}>
             What we offer
           </h2>
@@ -103,16 +87,19 @@ export const HomeServicesSection: React.FC<HomeServicesSectionProps> = ({ onOpen
             color: '#64748b',
             margin: 0,
           }}>
-            From a quick airport drop to a week-long family tour, we handle it.
+            From local city rentals to multi-day outstation family tours, we handle it all.
           </p>
         </div>
 
-        {/* 8 White Cards Grid (4x2 on desktop) matching mockup */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-          gap: '18px',
-        }}>
+        {/* 6 White Cards (3x2 Grid on Desktop) */}
+        <div 
+          className="services-grid-3x3"
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+            gap: '20px',
+          }}
+        >
           {offerings.map((item) => {
             const IconComp = item.icon;
             return (
@@ -123,10 +110,10 @@ export const HomeServicesSection: React.FC<HomeServicesSectionProps> = ({ onOpen
                   backgroundColor: '#ffffff',
                   border: '1px solid #e2e8f0',
                   borderRadius: '16px',
-                  padding: '24px 20px',
+                  padding: '26px 22px',
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: '12px',
+                  gap: '14px',
                   boxShadow: '0 4px 16px rgba(12, 35, 56, 0.03)',
                   cursor: 'pointer',
                   transition: 'all 0.2s ease',
@@ -135,8 +122,8 @@ export const HomeServicesSection: React.FC<HomeServicesSectionProps> = ({ onOpen
               >
                 {/* Square Icon Container with subtle blue background matching mockup */}
                 <div style={{
-                  width: '44px',
-                  height: '44px',
+                  width: '46px',
+                  height: '46px',
                   borderRadius: '10px',
                   backgroundColor: '#e8f3fb',
                   color: '#0c2338',
@@ -145,16 +132,17 @@ export const HomeServicesSection: React.FC<HomeServicesSectionProps> = ({ onOpen
                   justifyContent: 'center',
                   flexShrink: 0,
                 }}>
-                  <IconComp size={22} color="#0c2338" />
+                  <IconComp size={23} color="#0c2338" />
                 </div>
 
                 <div>
                   <h3 style={{
-                    fontSize: '1.15rem',
-                    fontWeight: 800,
+                    fontSize: '1.35rem',
+                    fontWeight: 'normal',
                     color: '#0c2338',
-                    marginBottom: '4px',
+                    marginBottom: '6px',
                     fontFamily: 'var(--font-heading)',
+                    letterSpacing: '0.3px',
                   }}>
                     {item.title}
                   </h3>
@@ -173,6 +161,14 @@ export const HomeServicesSection: React.FC<HomeServicesSectionProps> = ({ onOpen
           })}
         </div>
       </div>
+
+      <style jsx>{`
+        @media (min-width: 960px) {
+          .services-grid-3x3 {
+            grid-template-columns: repeat(3, 1fr) !important;
+          }
+        }
+      `}</style>
     </section>
   );
 };

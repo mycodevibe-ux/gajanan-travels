@@ -76,7 +76,7 @@ export const WriteReviewModal: React.FC<WriteReviewModalProps> = ({
           alignItems: 'center',
         }}>
           <div>
-            <h3 style={{ fontSize: '1.15rem', fontWeight: 800, margin: 0, fontFamily: 'var(--font-heading)' }}>
+            <h3 style={{ fontSize: '1.15rem', fontWeight: 'normal', margin: 0, fontFamily: 'var(--font-heading)', letterSpacing: '0.3px' }}>
               Share Your Travel Experience
             </h3>
             <p style={{ fontSize: '0.74rem', color: '#d1fae5', margin: '2px 0 0 0' }}>
@@ -119,7 +119,7 @@ export const WriteReviewModal: React.FC<WriteReviewModalProps> = ({
             }}>
               <CheckCircle2 size={34} color="#1b4332" />
             </div>
-            <h3 style={{ fontSize: '1.3rem', fontWeight: 800, color: '#0f172a', marginBottom: '6px' }}>
+            <h3 style={{ fontSize: '1.3rem', fontWeight: 'normal', color: '#0f172a', marginBottom: '6px', fontFamily: 'var(--font-heading)', letterSpacing: '0.3px' }}>
               Thank You For Your Review!
             </h3>
             <p style={{ fontSize: '0.86rem', color: '#64748b', marginBottom: '20px' }}>
@@ -128,7 +128,7 @@ export const WriteReviewModal: React.FC<WriteReviewModalProps> = ({
             <button
               onClick={onClose}
               className="btn btn-forest"
-              style={{ padding: '8px 24px', fontSize: '0.86rem', borderRadius: '8px' }}
+              style={{ padding: '8px 24px', fontSize: '0.86rem', borderRadius: '8px', fontWeight: 'normal' }}
             >
               Close
             </button>
@@ -137,7 +137,7 @@ export const WriteReviewModal: React.FC<WriteReviewModalProps> = ({
           <form onSubmit={handleSubmit} style={{ padding: '18px 20px' }}>
             {/* Star Rating Picker */}
             <div style={{ marginBottom: '14px', textAlign: 'center' }}>
-              <label style={{ display: 'block', fontSize: '0.78rem', color: '#64748b', fontWeight: 700, marginBottom: '6px' }}>
+              <label style={{ display: 'block', fontSize: '0.78rem', color: '#64748b', fontWeight: 'normal', marginBottom: '6px' }}>
                 Your Rating
               </label>
               <div style={{ display: 'flex', justifyContent: 'center', gap: '8px' }}>
@@ -168,7 +168,7 @@ export const WriteReviewModal: React.FC<WriteReviewModalProps> = ({
             {/* Inputs Grid */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '12px' }}>
               <div>
-                <label style={{ display: 'block', fontSize: '0.72rem', color: '#64748b', fontWeight: 600, marginBottom: '3px' }}>
+                <label style={{ display: 'block', fontSize: '0.72rem', color: '#64748b', fontWeight: 'normal', marginBottom: '3px' }}>
                   Your Full Name *
                 </label>
                 <input
@@ -182,6 +182,7 @@ export const WriteReviewModal: React.FC<WriteReviewModalProps> = ({
                     borderRadius: '6px',
                     border: '1px solid #cbd5e1',
                     fontSize: '0.82rem',
+                    fontWeight: 'normal',
                     outline: 'none',
                   }}
                   required
@@ -189,7 +190,7 @@ export const WriteReviewModal: React.FC<WriteReviewModalProps> = ({
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '0.72rem', color: '#64748b', fontWeight: 600, marginBottom: '3px' }}>
+                <label style={{ display: 'block', fontSize: '0.72rem', color: '#64748b', fontWeight: 'normal', marginBottom: '3px' }}>
                   Trip Route
                 </label>
                 <input
@@ -203,6 +204,7 @@ export const WriteReviewModal: React.FC<WriteReviewModalProps> = ({
                     borderRadius: '6px',
                     border: '1px solid #cbd5e1',
                     fontSize: '0.82rem',
+                    fontWeight: 'normal',
                     outline: 'none',
                   }}
                   required
@@ -211,7 +213,7 @@ export const WriteReviewModal: React.FC<WriteReviewModalProps> = ({
             </div>
 
             <div style={{ marginBottom: '12px' }}>
-              <label style={{ display: 'block', fontSize: '0.72rem', color: '#64748b', fontWeight: 600, marginBottom: '3px' }}>
+              <label style={{ display: 'block', fontSize: '0.72rem', color: '#64748b', fontWeight: 'normal', marginBottom: '3px' }}>
                 Vehicle You Traveled In
               </label>
               <select
@@ -223,6 +225,7 @@ export const WriteReviewModal: React.FC<WriteReviewModalProps> = ({
                   borderRadius: '6px',
                   border: '1px solid #cbd5e1',
                   fontSize: '0.82rem',
+                  fontWeight: 'normal',
                   outline: 'none',
                   backgroundColor: '#ffffff',
                 }}
@@ -236,7 +239,7 @@ export const WriteReviewModal: React.FC<WriteReviewModalProps> = ({
             </div>
 
             <div style={{ marginBottom: '16px' }}>
-              <label style={{ display: 'block', fontSize: '0.72rem', color: '#64748b', fontWeight: 600, marginBottom: '3px' }}>
+              <label style={{ display: 'block', fontSize: '0.72rem', color: '#64748b', fontWeight: 'normal', marginBottom: '3px' }}>
                 Your Review / Experience *
               </label>
               <textarea
@@ -250,6 +253,7 @@ export const WriteReviewModal: React.FC<WriteReviewModalProps> = ({
                   borderRadius: '6px',
                   border: '1px solid #cbd5e1',
                   fontSize: '0.82rem',
+                  fontWeight: 'normal',
                   outline: 'none',
                 }}
                 required
@@ -264,7 +268,7 @@ export const WriteReviewModal: React.FC<WriteReviewModalProps> = ({
                 padding: '10px',
                 fontSize: '0.88rem',
                 borderRadius: '8px',
-                fontWeight: 700,
+                fontWeight: 'normal',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',

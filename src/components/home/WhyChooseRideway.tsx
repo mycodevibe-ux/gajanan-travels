@@ -43,10 +43,11 @@ export const WhyChooseRideway: React.FC = () => {
       <div className="container-custom">
         <h2 style={{
           fontSize: '1.85rem',
-          fontWeight: 800,
+          fontWeight: 'normal',
           color: '#0f172a',
           marginBottom: '28px',
           fontFamily: 'var(--font-heading)',
+          letterSpacing: '0.3px',
         }}>
           Why Choose Rideway?
         </h2>
@@ -93,7 +94,7 @@ export const WhyChooseRideway: React.FC = () => {
                 <div>
                   <h3 style={{
                     fontSize: '0.94rem',
-                    fontWeight: 800,
+                    fontWeight: 'normal',
                     color: '#0f172a',
                     marginBottom: '3px',
                     lineHeight: 1.2,

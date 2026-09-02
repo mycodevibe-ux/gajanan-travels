@@ -64,7 +64,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
           color: '#ffffff',
         }}>
           <div>
-            <h3 style={{ fontSize: '1.1rem', color: '#ffffff', fontWeight: 800, margin: 0, fontFamily: 'var(--font-heading)' }}>
+            <h3 style={{ fontSize: '1.35rem', color: '#ffffff', fontWeight: 'normal', margin: 0, fontFamily: 'var(--font-heading)', letterSpacing: '0.3px' }}>
               Book Your Ride With {siteConfig.name}
             </h3>
             <p style={{ fontSize: '0.74rem', color: '#cbd5e1', margin: 0, marginTop: '2px' }}>

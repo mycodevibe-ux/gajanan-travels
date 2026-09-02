@@ -80,7 +80,7 @@ export const ValueProps: React.FC = () => {
                   <IconComp size={28} />
                 </div>
 
-                <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0f172a', marginBottom: '10px' }}>
+                <h3 style={{ fontSize: '1.25rem', fontWeight: 'normal', color: '#0f172a', marginBottom: '10px', fontFamily: 'var(--font-heading)', letterSpacing: '0.3px' }}>
                   {item.title}
                 </h3>
 

@@ -72,11 +72,11 @@ export const PopularPackagesSection: React.FC<PopularPackagesSectionProps> = ({ 
           <div>
             <h2 style={{
               fontSize: '2.4rem',
-              fontWeight: 900,
+              fontWeight: 'normal',
               color: '#0c2338',
               fontFamily: 'var(--font-heading)',
               marginBottom: '6px',
-              letterSpacing: '-0.02em',
+              letterSpacing: '0.3px',
             }}>
               Popular packages
             </h2>
@@ -93,7 +93,7 @@ export const PopularPackagesSection: React.FC<PopularPackagesSectionProps> = ({ 
             href="#contact"
             style={{
               color: '#f97316',
-              fontWeight: 800,
+              fontWeight: 'normal',
               fontSize: '0.9rem',
               display: 'inline-flex',
               alignItems: 'center',
@@ -143,7 +143,7 @@ export const PopularPackagesSection: React.FC<PopularPackagesSectionProps> = ({ 
                   backgroundColor: '#f97316',
                   color: '#ffffff',
                   fontSize: '0.68rem',
-                  fontWeight: 800,
+                  fontWeight: 'normal',
                   padding: '2px 8px',
                   borderRadius: '4px',
                 }}>
@@ -153,15 +153,15 @@ export const PopularPackagesSection: React.FC<PopularPackagesSectionProps> = ({ 
 
               {/* Body */}
               <div style={{ padding: '14px 12px', display: 'flex', flexDirection: 'column', flex: 1 }}>
-                <h3 style={{ fontSize: '0.96rem', fontWeight: 800, color: '#0c2338', marginBottom: '4px' }}>
+                <h3 style={{ fontSize: '1.25rem', fontWeight: 'normal', color: '#0c2338', marginBottom: '2px', fontFamily: 'var(--font-heading)', letterSpacing: '0.3px' }}>
                   {pkg.title}
                 </h3>
                 <div style={{ fontSize: '0.74rem', color: '#64748b', marginBottom: '10px' }}>
                   {pkg.duration}
                 </div>
                 <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div style={{ fontSize: '1.05rem', fontWeight: 900, color: '#0c2338' }}>
-                    {pkg.price} <span style={{ fontSize: '0.68rem', color: '#64748b', fontWeight: 400 }}>all-incl.</span>
+                  <div style={{ fontSize: '1.05rem', fontWeight: 'normal', fontFamily: 'var(--font-heading)', color: '#0c2338' }}>
+                    {pkg.price} <span style={{ fontSize: '0.68rem', color: '#64748b', fontWeight: 'normal' }}>all-incl.</span>
                   </div>
                   <ArrowRight size={14} color="#f97316" />
                 </div>
@@ -185,10 +185,11 @@ export const PopularPackagesSection: React.FC<PopularPackagesSectionProps> = ({ 
           <div>
             <h3 style={{
               fontSize: '1.3rem',
-              fontWeight: 800,
+              fontWeight: 'normal',
               color: '#ffffff',
               marginBottom: '4px',
               fontFamily: 'var(--font-heading)',
+              letterSpacing: '0.3px',
             }}>
               Got a custom plan? — plan your trip early
             </h3>
@@ -207,7 +208,7 @@ export const PopularPackagesSection: React.FC<PopularPackagesSectionProps> = ({ 
             style={{
               padding: '11px 24px',
               fontSize: '0.9rem',
-              fontWeight: 800,
+              fontWeight: 'normal',
               borderRadius: '8px',
               textDecoration: 'none',
             }}

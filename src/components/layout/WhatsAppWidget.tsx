@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import { MessageCircle, X, Send, Car, MapPin, PlaneTakeoff, ShieldCheck } from 'lucide-react';
+import { X, Send, Car, MapPin, PlaneTakeoff, ShieldCheck } from 'lucide-react';
 import { siteConfig } from '@/data/siteConfig';
+import { WhatsAppOriginalIcon } from '@/components/vehicles/VehicleIcons';
 
 export const WhatsAppWidget: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,25 +13,25 @@ export const WhatsAppWidget: React.FC = () => {
       title: 'Book Swift Dzire / Ertiga',
       desc: 'Check rates & vehicle availability',
       icon: Car,
-      text: 'Hello RIDEWAY! 🚗 I want to book a tourist cab (Swift Dzire / Ertiga / Innova). Please share rates.',
+      text: `Hello ${siteConfig.name}! 🚗 I want to book a tourist cab (Swift Dzire / Ertiga / Innova). Please share rates.`,
     },
     {
       title: 'Pune to Mahabaleshwar / Goa Tour',
       desc: 'Get custom itinerary with hotel stays',
       icon: MapPin,
-      text: 'Hello RIDEWAY! 🗺️ I am planning a holiday trip (Mahabaleshwar / Goa / Shirdi). Please share package options and quotation.',
+      text: `Hello ${siteConfig.name}! 🗺️ I am planning a holiday trip (Mahabaleshwar / Goa / Shirdi). Please share package options and quotation.`,
     },
     {
       title: 'Airport Taxi Pickup / Drop',
       desc: 'Pune / Mumbai Airport on-time transfer',
       icon: PlaneTakeoff,
-      text: 'Hello RIDEWAY! ✈️ I need an airport pickup/drop cab. Please share available car options.',
+      text: `Hello ${siteConfig.name}! ✈️ I need an airport pickup/drop cab. Please share available car options.`,
     },
     {
       title: '17 or 20 Seater Bus Charter',
       desc: 'Group travel & family outings',
-      icon: MessageCircle,
-      text: 'Hello RIDEWAY! 👥 We need a 17 or 20 seater bus for group travel. Please share rates.',
+      icon: Car,
+      text: `Hello ${siteConfig.name}! 👥 We need a 17 or 20 seater bus for group travel. Please share rates.`,
     },
   ];
 
@@ -73,21 +74,21 @@ export const WhatsAppWidget: React.FC = () => {
                   width: '36px',
                   height: '36px',
                   borderRadius: '50%',
-                  backgroundColor: '#22c55e',
+                  backgroundColor: '#25D366',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   color: '#ffffff',
                   boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
                 }}>
-                  <MessageCircle size={20} />
+                  <WhatsAppOriginalIcon size={22} color="#ffffff" />
                 </div>
                 <div>
-                  <div style={{ fontWeight: 800, fontSize: '0.94rem', color: '#ffffff' }}>
-                    Rideway Support
+                  <div style={{ fontWeight: 'normal', fontSize: '0.94rem', color: '#ffffff' }}>
+                    {siteConfig.name} WhatsApp
                   </div>
                   <div style={{ fontSize: '0.72rem', display: 'flex', alignItems: 'center', gap: '5px', color: '#86efac' }}>
-                    <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#22c55e', display: 'inline-block' }} />
+                    <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#25D366', display: 'inline-block' }} />
                     <span>Online (24/7 Available)</span>
                   </div>
                 </div>
@@ -139,7 +140,7 @@ export const WhatsAppWidget: React.FC = () => {
                       transition: 'all 0.2s ease',
                     }}
                     onMouseOver={(e) => {
-                      e.currentTarget.style.borderColor = '#f97316';
+                      e.currentTarget.style.borderColor = '#25D366';
                       e.currentTarget.style.transform = 'translateX(3px)';
                     }}
                     onMouseOut={(e) => {
@@ -161,10 +162,10 @@ export const WhatsAppWidget: React.FC = () => {
                       <IconComp size={15} />
                     </div>
                     <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#0c2338' }}>{item.title}</div>
+                      <div style={{ fontSize: '0.82rem', fontWeight: 'normal', color: '#0c2338' }}>{item.title}</div>
                       <div style={{ fontSize: '0.7rem', color: '#64748b' }}>{item.desc}</div>
                     </div>
-                    <Send size={13} color="#f97316" />
+                    <Send size={13} color="#25D366" />
                   </button>
                 );
               })}
@@ -180,36 +181,36 @@ export const WhatsAppWidget: React.FC = () => {
               justifyContent: 'center',
               gap: '4px',
             }}>
-              <ShieldCheck size={12} color="#22c55e" />
+              <ShieldCheck size={12} color="#25D366" />
               <span>Official WhatsApp: {siteConfig.phone}</span>
             </div>
           </div>
         </div>
       )}
 
-      {/* Floating Action Button matching mockup bottom-right green circle */}
+      {/* Floating Action Button with Original WhatsApp Icon */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="pulse-wa"
         style={{
-          width: '54px',
-          height: '54px',
+          width: '56px',
+          height: '56px',
           borderRadius: '50%',
-          backgroundColor: '#22c55e',
+          backgroundColor: '#25D366',
           color: '#ffffff',
           border: 'none',
           cursor: 'pointer',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          boxShadow: '0 6px 20px rgba(34, 197, 94, 0.45)',
+          boxShadow: '0 6px 20px rgba(37, 211, 102, 0.5)',
           transition: 'transform 0.2s ease',
         }}
         onMouseOver={(e) => (e.currentTarget.style.transform = 'scale(1.08)')}
         onMouseOut={(e) => (e.currentTarget.style.transform = 'scale(1)')}
         aria-label="Open WhatsApp Support"
       >
-        {isOpen ? <X size={24} /> : <MessageCircle size={28} />}
+        {isOpen ? <X size={24} /> : <WhatsAppOriginalIcon size={30} color="#ffffff" />}
       </button>
     </div>
   );

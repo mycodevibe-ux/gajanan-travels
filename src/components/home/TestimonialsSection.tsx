@@ -30,7 +30,7 @@ export const TestimonialsSection: React.FC = () => {
             borderRadius: '9999px',
             fontSize: '0.86rem',
             color: '#b45309',
-            fontWeight: 700,
+            fontWeight: 'normal',
           }}>
             <Star size={16} fill="#f59e0b" color="#f59e0b" />
             <span>Rated 4.9/5 based on 1,850+ Google & Tripadvisor Reviews</span>
@@ -78,7 +78,7 @@ export const TestimonialsSection: React.FC = () => {
               {(rev.packageBooked || rev.vehicleBooked) && (
                 <div style={{
                   fontSize: '0.74rem',
-                  fontWeight: 600,
+                  fontWeight: 'normal',
                   color: '#059669',
                   backgroundColor: '#ecfdf5',
                   padding: '4px 10px',
@@ -110,7 +110,7 @@ export const TestimonialsSection: React.FC = () => {
                   }}
                 />
                 <div>
-                  <div style={{ fontWeight: 800, fontSize: '0.92rem', color: '#0f172a' }}>
+                  <div style={{ fontWeight: 'normal', fontSize: '0.92rem', color: '#0f172a' }}>
                     {rev.author}
                   </div>
                   <div style={{ fontSize: '0.75rem', color: '#64748b' }}>
@@ -119,7 +119,7 @@ export const TestimonialsSection: React.FC = () => {
                 </div>
 
                 {rev.verified && (
-                  <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '3px', color: '#059669', fontSize: '0.72rem', fontWeight: 700 }}>
+                  <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '3px', color: '#059669', fontSize: '0.72rem', fontWeight: 'normal' }}>
                     <ShieldCheck size={14} />
                     <span>Verified</span>
                   </div>

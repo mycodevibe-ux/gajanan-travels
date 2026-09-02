@@ -59,7 +59,7 @@ export const VehicleFilter: React.FC<VehicleFilterProps> = ({
                 padding: '8px 16px',
                 borderRadius: '9999px',
                 fontSize: '0.86rem',
-                fontWeight: isSelected ? 700 : 500,
+                fontWeight: 'normal',
                 border: isSelected ? '1.5px solid #059669' : '1px solid #e2e8f0',
                 backgroundColor: isSelected ? '#ecfdf5' : '#ffffff',
                 color: isSelected ? '#047857' : '#475569',

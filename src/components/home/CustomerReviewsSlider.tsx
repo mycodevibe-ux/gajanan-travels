@@ -120,11 +120,11 @@ export const CustomerReviewsSlider: React.FC = () => {
           <div>
             <h2 style={{
               fontSize: '2.4rem',
-              fontWeight: 900,
+              fontWeight: 'normal',
               color: '#0c2338',
               fontFamily: 'var(--font-heading)',
               marginBottom: '10px',
-              letterSpacing: '-0.02em',
+              letterSpacing: '0.3px',
             }}>
               What our customers say
             </h2>
@@ -148,7 +148,7 @@ export const CustomerReviewsSlider: React.FC = () => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontWeight: 900,
+                fontWeight: 'normal',
                 fontSize: '0.72rem',
                 fontFamily: 'sans-serif',
               }}>
@@ -156,7 +156,7 @@ export const CustomerReviewsSlider: React.FC = () => {
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                <span style={{ fontWeight: 900, color: '#0c2338', fontSize: '0.88rem' }}>4.8</span>
+                <span style={{ fontWeight: 'normal', color: '#0c2338', fontSize: '0.88rem' }}>4.8</span>
                 <div style={{ display: 'flex', gap: '1px' }}>
                   {[...Array(5)].map((_, i) => (
                     <Star key={i} size={13} color="#f97316" fill="#f97316" />
@@ -164,7 +164,7 @@ export const CustomerReviewsSlider: React.FC = () => {
                 </div>
               </div>
 
-              <span style={{ fontSize: '0.76rem', color: '#64748b', fontWeight: 600, borderLeft: '1px solid #cbd5e1', paddingLeft: '8px' }}>
+              <span style={{ fontSize: '0.76rem', color: '#64748b', fontWeight: 'normal', borderLeft: '1px solid #cbd5e1', paddingLeft: '8px' }}>
                 Based on 500+ Google reviews
               </span>
             </div>
@@ -180,7 +180,7 @@ export const CustomerReviewsSlider: React.FC = () => {
                 fontSize: '0.82rem',
                 borderRadius: '8px',
                 gap: '6px',
-                fontWeight: 700,
+                fontWeight: 'normal',
               }}
             >
               <PenLine size={14} color="#f97316" />
@@ -307,17 +307,17 @@ export const CustomerReviewsSlider: React.FC = () => {
                         style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                       />
                     ) : (
-                      <span style={{ color: '#ffffff', fontWeight: 800, fontSize: '0.85rem' }}>
+                      <span style={{ color: '#ffffff', fontWeight: 'normal', fontSize: '0.85rem' }}>
                         {review.avatar || review.name.slice(0, 2).toUpperCase()}
                       </span>
                     )}
                   </div>
 
                   <div>
-                    <div style={{ fontWeight: 800, fontSize: '0.92rem', color: '#0c2338' }}>
+                    <div style={{ fontWeight: 'normal', fontSize: '0.92rem', color: '#0c2338' }}>
                       {review.name}
                     </div>
-                    <div style={{ fontSize: '0.76rem', color: '#64748b', fontWeight: 600 }}>
+                    <div style={{ fontSize: '0.76rem', color: '#64748b', fontWeight: 'normal' }}>
                       {review.trip}
                     </div>
                   </div>

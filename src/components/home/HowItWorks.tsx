@@ -75,8 +75,9 @@ export const HowItWorks: React.FC = () => {
                   top: '18px',
                   right: '24px',
                   fontSize: '2.4rem',
-                  fontWeight: 900,
+                  fontWeight: 'normal',
                   fontFamily: 'var(--font-heading)',
+                  letterSpacing: '0.3px',
                   color: '#f1f5f9',
                   lineHeight: 1,
                   userSelect: 'none',
@@ -100,7 +101,7 @@ export const HowItWorks: React.FC = () => {
                   <IconComp size={32} />
                 </div>
 
-                <h3 style={{ fontSize: '1.3rem', fontWeight: 800, color: '#0f172a', marginBottom: '10px' }}>
+                <h3 style={{ fontSize: '1.3rem', fontWeight: 'normal', color: '#0f172a', marginBottom: '10px', fontFamily: 'var(--font-heading)', letterSpacing: '0.3px' }}>
                   {step.title}
                 </h3>
 

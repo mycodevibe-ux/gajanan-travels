@@ -6,10 +6,8 @@ import {
   Calendar, 
   MapPin, 
   Hotel, 
-  Car, 
   CheckCircle2, 
   XCircle, 
-  MessageCircle, 
   CalendarCheck, 
   ChevronDown, 
   ChevronUp, 
@@ -18,6 +16,7 @@ import {
 } from 'lucide-react';
 import { TourPackage } from '@/types';
 import { createPackageInquiryUrl } from '@/lib/whatsapp';
+import { getVehicleIcon, WhatsAppOriginalIcon } from '@/components/vehicles/VehicleIcons';
 
 interface PackageDetailModalProps {
   pkg: TourPackage | null;
@@ -112,14 +111,15 @@ export const PackageDetailModal: React.FC<PackageDetailModalProps> = ({
             right: '22px',
             color: '#ffffff',
           }}>
-            <div style={{ display: 'flex', gap: '8px', marginBottom: '6px', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
               <span style={{
-                backgroundColor: '#1b4332',
+                backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                backdropFilter: 'blur(4px)',
                 color: '#ffffff',
                 padding: '4px 10px',
                 borderRadius: '6px',
                 fontSize: '0.76rem',
-                fontWeight: 700,
+                fontWeight: 'normal',
               }}>
                 {pkg.category} Tour
               </span>
@@ -130,12 +130,12 @@ export const PackageDetailModal: React.FC<PackageDetailModalProps> = ({
                 padding: '4px 10px',
                 borderRadius: '6px',
                 fontSize: '0.76rem',
-                fontWeight: 700,
+                fontWeight: 'normal',
               }}>
                 {pkg.durationDays} Days / {pkg.durationNights} Nights
               </span>
             </div>
-            <h2 style={{ fontSize: '1.7rem', fontWeight: 800, color: '#ffffff', lineHeight: 1.2, fontFamily: 'var(--font-heading)' }}>
+            <h2 style={{ fontSize: '1.7rem', fontWeight: 'normal', color: '#ffffff', lineHeight: 1.2, fontFamily: 'var(--font-heading)', letterSpacing: '0.3px' }}>
               {pkg.title}
             </h2>
             <div style={{ fontSize: '0.84rem', color: '#cbd5e1', display: 'flex', alignItems: 'center', gap: '6px', marginTop: '4px' }}>
@@ -162,15 +162,15 @@ export const PackageDetailModal: React.FC<PackageDetailModalProps> = ({
               <Hotel size={20} color="#1b4332" />
               <div>
                 <div style={{ fontSize: '0.72rem', color: '#64748b' }}>Stay Category</div>
-                <div style={{ fontSize: '0.86rem', fontWeight: 700, color: '#0f172a' }}>{pkg.hotelTier}</div>
+                <div style={{ fontSize: '0.86rem', fontWeight: 'normal', color: '#0f172a' }}>{pkg.hotelTier}</div>
               </div>
             </div>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <Car size={20} color="#1b4332" />
+              {getVehicleIcon(pkg.vehicleIncluded, 20, '#1b4332')}
               <div>
                 <div style={{ fontSize: '0.72rem', color: '#64748b' }}>Vehicle Included</div>
-                <div style={{ fontSize: '0.86rem', fontWeight: 700, color: '#0f172a' }}>{pkg.vehicleIncluded}</div>
+                <div style={{ fontSize: '0.86rem', fontWeight: 'normal', color: '#0f172a' }}>{pkg.vehicleIncluded}</div>
               </div>
             </div>
 
@@ -178,14 +178,14 @@ export const PackageDetailModal: React.FC<PackageDetailModalProps> = ({
               <Calendar size={20} color="#1b4332" />
               <div>
                 <div style={{ fontSize: '0.72rem', color: '#64748b' }}>Duration</div>
-                <div style={{ fontSize: '0.86rem', fontWeight: 700, color: '#0f172a' }}>{pkg.durationDays}D / {pkg.durationNights}N</div>
+                <div style={{ fontSize: '0.86rem', fontWeight: 'normal', color: '#0f172a' }}>{pkg.durationDays}D / {pkg.durationNights}N</div>
               </div>
             </div>
           </div>
 
           {/* Day-by-Day Itinerary Accordion */}
           <div style={{ marginBottom: '28px' }}>
-            <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: '#0f172a', marginBottom: '14px', fontFamily: 'var(--font-heading)' }}>
+            <h3 style={{ fontSize: '1.15rem', fontWeight: 'normal', color: '#0f172a', marginBottom: '14px', fontFamily: 'var(--font-heading)', letterSpacing: '0.3px' }}>
               Day-wise Itinerary
             </h3>
 
@@ -226,13 +226,13 @@ export const PackageDetailModal: React.FC<PackageDetailModalProps> = ({
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          fontWeight: 800,
+                          fontWeight: 'normal',
                           fontSize: '0.82rem',
                           flexShrink: 0,
                         }}>
                           D{dayItem.day}
                         </span>
-                        <div style={{ fontWeight: 700, fontSize: '0.9rem', color: '#0f172a' }}>
+                        <div style={{ fontWeight: 'normal', fontSize: '0.9rem', color: '#0f172a' }}>
                           {dayItem.title}
                         </div>
                       </div>
@@ -247,7 +247,7 @@ export const PackageDetailModal: React.FC<PackageDetailModalProps> = ({
                         </p>
 
                         <div style={{ marginBottom: '12px' }}>
-                          <div style={{ fontSize: '0.76rem', fontWeight: 700, color: '#0f172a', marginBottom: '4px' }}>
+                          <div style={{ fontSize: '0.76rem', fontWeight: 'normal', color: '#0f172a', marginBottom: '4px' }}>
                             Activities:
                           </div>
                           <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
@@ -292,7 +292,7 @@ export const PackageDetailModal: React.FC<PackageDetailModalProps> = ({
               borderRadius: '12px',
               padding: '16px',
             }}>
-              <h4 style={{ fontSize: '0.9rem', fontWeight: 700, color: '#1b4332', marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <h4 style={{ fontSize: '0.9rem', fontWeight: 'normal', color: '#1b4332', marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <CheckCircle2 size={16} color="#1b4332" />
                 <span>Included</span>
               </h4>
@@ -312,7 +312,7 @@ export const PackageDetailModal: React.FC<PackageDetailModalProps> = ({
               borderRadius: '12px',
               padding: '16px',
             }}>
-              <h4 style={{ fontSize: '0.9rem', fontWeight: 700, color: '#9f1239', marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <h4 style={{ fontSize: '0.9rem', fontWeight: 'normal', color: '#9f1239', marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <XCircle size={16} color="#e11d48" />
                 <span>Not Included</span>
               </h4>
@@ -340,7 +340,7 @@ export const PackageDetailModal: React.FC<PackageDetailModalProps> = ({
             <div>
               <div style={{ fontSize: '0.72rem', color: '#64748b' }}>Special Package Rate</div>
               <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
-                <span style={{ fontSize: '1.5rem', fontWeight: 800, color: '#0f172a' }}>
+                <span style={{ fontSize: '1.5rem', fontWeight: 'normal', fontFamily: 'var(--font-heading)', color: '#0f172a' }}>
                   ₹{pkg.pricePerPerson.toLocaleString('en-IN')}
                 </span>
                 <span style={{ fontSize: '0.82rem', color: '#94a3b8', textDecoration: 'line-through' }}>
@@ -354,9 +354,9 @@ export const PackageDetailModal: React.FC<PackageDetailModalProps> = ({
               <button
                 onClick={handleWhatsApp}
                 className="btn btn-whatsapp"
-                style={{ padding: '10px 18px' }}
+                style={{ padding: '10px 18px', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
               >
-                <MessageCircle size={17} />
+                <WhatsAppOriginalIcon size={18} color="#ffffff" />
                 <span>WhatsApp Inquiry</span>
               </button>
               <button

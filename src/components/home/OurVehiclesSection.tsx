@@ -1,38 +1,58 @@
 'use client';
 
-import React from 'react';
-import { Users, Briefcase, ArrowRight, ShieldCheck } from 'lucide-react';
+import React, { useState } from 'react';
+import { Users, Briefcase, ArrowRight, ShieldCheck, Sparkles } from 'lucide-react';
 import { Vehicle } from '@/types';
 import { vehiclesData } from '@/data/vehicles';
+import { getVehicleIcon } from '@/components/vehicles/VehicleIcons';
 
 interface OurVehiclesSectionProps {
   onSelectVehicle: (vehicle: Vehicle) => void;
 }
 
 export const OurVehiclesSection: React.FC<OurVehiclesSectionProps> = ({ onSelectVehicle }) => {
-  // Show 4 core fleet vehicles matching mockup
-  const displayFleet = vehiclesData.slice(0, 4);
+  const [filter, setFilter] = useState<'all' | 'cars' | 'tempo_bus'>('all');
+
+  const filteredVehicles = vehiclesData.filter((v) => {
+    if (filter === 'cars') return v.category.includes('Sedan') || v.category.includes('SUV') || v.category.includes('MUV');
+    if (filter === 'tempo_bus') return v.category.includes('Tempo') || v.category.includes('Bus') || v.category.includes('Van');
+    return true;
+  });
 
   return (
-    <section id="fleet" style={{ backgroundColor: '#ffffff', padding: '75px 0 65px 0' }}>
+    <section id="fleet" style={{ backgroundColor: '#ffffff', padding: '80px 0 70px 0' }}>
       <div className="container-custom">
-        {/* Section Header matching mockup */}
+        {/* Section Header */}
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'flex-end',
-          marginBottom: '38px',
+          marginBottom: '32px',
           flexWrap: 'wrap',
           gap: '16px',
         }}>
           <div>
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              backgroundColor: '#ebf5f0',
+              color: '#1b4332',
+              fontSize: '0.8rem',
+              fontWeight: 'normal',
+              padding: '4px 12px',
+              borderRadius: '9999px',
+              marginBottom: '10px',
+            }}>
+              <span>Verified Clean Fleet</span>
+            </div>
             <h2 style={{
               fontSize: '2.4rem',
-              fontWeight: 900,
+              fontWeight: 'normal',
               color: '#0c2338',
               fontFamily: 'var(--font-heading)',
               marginBottom: '6px',
-              letterSpacing: '-0.02em',
+              letterSpacing: '0.3px',
             }}>
               Our fleet
             </h2>
@@ -42,35 +62,76 @@ export const OurVehiclesSection: React.FC<OurVehiclesSectionProps> = ({ onSelect
               margin: 0,
               maxWidth: '650px',
             }}>
-              From a couple's weekend getaway to a 40-person family reunion, find the exact vehicle you need with transparent per-km rates.
+              From a couple's weekend getaway to large group pilgrimage tours, choose from our premium sanitized vehicles with transparent per-km rates.
             </p>
           </div>
 
-          <a
-            href="#contact"
-            style={{
-              color: '#f97316',
-              fontWeight: 800,
-              fontSize: '0.9rem',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '5px',
-              textDecoration: 'none',
-              transition: 'gap 0.2s',
-            }}
-          >
-            <span>View all vehicles</span>
-            <ArrowRight size={15} />
-          </a>
+          {/* Quick Filter Tabs */}
+          <div style={{
+            display: 'flex',
+            backgroundColor: '#f1f5f9',
+            padding: '4px',
+            borderRadius: '10px',
+            gap: '4px',
+          }}>
+            <button
+              onClick={() => setFilter('all')}
+              style={{
+                border: 'none',
+                padding: '6px 14px',
+                borderRadius: '7px',
+                fontSize: '0.82rem',
+                fontWeight: 'normal',
+                backgroundColor: filter === 'all' ? '#1b4332' : 'transparent',
+                color: filter === 'all' ? '#ffffff' : '#64748b',
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+              }}
+            >
+              All Vehicles
+            </button>
+            <button
+              onClick={() => setFilter('cars')}
+              style={{
+                border: 'none',
+                padding: '6px 14px',
+                borderRadius: '7px',
+                fontSize: '0.82rem',
+                fontWeight: 'normal',
+                backgroundColor: filter === 'cars' ? '#1b4332' : 'transparent',
+                color: filter === 'cars' ? '#ffffff' : '#64748b',
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+              }}
+            >
+              Sedans & SUVs
+            </button>
+            <button
+              onClick={() => setFilter('tempo_bus')}
+              style={{
+                border: 'none',
+                padding: '6px 14px',
+                borderRadius: '7px',
+                fontSize: '0.82rem',
+                fontWeight: 'normal',
+                backgroundColor: filter === 'tempo_bus' ? '#1b4332' : 'transparent',
+                color: filter === 'tempo_bus' ? '#ffffff' : '#64748b',
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+              }}
+            >
+              Tempo & Buses
+            </button>
+          </div>
         </div>
 
-        {/* 4 Fleet Cards Grid matching mockup */}
+        {/* Fleet Cards Grid */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-          gap: '20px',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+          gap: '24px',
         }}>
-          {displayFleet.map((vehicle) => (
+          {filteredVehicles.map((vehicle) => (
             <div
               key={vehicle.id}
               style={{
@@ -80,96 +141,180 @@ export const OurVehiclesSection: React.FC<OurVehiclesSectionProps> = ({ onSelect
                 padding: '18px',
                 display: 'flex',
                 flexDirection: 'column',
-                boxShadow: '0 4px 16px rgba(12, 35, 56, 0.04)',
+                boxShadow: '0 4px 20px rgba(12, 35, 56, 0.04)',
                 transition: 'all 0.25s ease',
+                position: 'relative',
               }}
               className="card-hover-lift"
             >
-              {/* Image Container with Zoom Mask */}
+              {/* Category Tag with Dedicated Vehicle Icon */}
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: '10px',
+              }}>
+                <span style={{
+                  backgroundColor: '#ebf5f0',
+                  color: '#1b4332',
+                  padding: '4px 10px',
+                  borderRadius: '8px',
+                  fontSize: '0.74rem',
+                  fontWeight: 'normal',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                }}>
+                  {getVehicleIcon(vehicle.id || vehicle.category, 14, '#1b4332')}
+                  <span>{vehicle.category}</span>
+                </span>
+
+                <span style={{
+                  fontSize: '0.72rem',
+                  fontWeight: 'normal',
+                  color: '#64748b',
+                  backgroundColor: '#f8fafc',
+                  padding: '3px 8px',
+                  borderRadius: '6px',
+                  border: '1px solid #f1f5f9',
+                }}>
+                  {vehicle.fuelType}
+                </span>
+              </div>
+
+              {/* Vehicle Studio Image with Transparent Presentation */}
               <div 
-                className="img-zoom-container"
                 style={{
+                  position: 'relative',
                   height: '160px',
                   width: '100%',
-                  marginBottom: '14px',
+                  borderRadius: '12px',
                   backgroundColor: '#f8fafc',
-                  border: '1px solid #f1f5f9',
+                  backgroundImage: 'radial-gradient(ellipse at 50% 65%, rgba(203, 213, 225, 0.45) 0%, rgba(248, 250, 252, 0) 70%)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  overflow: 'hidden',
+                  marginBottom: '14px',
                 }}
               >
+                {/* Floating Clean AC Tag */}
+                <div style={{
+                  position: 'absolute',
+                  top: '10px',
+                  left: '10px',
+                  backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                  backdropFilter: 'blur(6px)',
+                  padding: '2px 8px',
+                  borderRadius: '6px',
+                  fontSize: '0.68rem',
+                  fontWeight: 'normal',
+                  color: '#1b4332',
+                  border: '1px solid rgba(27, 67, 50, 0.12)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  zIndex: 2,
+                }}>
+                  <span>AC Chilled</span>
+                </div>
+
+                {/* Transparent Studio Vehicle Image */}
                 <img
                   src={vehicle.image}
                   alt={vehicle.name}
                   style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
+                    maxHeight: '125px',
+                    maxWidth: '92%',
+                    objectFit: 'contain',
+                    mixBlendMode: 'multiply',
+                    transition: 'transform 0.4s ease',
+                    filter: 'drop-shadow(0 6px 10px rgba(0,0,0,0.06))',
                   }}
+                  className="vehicle-card-img"
                 />
               </div>
 
               {/* Title & Starting Rate */}
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '6px' }}>
                 <h3 style={{
-                  fontSize: '1.2rem',
-                  fontWeight: 800,
+                  fontSize: '1.4rem',
+                  fontWeight: 'normal',
                   color: '#0c2338',
                   margin: 0,
                   fontFamily: 'var(--font-heading)',
+                  letterSpacing: '0.3px',
                 }}>
                   {vehicle.name}
                 </h3>
-                <span style={{
-                  fontSize: '0.94rem',
-                  fontWeight: 800,
-                  color: '#f97316',
-                }}>
-                  ₹{vehicle.pricePerKm}/km
-                </span>
+                <div style={{ textAlign: 'right' }}>
+                  <div style={{
+                    fontSize: '1.15rem',
+                    fontWeight: 'normal',
+                    fontFamily: 'var(--font-heading)',
+                    color: '#f97316',
+                    lineHeight: 1,
+                  }}>
+                    ₹{vehicle.pricePerKm}<span style={{ fontSize: '0.75rem', fontWeight: 'normal', color: '#64748b' }}>/km</span>
+                  </div>
+                </div>
               </div>
 
-              {/* Specs */}
+              {/* Tagline */}
+              <p style={{
+                fontSize: '0.78rem',
+                color: '#64748b',
+                lineHeight: 1.4,
+                marginBottom: '12px',
+                minHeight: '34px',
+              }}>
+                {vehicle.tagline}
+              </p>
+
+              {/* Specs Badges */}
               <div style={{
                 display: 'flex',
-                gap: '12px',
-                fontSize: '0.8rem',
-                color: '#64748b',
+                gap: '8px',
+                fontSize: '0.78rem',
+                color: '#334155',
                 marginBottom: '16px',
+                backgroundColor: '#f8fafc',
+                padding: '6px 10px',
+                borderRadius: '8px',
+                justifyContent: 'space-between',
               }}>
-                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                  <Users size={14} color="#0c2338" />
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontWeight: 'normal' }}>
+                  <Users size={13} color="#1b4332" />
                   <span>{vehicle.passengerCapacity} Seats</span>
                 </span>
-                <span>•</span>
-                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                  <Briefcase size={14} color="#0c2338" />
+                <span style={{ color: '#cbd5e1' }}>|</span>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontWeight: 'normal' }}>
+                  <Briefcase size={13} color="#1b4332" />
                   <span>{vehicle.luggageCapacity} Bags</span>
                 </span>
+                <span style={{ color: '#cbd5e1' }}>|</span>
+                <span style={{ color: '#1b4332', fontWeight: 'normal' }}>Dual AC</span>
               </div>
 
-              {/* Clean "Book now" Button */}
+              {/* Book now Button */}
               <button
                 onClick={() => onSelectVehicle(vehicle)}
-                className="btn btn-outline-navy"
+                className="btn btn-forest"
                 style={{
                   width: '100%',
                   padding: '9px 16px',
-                  fontSize: '0.86rem',
-                  fontWeight: 700,
+                  fontSize: '0.88rem',
+                  fontWeight: 'normal',
                   borderRadius: '8px',
                   marginTop: 'auto',
-                }}
-                onMouseOver={(e) => {
-                  e.currentTarget.style.backgroundColor = '#0c2338';
-                  e.currentTarget.style.borderColor = '#0c2338';
-                  e.currentTarget.style.color = '#ffffff';
-                }}
-                onMouseOut={(e) => {
-                  e.currentTarget.style.backgroundColor = 'transparent';
-                  e.currentTarget.style.borderColor = '#cbd5e1';
-                  e.currentTarget.style.color = '#0c2338';
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '6px',
                 }}
               >
-                <span>Book now</span>
+                <span>Book Cab</span>
+                <ArrowRight size={15} />
               </button>
             </div>
           ))}

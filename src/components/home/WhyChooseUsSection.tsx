@@ -49,12 +49,12 @@ export const WhyChooseUsSection: React.FC = () => {
         {/* Section Title matching mockup with dynamic brand name */}
         <h2 style={{
           fontSize: '2.2rem',
-          fontWeight: 900,
+          fontWeight: 'normal',
           color: '#ffffff',
           fontFamily: 'var(--font-heading)',
           textAlign: 'center',
           marginBottom: '38px',
-          letterSpacing: '-0.02em',
+          letterSpacing: '0.3px',
         }}>
           Why choose {siteConfig.name}
         </h2>
@@ -99,7 +99,7 @@ export const WhyChooseUsSection: React.FC = () => {
 
                 <div style={{
                   fontSize: '0.92rem',
-                  fontWeight: 700,
+                  fontWeight: 'normal',
                   color: '#ffffff',
                 }}>
                   {item.title}

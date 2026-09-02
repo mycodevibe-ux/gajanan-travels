@@ -16,7 +16,7 @@ export const vehiclesData: Vehicle[] = [
     minKmPerDay: 250,
     driverAllowancePerDay: 350,
     extraHourRate: 150,
-    image: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=600&q=80',
+    image: '/images/vehicles/swift-dzire.jpg',
     features: [
       'Chilled Climate Control AC',
       'Comfortable Rear Legroom',
@@ -43,7 +43,7 @@ export const vehiclesData: Vehicle[] = [
     minKmPerDay: 250,
     driverAllowancePerDay: 400,
     extraHourRate: 180,
-    image: 'https://images.unsplash.com/photo-1550355291-bbee04a92027?auto=format&fit=crop&w=600&q=80',
+    image: '/images/vehicles/ertiga.jpg',
     features: [
       'Dual AC with Rear Air Vents',
       'Foldable Rear 3rd Row Seats',
@@ -70,7 +70,7 @@ export const vehiclesData: Vehicle[] = [
     minKmPerDay: 250,
     driverAllowancePerDay: 400,
     extraHourRate: 200,
-    image: 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=600&q=80',
+    image: '/images/vehicles/innova-crysta.jpg',
     features: [
       'Plush Reclining Captain Seats',
       'Dual Automatic Climate Control',
@@ -84,7 +84,7 @@ export const vehiclesData: Vehicle[] = [
   },
   {
     id: 'tata-17-seater',
-    name: 'Tata 17 Seater (TT)',
+    name: 'Force / Tata 17 Seater',
     category: 'Tempo Traveller',
     tagline: '17-seater luxury tourist mini-bus for group & pilgrimage tours',
     passengerCapacity: 17,
@@ -97,7 +97,7 @@ export const vehiclesData: Vehicle[] = [
     minKmPerDay: 250,
     driverAllowancePerDay: 500,
     extraHourRate: 300,
-    image: 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=600&q=80',
+    image: '/images/vehicles/tata-17-seater.jpg',
     features: [
       '2x1 Pushback Maharaja Recliner Seats',
       'Individual AC Vents for All Rows',
@@ -124,7 +124,7 @@ export const vehiclesData: Vehicle[] = [
     minKmPerDay: 250,
     driverAllowancePerDay: 500,
     extraHourRate: 350,
-    image: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=600&q=80',
+    image: '/images/vehicles/tata-20-seater.jpg',
     features: [
       'High-deck Pushback Seating',
       'Powerful Dual AC Compressor',
@@ -135,5 +135,32 @@ export const vehiclesData: Vehicle[] = [
     popular: true,
     rating: 4.96,
     reviewsCount: 390,
+  },
+  {
+    id: 'urbania',
+    name: 'Force Urbania Luxury Van',
+    category: 'Luxury Van',
+    tagline: 'Next-generation ultra-luxury executive travel van with aircraft-grade interior',
+    passengerCapacity: 13,
+    luggageCapacity: 8,
+    ac: true,
+    fuelType: 'Diesel',
+    transmission: 'Manual',
+    pricePerKm: 28,
+    baseFarePerDay: 7500,
+    minKmPerDay: 250,
+    driverAllowancePerDay: 500,
+    extraHourRate: 320,
+    image: '/images/vehicles/urbania.jpg',
+    features: [
+      'Aircraft Style Individual Recliners',
+      'Triple-Zone Roof Air Conditioning',
+      'Ambient LED Mood Lighting',
+      'USB Charging at Every Seat',
+      'Extra Large Tinted Windows'
+    ],
+    popular: true,
+    rating: 4.99,
+    reviewsCount: 290,
   },
 ];

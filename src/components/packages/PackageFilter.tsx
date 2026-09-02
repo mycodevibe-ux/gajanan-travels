@@ -58,7 +58,7 @@ export const PackageFilter: React.FC<PackageFilterProps> = ({
                 padding: '7px 14px',
                 borderRadius: '9999px',
                 fontSize: '0.84rem',
-                fontWeight: isSelected ? 700 : 500,
+                fontWeight: 'normal',
                 border: isSelected ? '1.5px solid #1b4332' : '1px solid #e2e8f0',
                 backgroundColor: isSelected ? '#1b4332' : '#ffffff',
                 color: isSelected ? '#ffffff' : '#475569',

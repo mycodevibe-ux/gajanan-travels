@@ -17,7 +17,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBookingModal }) => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
 
-      const sections = ['home', 'about', 'fleet', 'services', 'packages', 'reviews', 'contact'];
+      const sections = ['home', 'about', 'fleet', 'services', 'reviews', 'contact'];
       const scrollPosition = window.scrollY + 100;
 
       for (const sectionId of sections) {
@@ -42,7 +42,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBookingModal }) => {
     { name: 'ABOUT', href: '#about', id: 'about' },
     { name: 'FLEET', href: '#fleet', id: 'fleet' },
     { name: 'SERVICES', href: '#services', id: 'services' },
-    { name: 'PACKAGES', href: '#packages', id: 'packages' },
     { name: 'REVIEWS', href: '#reviews', id: 'reviews' },
     { name: 'CONTACT', href: '#contact', id: 'contact' },
   ];
@@ -99,19 +98,19 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBookingModal }) => {
               alignItems: 'center',
               justifyContent: 'center',
               color: '#ffffff',
-              fontWeight: 900,
-              fontSize: '1.15rem',
+              fontWeight: 400,
+              fontSize: '1.4rem',
               fontFamily: 'var(--font-heading)',
               boxShadow: '0 2px 6px rgba(12, 35, 56, 0.2)',
             }}>
               {firstLetter}
             </div>
             <div style={{
-              fontSize: '1.4rem',
-              fontWeight: 900,
+              fontSize: '1.75rem',
+              fontWeight: 'normal',
               fontFamily: 'var(--font-heading)',
               color: '#0c2338',
-              letterSpacing: '-0.3px',
+              letterSpacing: '0.3px',
               lineHeight: 1,
             }}>
               {siteConfig.name}
@@ -133,12 +132,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBookingModal }) => {
                   onClick={(e) => handleNavClick(e, link.href)}
                   style={{
                     fontSize: '0.82rem',
-                    fontWeight: isActive ? 800 : 700,
+                    fontWeight: 'normal',
                     color: isActive ? '#f97316' : '#334155',
                     position: 'relative',
                     padding: '8px 0',
                     textDecoration: 'none',
-                    letterSpacing: '0.5px',
+                    letterSpacing: '0.3px',
                     transition: 'color 0.2s ease',
                     cursor: 'pointer',
                   }}
@@ -172,7 +171,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBookingModal }) => {
                 gap: '8px',
                 color: '#0c2338',
                 fontSize: '0.86rem',
-                fontWeight: 700,
+                fontWeight: 'normal',
                 backgroundColor: '#ffffff',
                 border: '1.5px solid #cbd5e1',
                 padding: '7px 16px',
@@ -195,8 +194,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBookingModal }) => {
               style={{
                 padding: '9px 20px',
                 fontSize: '0.84rem',
-                fontWeight: 800,
-                letterSpacing: '0.5px',
+                fontWeight: 'normal',
+                letterSpacing: '0.3px',
                 borderRadius: '8px',
               }}
             >
@@ -255,7 +254,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBookingModal }) => {
           }}>
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '28px' }}>
-                <span style={{ fontWeight: 900, fontSize: '1.3rem', color: '#0c2338' }}>
+                <span style={{ fontWeight: 'normal', fontSize: '1.3rem', color: '#0c2338', fontFamily: 'var(--font-heading)', letterSpacing: '0.3px' }}>
                   {siteConfig.name}
                 </span>
                 <button
@@ -288,7 +287,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBookingModal }) => {
                       style={{
                         padding: '12px 14px',
                         borderRadius: '8px',
-                        fontWeight: isActive ? 800 : 600,
+                        fontWeight: 'normal',
                         backgroundColor: isActive ? '#f0f7fc' : 'transparent',
                         color: isActive ? '#f97316' : '#334155',
                         fontSize: '0.95rem',

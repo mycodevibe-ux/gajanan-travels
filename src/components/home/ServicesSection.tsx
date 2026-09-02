@@ -99,11 +99,12 @@ export const ServicesSection: React.FC = () => {
 
                 <h3 style={{
                   fontSize: '0.94rem',
-                  fontWeight: 800,
+                  fontWeight: 'normal',
                   color: '#001D23',
                   marginBottom: '4px',
                   lineHeight: 1.2,
                   fontFamily: 'var(--font-heading)',
+                  letterSpacing: '0.3px',
                 }}>
                   {srv.title}
                 </h3>

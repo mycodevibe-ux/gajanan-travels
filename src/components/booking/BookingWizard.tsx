@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { TripType, BookingFormData } from '@/types';
 import { vehiclesData } from '@/data/vehicles';
+import { getVehicleIcon, WhatsAppOriginalIcon } from '@/components/vehicles/VehicleIcons';
 import { calculateEstimatedPrice } from '@/lib/pricing';
 import { createWhatsAppBookingUrl } from '@/lib/whatsapp';
 import { siteConfig } from '@/data/siteConfig';
@@ -156,11 +157,11 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
           <CheckCircle2 size={32} color="#1b4332" />
         </div>
 
-        <h3 style={{ fontSize: '1.35rem', color: '#0f172a', marginBottom: '4px', fontWeight: 800 }}>
+        <h3 style={{ fontSize: '1.35rem', color: '#0f172a', marginBottom: '4px', fontWeight: 'normal', fontFamily: 'var(--font-heading)', letterSpacing: '0.3px' }}>
           Booking Inquiry Received!
         </h3>
         <p style={{ color: '#64748b', fontSize: '0.86rem', marginBottom: '14px' }}>
-          Thank you, <strong>{formData.fullName}</strong>. Ref: <span style={{ color: '#1b4332', fontWeight: 800 }}>{bookingRef}</span>
+          Thank you, {formData.fullName}. Ref: <span style={{ color: '#1b4332', fontWeight: 'normal' }}>{bookingRef}</span>
         </p>
 
         <div style={{
@@ -175,12 +176,12 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
           textAlign: 'left',
           lineHeight: 1.5,
         }}>
-          <div><strong>Route:</strong> {formData.pickupCity} → {formData.dropCity || 'Local City'}</div>
-          <div><strong>Vehicle:</strong> {selectedVehicle.name} • {formData.pickupDate} {formData.returnDate ? `to ${formData.returnDate}` : ''}</div>
-          <div style={{ color: '#1b4332', fontWeight: 800, marginTop: '2px' }}>
+          <div>Route: {formData.pickupCity} → {formData.dropCity || 'Local City'}</div>
+          <div>Vehicle: {selectedVehicle.name} • {formData.pickupDate} {formData.returnDate ? `to ${formData.returnDate}` : ''}</div>
+          <div style={{ color: '#1b4332', fontWeight: 'normal', marginTop: '2px' }}>
             Estimated Fare: ₹{priceResult.totalEstimate.toLocaleString('en-IN')} approx.
           </div>
-          <div style={{ marginTop: '6px', fontSize: '0.76rem', color: '#1b4332', fontWeight: 600 }}>
+          <div style={{ marginTop: '6px', fontSize: '0.76rem', color: '#1b4332', fontWeight: 'normal' }}>
             ✓ Quote details dispatched to {siteConfig.email}
           </div>
         </div>
@@ -188,9 +189,9 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
         <button
           onClick={handleBookViaWhatsApp}
           className="btn btn-whatsapp"
-          style={{ padding: '10px 22px', fontSize: '0.88rem', borderRadius: '8px' }}
+          style={{ padding: '10px 22px', fontSize: '0.88rem', borderRadius: '8px', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
         >
-          <MessageCircle size={16} />
+          <WhatsAppOriginalIcon size={18} color="#ffffff" />
           <span>Send Quote to WhatsApp ({siteConfig.phone})</span>
         </button>
       </div>
@@ -234,7 +235,7 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
                 cursor: 'pointer',
                 backgroundColor: isActive ? '#1b4332' : 'transparent',
                 color: isActive ? '#ffffff' : '#64748b',
-                fontWeight: isActive ? 700 : 500,
+                fontWeight: 'normal',
                 fontSize: '0.78rem',
                 transition: 'all 0.15s ease',
               }}
@@ -257,7 +258,7 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
           }}>
             {/* Pickup */}
             <div>
-              <label style={{ display: 'block', fontSize: '0.72rem', color: '#64748b', fontWeight: 600, marginBottom: '3px' }}>
+              <label style={{ display: 'block', fontSize: '0.72rem', color: '#64748b', fontWeight: 'normal', marginBottom: '3px' }}>
                 Pickup Location
               </label>
               <div style={{ position: 'relative' }}>
@@ -272,6 +273,7 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
                     borderRadius: '6px',
                     border: '1px solid #cbd5e1',
                     fontSize: '0.82rem',
+                    fontWeight: 'normal',
                     outline: 'none',
                     color: '#0f172a',
                   }}
@@ -284,7 +286,7 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
             {/* Drop Destination */}
             {formData.tripType !== 'local_rental' ? (
               <div>
-                <label style={{ display: 'block', fontSize: '0.72rem', color: '#64748b', fontWeight: 600, marginBottom: '3px' }}>
+                <label style={{ display: 'block', fontSize: '0.72rem', color: '#64748b', fontWeight: 'normal', marginBottom: '3px' }}>
                   Drop Destination
                 </label>
                 <div style={{ position: 'relative' }}>
@@ -299,6 +301,7 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
                       borderRadius: '6px',
                       border: '1px solid #cbd5e1',
                       fontSize: '0.82rem',
+                      fontWeight: 'normal',
                       outline: 'none',
                       color: '#0f172a',
                     }}
@@ -309,7 +312,7 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
               </div>
             ) : (
               <div>
-                <label style={{ display: 'block', fontSize: '0.72rem', color: '#64748b', fontWeight: 600, marginBottom: '3px' }}>
+                <label style={{ display: 'block', fontSize: '0.72rem', color: '#64748b', fontWeight: 'normal', marginBottom: '3px' }}>
                   Rental Package
                 </label>
                 <select
@@ -321,6 +324,7 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
                     borderRadius: '6px',
                     border: '1px solid #cbd5e1',
                     fontSize: '0.8rem',
+                    fontWeight: 'normal',
                     outline: 'none',
                     color: '#0f172a',
                     cursor: 'pointer',
@@ -335,7 +339,7 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
 
             {/* Pickup Date */}
             <div>
-              <label style={{ display: 'block', fontSize: '0.72rem', color: '#64748b', fontWeight: 600, marginBottom: '3px' }}>
+              <label style={{ display: 'block', fontSize: '0.72rem', color: '#64748b', fontWeight: 'normal', marginBottom: '3px' }}>
                 Pickup Date
               </label>
               <input
@@ -349,6 +353,7 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
                   borderRadius: '6px',
                   border: '1px solid #cbd5e1',
                   fontSize: '0.82rem',
+                  fontWeight: 'normal',
                   outline: 'none',
                   color: '#0f172a',
                 }}
@@ -359,7 +364,7 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
             {/* Return Date */}
             {formData.tripType === 'outstation_roundtrip' && (
               <div>
-                <label style={{ display: 'block', fontSize: '0.72rem', color: '#64748b', fontWeight: 600, marginBottom: '3px' }}>
+                <label style={{ display: 'block', fontSize: '0.72rem', color: '#64748b', fontWeight: 'normal', marginBottom: '3px' }}>
                   Return Date
                 </label>
                 <input
@@ -373,6 +378,7 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
                     borderRadius: '6px',
                     border: '1px solid #cbd5e1',
                     fontSize: '0.82rem',
+                    fontWeight: 'normal',
                     outline: 'none',
                     color: '#0f172a',
                   }}
@@ -381,46 +387,123 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
             )}
           </div>
 
-          {/* Row 2: Vehicle Selector & Passengers Inline */}
+          {/* Visual Vehicle Selection Strip */}
+          <div style={{ marginBottom: '14px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+              <label style={{ fontSize: '0.74rem', color: '#1b4332', fontWeight: 'normal' }}>
+                Select Preferred Cab / Vehicle
+              </label>
+              <span style={{ fontSize: '0.7rem', color: '#64748b' }}>
+                {selectedVehicle.name} • {selectedVehicle.passengerCapacity} Seats
+              </span>
+            </div>
+
+            {/* Scrollable / Grid of Vehicles with Transparent Images */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(135px, 1fr))',
+              gap: '8px',
+              marginBottom: '10px',
+            }}>
+              {vehiclesData.map((v) => {
+                const isSelected = v.id === formData.selectedVehicleId;
+                return (
+                  <button
+                    type="button"
+                    key={v.id}
+                    onClick={() => setFormData({ ...formData, selectedVehicleId: v.id })}
+                    style={{
+                      border: isSelected ? '2px solid #1b4332' : '1px solid #e2e8f0',
+                      backgroundColor: isSelected ? '#f2f9f5' : '#ffffff',
+                      borderRadius: '10px',
+                      padding: '8px 6px',
+                      textAlign: 'center',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      transition: 'all 0.2s',
+                      boxShadow: isSelected ? '0 3px 8px rgba(27,67,50,0.12)' : 'none',
+                      position: 'relative',
+                    }}
+                  >
+                    {/* Selected check badge */}
+                    {isSelected && (
+                      <span style={{
+                        position: 'absolute',
+                        top: '4px',
+                        right: '4px',
+                        width: '16px',
+                        height: '16px',
+                        borderRadius: '50%',
+                        backgroundColor: '#1b4332',
+                        color: '#ffffff',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '10px',
+                        fontWeight: 'normal',
+                      }}>
+                        ✓
+                      </span>
+                    )}
+
+                    {/* Transparent Vehicle Thumbnail */}
+                    <div style={{
+                      height: '42px',
+                      width: '100%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      marginBottom: '4px',
+                    }}>
+                      <img
+                        src={v.image}
+                        alt={v.name}
+                        style={{
+                          maxHeight: '100%',
+                          maxWidth: '90%',
+                          objectFit: 'contain',
+                          mixBlendMode: 'multiply',
+                        }}
+                      />
+                    </div>
+
+                    {/* Vehicle Name with Icon */}
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      fontSize: '0.74rem',
+                      fontWeight: 'normal',
+                      color: isSelected ? '#1b4332' : '#0f172a',
+                      lineHeight: 1.2,
+                    }}>
+                      {getVehicleIcon(v.id || v.category, 12, isSelected ? '#1b4332' : '#64748b')}
+                      <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{v.name.split(' ')[0]}</span>
+                    </div>
+
+                    {/* Rate & Capacity */}
+                    <div style={{ fontSize: '0.68rem', color: isSelected ? '#047857' : '#64748b', fontWeight: 'normal', marginTop: '2px' }}>
+                      ₹{v.pricePerKm}/km • {v.passengerCapacity}S
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Inline Passengers & Add-ons Row */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: '2fr 1fr',
+            gridTemplateColumns: '1fr 1fr',
             gap: '10px',
             marginBottom: '12px',
           }}>
-            {/* Vehicle Dropdown */}
-            <div>
-              <label style={{ display: 'block', fontSize: '0.72rem', color: '#64748b', fontWeight: 600, marginBottom: '3px' }}>
-                Vehicle Type
-              </label>
-              <select
-                value={formData.selectedVehicleId}
-                onChange={(e) => setFormData({ ...formData, selectedVehicleId: e.target.value })}
-                style={{
-                  width: '100%',
-                  padding: '8px 10px',
-                  borderRadius: '6px',
-                  border: '1.5px solid #1b4332',
-                  fontSize: '0.84rem',
-                  fontWeight: 700,
-                  outline: 'none',
-                  color: '#0f172a',
-                  backgroundColor: '#f2f9f5',
-                  cursor: 'pointer',
-                }}
-              >
-                {vehiclesData.map((v) => (
-                  <option key={v.id} value={v.id}>
-                    {v.name} ({v.passengerCapacity} Seats - ₹{v.pricePerKm}/km)
-                  </option>
-                ))}
-              </select>
-            </div>
-
             {/* Passengers */}
             <div>
-              <label style={{ display: 'block', fontSize: '0.72rem', color: '#64748b', fontWeight: 600, marginBottom: '3px' }}>
-                Passengers
+              <label style={{ display: 'block', fontSize: '0.72rem', color: '#64748b', fontWeight: 'normal', marginBottom: '3px' }}>
+                Total Passengers
               </label>
               <div style={{ position: 'relative' }}>
                 <input
@@ -435,12 +518,39 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
                     borderRadius: '6px',
                     border: '1px solid #cbd5e1',
                     fontSize: '0.82rem',
+                    fontWeight: 'normal',
                     outline: 'none',
                     color: '#0f172a',
                   }}
                 />
                 <Users size={13} color="#1b4332" style={{ position: 'absolute', left: '8px', top: '10px' }} />
               </div>
+            </div>
+
+            {/* Luggage Bags */}
+            <div>
+              <label style={{ display: 'block', fontSize: '0.72rem', color: '#64748b', fontWeight: 'normal', marginBottom: '3px' }}>
+                Luggage Bags
+              </label>
+              <select
+                value={formData.luggage}
+                onChange={(e) => setFormData({ ...formData, luggage: Number(e.target.value) })}
+                style={{
+                  width: '100%',
+                  padding: '8px 10px',
+                  borderRadius: '6px',
+                  border: '1px solid #cbd5e1',
+                  fontSize: '0.82rem',
+                  fontWeight: 'normal',
+                  outline: 'none',
+                  color: '#0f172a',
+                  backgroundColor: '#ffffff',
+                }}
+              >
+                <option value={1}>1-2 Bags (Small)</option>
+                <option value={3}>3-4 Bags (Medium)</option>
+                <option value={6}>5+ Bags (Heavy)</option>
+              </select>
             </div>
           </div>
 
@@ -455,11 +565,11 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
             justifyContent: 'space-between',
             fontSize: '0.76rem',
             color: '#1b4332',
-            fontWeight: 600,
+            fontWeight: 'normal',
             marginBottom: '14px',
           }}>
             <div>
-              <span>📍 Route: <strong>{formData.pickupCity} → {formData.dropCity || 'City'}</strong></span>
+              <span>📍 Route: <span>{formData.pickupCity} → {formData.dropCity || 'City'}</span></span>
               <span style={{ marginLeft: '10px', color: '#475569' }}>
                 ({priceResult.breakdownNotes[0] || 'Approx distance estimate'})
               </span>
@@ -479,12 +589,12 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
             color: '#ffffff',
           }}>
             <div>
-              <div style={{ fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.5px', color: '#a7f3d0' }}>
+              <div style={{ fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.3px', color: '#a7f3d0' }}>
                 Estimated Total Fare
               </div>
-              <div style={{ fontSize: '1.45rem', fontWeight: 900, color: '#ffffff', lineHeight: 1 }}>
+              <div style={{ fontSize: '1.45rem', fontWeight: 'normal', fontFamily: 'var(--font-heading)', color: '#ffffff', lineHeight: 1 }}>
                 ₹{priceResult.totalEstimate.toLocaleString('en-IN')}{' '}
-                <span style={{ fontSize: '0.72rem', color: '#d1fae5', fontWeight: 400 }}>approx.</span>
+                <span style={{ fontSize: '0.72rem', color: '#d1fae5', fontWeight: 'normal' }}>approx.</span>
               </div>
             </div>
 
@@ -499,7 +609,7 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
                   backgroundColor: '#ffffff',
                   color: '#1b4332',
                   border: 'none',
-                  fontWeight: 800,
+                  fontWeight: 'normal',
                   borderRadius: '6px',
                 }}
               >
@@ -511,9 +621,9 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
                 type="button"
                 onClick={handleBookViaWhatsApp}
                 className="btn btn-whatsapp"
-                style={{ padding: '8px 14px', fontSize: '0.82rem', borderRadius: '6px' }}
+                style={{ padding: '8px 14px', fontSize: '0.82rem', borderRadius: '6px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
               >
-                <MessageCircle size={15} />
+                <WhatsAppOriginalIcon size={16} color="#ffffff" />
                 <span>Instant WhatsApp</span>
               </button>
             </div>
@@ -534,10 +644,10 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
             fontSize: '0.8rem',
           }}>
             <div>
-              <strong style={{ color: '#1b4332' }}>{formData.pickupCity} → {formData.dropCity || 'Local City'}</strong>
+              <span style={{ color: '#1b4332' }}>{formData.pickupCity} → {formData.dropCity || 'Local City'}</span>
               <span style={{ color: '#64748b', marginLeft: '6px' }}>({selectedVehicle.name})</span>
             </div>
-            <div style={{ fontWeight: 800, color: '#1b4332', fontSize: '1.1rem' }}>
+            <div style={{ fontWeight: 'normal', color: '#1b4332', fontSize: '1.1rem', fontFamily: 'var(--font-heading)' }}>
               ₹{priceResult.totalEstimate.toLocaleString('en-IN')}
             </div>
           </div>
@@ -549,7 +659,7 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
             marginBottom: '10px',
           }}>
             <div>
-              <label style={{ display: 'block', fontSize: '0.72rem', color: '#64748b', fontWeight: 600, marginBottom: '3px' }}>
+              <label style={{ display: 'block', fontSize: '0.72rem', color: '#64748b', fontWeight: 'normal', marginBottom: '3px' }}>
                 Your Name *
               </label>
               <input
@@ -563,6 +673,7 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
                   borderRadius: '6px',
                   border: '1px solid #cbd5e1',
                   fontSize: '0.82rem',
+                  fontWeight: 'normal',
                   outline: 'none',
                 }}
                 required
@@ -570,7 +681,7 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '0.72rem', color: '#64748b', fontWeight: 600, marginBottom: '3px' }}>
+              <label style={{ display: 'block', fontSize: '0.72rem', color: '#64748b', fontWeight: 'normal', marginBottom: '3px' }}>
                 WhatsApp Mobile Number *
               </label>
               <input
@@ -584,6 +695,7 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
                   borderRadius: '6px',
                   border: '1px solid #cbd5e1',
                   fontSize: '0.82rem',
+                  fontWeight: 'normal',
                   outline: 'none',
                 }}
                 required
@@ -592,7 +704,7 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
           </div>
 
           <div style={{ marginBottom: '14px' }}>
-            <label style={{ display: 'block', fontSize: '0.72rem', color: '#64748b', fontWeight: 600, marginBottom: '3px' }}>
+            <label style={{ display: 'block', fontSize: '0.72rem', color: '#64748b', fontWeight: 'normal', marginBottom: '3px' }}>
               Special Notes / Pickup Address
             </label>
             <input
@@ -606,6 +718,7 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
                 borderRadius: '6px',
                 border: '1px solid #cbd5e1',
                 fontSize: '0.82rem',
+                fontWeight: 'normal',
                 outline: 'none',
               }}
             />
@@ -621,7 +734,7 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
                 border: '1px solid #cbd5e1',
                 backgroundColor: 'transparent',
                 cursor: 'pointer',
-                fontWeight: 600,
+                fontWeight: 'normal',
                 fontSize: '0.8rem',
                 color: '#475569',
               }}
@@ -634,9 +747,9 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
                 type="button"
                 onClick={handleBookViaWhatsApp}
                 className="btn btn-whatsapp"
-                style={{ padding: '8px 16px', fontSize: '0.82rem', borderRadius: '6px' }}
+                style={{ padding: '8px 16px', fontSize: '0.82rem', borderRadius: '6px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
               >
-                <MessageCircle size={15} />
+                <WhatsAppOriginalIcon size={16} color="#ffffff" />
                 <span>Send to WhatsApp ({siteConfig.phone})</span>
               </button>
 

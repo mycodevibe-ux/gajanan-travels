@@ -80,7 +80,7 @@ export const PackageCard: React.FC<PackageCardProps> = ({
           background: 'linear-gradient(to top, rgba(15, 23, 42, 0.8) 0%, rgba(15, 23, 42, 0.1) 60%, transparent 100%)',
         }} />
 
-        {/* Duration Badge */}
+        {/* Badges on top */}
         <div style={{
           position: 'absolute',
           top: '12px',
@@ -96,7 +96,7 @@ export const PackageCard: React.FC<PackageCardProps> = ({
             padding: '4px 10px',
             borderRadius: '6px',
             fontSize: '0.74rem',
-            fontWeight: 700,
+            fontWeight: 'normal',
             display: 'inline-flex',
             alignItems: 'center',
             gap: '4px',
@@ -111,7 +111,7 @@ export const PackageCard: React.FC<PackageCardProps> = ({
             padding: '4px 8px',
             borderRadius: '6px',
             fontSize: '0.72rem',
-            fontWeight: 800,
+            fontWeight: 'normal',
           }}>
             {pkg.category}
           </span>
@@ -128,7 +128,7 @@ export const PackageCard: React.FC<PackageCardProps> = ({
             padding: '4px 8px',
             borderRadius: '6px',
             fontSize: '0.72rem',
-            fontWeight: 800,
+            fontWeight: 'normal',
           }}>
             {pkg.discountPercent}% OFF
           </div>
@@ -145,7 +145,7 @@ export const PackageCard: React.FC<PackageCardProps> = ({
           padding: '3px 8px',
           borderRadius: '6px',
           fontSize: '0.74rem',
-          fontWeight: 700,
+          fontWeight: 'normal',
           display: 'flex',
           alignItems: 'center',
           gap: '4px',
@@ -165,7 +165,7 @@ export const PackageCard: React.FC<PackageCardProps> = ({
           gap: '5px',
           fontSize: '0.78rem',
           color: '#1b4332',
-          fontWeight: 700,
+          fontWeight: 'normal',
           marginBottom: '4px',
         }}>
           <MapPin size={13} />
@@ -173,11 +173,12 @@ export const PackageCard: React.FC<PackageCardProps> = ({
         </div>
 
         <h3 style={{
-          fontSize: '1.18rem',
-          fontWeight: 800,
+          fontSize: '1.25rem',
+          fontWeight: 'normal',
           color: '#0f172a',
           marginBottom: '6px',
           fontFamily: 'var(--font-heading)',
+          letterSpacing: '0.3px',
         }}>
           {pkg.title}
         </h3>
@@ -196,7 +197,7 @@ export const PackageCard: React.FC<PackageCardProps> = ({
           marginBottom: '14px',
           fontSize: '0.76rem',
           color: '#1b4332',
-          fontWeight: 600,
+          fontWeight: 'normal',
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
             <Hotel size={13} color="#1b4332" />
@@ -212,7 +213,7 @@ export const PackageCard: React.FC<PackageCardProps> = ({
         <div style={{ marginBottom: '16px', flex: 1 }}>
           {pkg.highlights.slice(0, 2).map((item, idx) => (
             <div key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: '5px', fontSize: '0.78rem', color: '#475569', marginBottom: '3px' }}>
-              <span style={{ color: '#1b4332', fontWeight: 'bold' }}>✓</span>
+              <span style={{ color: '#1b4332', fontWeight: 'normal' }}>✓</span>
               <span>{item}</span>
             </div>
           ))}
@@ -232,7 +233,7 @@ export const PackageCard: React.FC<PackageCardProps> = ({
               Starting from
             </div>
             <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
-              <span style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0f172a' }}>
+              <span style={{ fontSize: '1.25rem', fontWeight: 'normal', fontFamily: 'var(--font-heading)', color: '#0f172a' }}>
                 ₹{pkg.pricePerPerson.toLocaleString('en-IN')}
               </span>
               {pkg.originalPrice && (

@@ -73,10 +73,11 @@ export const WhyChooseAndReviews: React.FC = () => {
 
             <h2 style={{
               fontSize: '2.4rem',
-              fontWeight: 800,
+              fontWeight: 'normal',
               color: '#ffffff',
               marginBottom: '26px',
               fontFamily: 'var(--font-heading)',
+              letterSpacing: '0.3px',
             }}>
               Ride with Confidence
             </h2>
@@ -113,9 +114,10 @@ export const WhyChooseAndReviews: React.FC = () => {
                 </div>
                 <h2 style={{
                   fontSize: '2.4rem',
-                  fontWeight: 800,
+                  fontWeight: 'normal',
                   color: '#ffffff',
                   fontFamily: 'var(--font-heading)',
+                  letterSpacing: '0.3px',
                 }}>
                   Happy Customers
                 </h2>
@@ -233,10 +235,10 @@ export const WhyChooseAndReviews: React.FC = () => {
                       }}
                     />
                     <div>
-                      <div style={{ fontSize: '0.84rem', fontWeight: 800, color: '#ffffff' }}>
+                      <div style={{ fontSize: '0.84rem', fontWeight: 'normal', color: '#ffffff' }}>
                         {rev.name}
                       </div>
-                      <div style={{ fontSize: '0.7rem', color: '#FF6F0F', fontWeight: 600 }}>
+                      <div style={{ fontSize: '0.7rem', color: '#FF6F0F', fontWeight: 'normal' }}>
                         {rev.trip}
                       </div>
                     </div>
