@@ -396,14 +396,6 @@ export const HomeContactSection: React.FC = () => {
           </div>
         </div>
       </div>
-
-      <style jsx>{`
-        @media (max-width: 540px) {
-          .contact-grid-row {
-            grid-template-columns: 1fr !important;
-          }
-        }
-      `}</style>
     </section>
   );
 };

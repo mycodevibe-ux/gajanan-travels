@@ -93,14 +93,6 @@ export const MobileBottomBar: React.FC<MobileBottomBarProps> = ({ onOpenBookingM
         <CalendarCheck size={17} />
         <span>Book Now</span>
       </button>
-
-      <style jsx>{`
-        @media (min-width: 769px) {
-          .mobile-bottom-bar {
-            display: none !important;
-          }
-        }
-      `}</style>
     </div>
   );
 };

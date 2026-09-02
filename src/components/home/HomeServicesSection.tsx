@@ -161,14 +161,6 @@ export const HomeServicesSection: React.FC<HomeServicesSectionProps> = ({ onOpen
           })}
         </div>
       </div>
-
-      <style jsx>{`
-        @media (min-width: 960px) {
-          .services-grid-3x3 {
-            grid-template-columns: repeat(3, 1fr) !important;
-          }
-        }
-      `}</style>
     </section>
   );
 };

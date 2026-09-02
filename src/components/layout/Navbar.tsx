@@ -324,14 +324,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBookingModal }) => {
           </div>
         </div>
       )}
-
-      <style jsx global>{`
-        @media (min-width: 990px) {
-          .desktop-nav { display: flex !important; }
-          .desktop-phone { display: inline-flex !important; }
-          .mobile-hamburger { display: none !important; }
-        }
-      `}</style>
     </>
   );
 };
