@@ -158,7 +158,7 @@ export const VehicleDetailModal: React.FC<VehicleDetailModalProps> = ({
           {/* Quick Specs Strip */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
             gap: '12px',
             backgroundColor: '#f8fafc',
             padding: '12px 16px',
@@ -171,16 +171,12 @@ export const VehicleDetailModal: React.FC<VehicleDetailModalProps> = ({
               <div style={{ fontSize: '1rem', fontWeight: 'normal', color: '#0f172a' }}>{language === 'mr' ? toMarathiDigits(vehicle.passengerCapacity) : vehicle.passengerCapacity} {language === 'mr' ? 'प्रवासी' : 'Guests'}</div>
             </div>
             <div>
-              <div style={{ fontSize: '0.72rem', color: '#64748b' }}>{language === 'mr' ? 'बॅग्स' : 'Luggage Space'}</div>
-              <div style={{ fontSize: '1rem', fontWeight: 'normal', color: '#0f172a' }}>{language === 'mr' ? toMarathiDigits(vehicle.luggageCapacity) : vehicle.luggageCapacity} {language === 'mr' ? 'बॅगा' : 'Bags'}</div>
+              <div style={{ fontSize: '0.72rem', color: '#64748b' }}>{language === 'mr' ? 'सुविधा पर्याय' : 'Option Type'}</div>
+              <div style={{ fontSize: '1rem', fontWeight: 'normal', color: '#0f172a' }}>{language === 'mr' ? 'एसी / नॉन-एसी' : 'AC / Non-AC'}</div>
             </div>
             <div>
               <div style={{ fontSize: '0.72rem', color: '#64748b' }}>{language === 'mr' ? 'इंधन' : 'Fuel & Drive'}</div>
               <div style={{ fontSize: '1rem', fontWeight: 'normal', color: '#0f172a' }}>{vehicle.fuelType} ({vehicle.transmission})</div>
-            </div>
-            <div>
-              <div style={{ fontSize: '0.72rem', color: '#64748b' }}>{language === 'mr' ? 'वातानुकूलन' : 'Air Conditioning'}</div>
-              <div style={{ fontSize: '1rem', fontWeight: 'normal', color: '#1b4332' }}>{language === 'mr' ? 'थंडगार ड्युअल एसी' : 'Chilled Dual AC'}</div>
             </div>
           </div>
 

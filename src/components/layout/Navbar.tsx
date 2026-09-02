@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Phone, Menu, X, Globe } from 'lucide-react';
+import { Phone, Menu, X } from 'lucide-react';
 import { siteConfig } from '@/data/siteConfig';
 import { useLanguage } from '@/context/LanguageContext';
 import { toMarathiDigits } from '@/lib/marathiNumbers';
@@ -17,18 +17,30 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBookingModal }) => {
   const [activeSection, setActiveSection] = useState('home');
 
   useEffect(() => {
+    // Strip hash from address bar on initial load
+    if (typeof window !== 'undefined' && window.location.hash) {
+      window.history.replaceState(null, '', window.location.pathname);
+    }
+
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+      setIsScrolled(scrollY > 20);
 
       const sections = ['home', 'about', 'fleet', 'services', 'reviews', 'contact'];
-      const scrollPosition = window.scrollY + 100;
+      const headerOffset = 110;
 
-      for (const sectionId of sections) {
+      if (scrollY < 120) {
+        setActiveSection('home');
+        return;
+      }
+
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const sectionId = sections[i];
         const el = document.getElementById(sectionId);
         if (el) {
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollPosition >= top && scrollPosition < top + height) {
+          const rect = el.getBoundingClientRect();
+          const top = rect.top + scrollY - headerOffset;
+          if (scrollY >= top - 30) {
             setActiveSection(sectionId);
             break;
           }
@@ -36,24 +48,25 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBookingModal }) => {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const navLinks = [
-    { name: t.nav_home, href: '#home', id: 'home' },
-    { name: t.nav_about, href: '#about', id: 'about' },
-    { name: t.nav_fleet, href: '#fleet', id: 'fleet' },
-    { name: t.nav_services, href: '#services', id: 'services' },
-    { name: t.nav_reviews, href: '#reviews', id: 'reviews' },
-    { name: t.nav_contact, href: '#contact', id: 'contact' },
+    { name: t.nav_home, id: 'home' },
+    { name: t.nav_about, id: 'about' },
+    { name: t.nav_fleet, id: 'fleet' },
+    { name: t.nav_services, id: 'services' },
+    { name: t.nav_reviews, id: 'reviews' },
+    { name: t.nav_contact, id: 'contact' },
   ];
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  const handleNavClick = (e: React.MouseEvent, targetId: string) => {
     e.preventDefault();
     setMobileMenuOpen(false);
-    const targetId = href.replace('#', '');
-    const element = document.getElementById(targetId);
+    const cleanId = targetId.replace('#', '');
+    const element = document.getElementById(cleanId);
     if (element) {
       const headerOffset = 72;
       const elementPosition = element.getBoundingClientRect().top;
@@ -63,7 +76,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBookingModal }) => {
         top: offsetPosition,
         behavior: 'smooth',
       });
-      setActiveSection(targetId);
+      setActiveSection(cleanId);
+    }
+
+    // Keep address bar clean without /#home, /#fleet, etc.
+    if (typeof window !== 'undefined') {
+      window.history.replaceState(null, '', window.location.pathname);
     }
   };
 
@@ -87,10 +105,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBookingModal }) => {
           height: '76px',
         }}>
           {/* Dynamic Logo Sourced from siteConfig.name */}
-          <a 
-            href="#home" 
-            onClick={(e) => handleNavClick(e, '#home')}
-            style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}
+          <button 
+            type="button"
+            onClick={(e) => handleNavClick(e, 'home')}
+            style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', background: 'transparent', border: 'none', cursor: 'pointer', padding: 0 }}
           >
             <div style={{
               width: '36px',
@@ -118,9 +136,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBookingModal }) => {
             }}>
               {siteConfig.name}
             </div>
-          </a>
+          </button>
 
-          {/* Center Nav Links */}
+          {/* Center Nav Links with Scrollspy Active Highlight */}
           <nav style={{
             display: 'none',
             alignItems: 'center',
@@ -129,19 +147,20 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBookingModal }) => {
             {navLinks.map((link) => {
               const isActive = activeSection === link.id;
               return (
-                <a
+                <button
+                  type="button"
                   key={link.id}
-                  href={link.href}
-                  onClick={(e) => handleNavClick(e, link.href)}
+                  onClick={(e) => handleNavClick(e, link.id)}
                   style={{
-                    fontSize: '0.82rem',
-                    fontWeight: 'normal',
+                    fontSize: '0.84rem',
+                    fontWeight: isActive ? '600' : 'normal',
                     color: isActive ? '#f97316' : '#334155',
                     position: 'relative',
                     padding: '8px 0',
-                    textDecoration: 'none',
+                    background: 'transparent',
+                    border: 'none',
                     letterSpacing: '0.3px',
-                    transition: 'color 0.2s ease',
+                    transition: 'all 0.2s ease',
                     cursor: 'pointer',
                   }}
                   onMouseOver={(e) => (e.currentTarget.style.color = '#f97316')}
@@ -154,12 +173,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBookingModal }) => {
                       bottom: '0',
                       left: '0',
                       right: '0',
-                      height: '2px',
+                      height: '2.5px',
                       backgroundColor: '#f97316',
                       borderRadius: '2px',
                     }} />
                   )}
-                </a>
+                </button>
               );
             })}
           </nav>
@@ -181,14 +200,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBookingModal }) => {
                 onClick={() => setLanguage('en')}
                 style={{
                   border: 'none',
-                  cursor: 'pointer',
-                  padding: '4px 10px',
+                  padding: '5px 12px',
                   borderRadius: '9999px',
                   fontSize: '0.74rem',
                   fontWeight: 'normal',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
                   backgroundColor: language === 'en' ? '#0c2338' : 'transparent',
                   color: language === 'en' ? '#ffffff' : '#64748b',
-                  transition: 'all 0.2s',
                 }}
               >
                 EN
@@ -198,55 +217,43 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBookingModal }) => {
                 onClick={() => setLanguage('mr')}
                 style={{
                   border: 'none',
-                  cursor: 'pointer',
-                  padding: '4px 10px',
+                  padding: '5px 12px',
                   borderRadius: '9999px',
                   fontSize: '0.74rem',
                   fontWeight: 'normal',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
                   backgroundColor: language === 'mr' ? '#0c2338' : 'transparent',
                   color: language === 'mr' ? '#ffffff' : '#64748b',
-                  transition: 'all 0.2s',
                 }}
               >
                 मराठी
               </button>
             </div>
 
-            <a 
+            {/* Direct Phone Call Button */}
+            <a
               href={`tel:${siteConfig.phone}`}
+              className="btn btn-outline-navy desktop-nav"
               style={{
-                display: 'none',
-                alignItems: 'center',
-                gap: '8px',
-                color: '#0c2338',
-                fontSize: '0.86rem',
+                padding: '8px 14px',
+                fontSize: '0.8rem',
                 fontWeight: 'normal',
-                backgroundColor: '#ffffff',
-                border: '1.5px solid #cbd5e1',
-                padding: '7px 16px',
-                borderRadius: '9999px',
                 textDecoration: 'none',
-                transition: 'all 0.2s',
+                gap: '6px',
+                display: 'inline-flex',
+                alignItems: 'center',
               }}
-              className="desktop-phone"
-              onMouseOver={(e) => (e.currentTarget.style.borderColor = '#f97316')}
-              onMouseOut={(e) => (e.currentTarget.style.borderColor = '#cbd5e1')}
             >
               <Phone size={13} color="#f97316" />
               <span>{language === 'mr' ? toMarathiDigits(siteConfig.phone) : siteConfig.phone}</span>
             </a>
 
-            {/* Vibrant Orange Book Now Button */}
+            {/* Orange Action CTA Button */}
             <button
               onClick={onOpenBookingModal}
-              className="btn btn-orange"
-              style={{
-                padding: '9px 18px',
-                fontSize: '0.84rem',
-                fontWeight: 'normal',
-                letterSpacing: '0.3px',
-                borderRadius: '8px',
-              }}
+              className="btn btn-orange desktop-nav"
+              style={{ padding: '8px 16px', fontSize: '0.82rem', fontWeight: 'normal' }}
             >
               <span>{t.nav_book_now}</span>
             </button>
@@ -378,22 +385,28 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBookingModal }) => {
                 {navLinks.map((link) => {
                   const isActive = activeSection === link.id;
                   return (
-                    <a
+                    <button
+                      type="button"
                       key={link.id}
-                      href={link.href}
-                      onClick={(e) => handleNavClick(e, link.href)}
+                      onClick={(e) => handleNavClick(e, link.id)}
                       style={{
                         padding: '12px 14px',
                         borderRadius: '8px',
-                        fontWeight: 'normal',
+                        fontWeight: isActive ? '600' : 'normal',
                         backgroundColor: isActive ? '#f0f7fc' : 'transparent',
                         color: isActive ? '#f97316' : '#334155',
                         fontSize: '0.95rem',
-                        textDecoration: 'none',
+                        textAlign: 'left',
+                        border: 'none',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
                       }}
                     >
-                      {link.name}
-                    </a>
+                      <span>{link.name}</span>
+                      {isActive && <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#f97316' }} />}
+                    </button>
                   );
                 })}
               </div>

@@ -288,25 +288,24 @@ export const OurVehiclesSection: React.FC<OurVehiclesSectionProps> = ({ onSelect
               <div style={{
                 display: 'flex',
                 gap: '8px',
-                fontSize: '0.78rem',
+                fontSize: '0.8rem',
                 color: '#334155',
                 marginBottom: '16px',
                 backgroundColor: '#f8fafc',
-                padding: '6px 10px',
+                padding: '7px 12px',
                 borderRadius: '8px',
-                justifyContent: 'space-between',
+                justifyContent: 'space-around',
+                alignItems: 'center',
               }}>
-                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontWeight: 'normal' }}>
-                  <Users size={13} color="#1b4332" />
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', fontWeight: 'normal' }}>
+                  <Users size={14} color="#1b4332" />
                   <span>{language === 'mr' ? toMarathiDigits(vehicle.passengerCapacity) : vehicle.passengerCapacity} {t.fleet_seating}</span>
                 </span>
                 <span style={{ color: '#cbd5e1' }}>|</span>
-                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontWeight: 'normal' }}>
-                  <Briefcase size={13} color="#1b4332" />
-                  <span>{language === 'mr' ? toMarathiDigits(vehicle.luggageCapacity) : vehicle.luggageCapacity} {t.fleet_luggage}</span>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', fontWeight: 'normal', color: '#1b4332' }}>
+                  <Sparkles size={14} color="#1b4332" />
+                  <span>{language === 'mr' ? 'एसी / नॉन-एसी' : 'AC / Non-AC'}</span>
                 </span>
-                <span style={{ color: '#cbd5e1' }}>|</span>
-                <span style={{ color: '#1b4332', fontWeight: 'normal' }}>{language === 'mr' ? 'ड्युअल एसी' : 'Dual AC'}</span>
               </div>
 
               {/* Book now Button */}

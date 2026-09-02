@@ -400,7 +400,7 @@ export const HomeContactSection: React.FC = () => {
                     </span>
                   </div>
                   <span style={{ fontSize: '0.72rem', color: '#047857', backgroundColor: '#eaf5ee', padding: '2px 8px', borderRadius: '9999px', fontWeight: 'normal' }}>
-                    {routeEstimate.routeTitle}
+                    {hasRouteInput && routeEstimate.distanceKm > 0 ? routeEstimate.routeTitle : (language === 'mr' ? 'मार्ग निवडा' : 'Select Route')}
                   </span>
                 </div>
 
@@ -417,7 +417,11 @@ export const HomeContactSection: React.FC = () => {
                       {language === 'mr' ? '📍 एकूण अंतर' : '📍 Distance'}
                     </div>
                     <div style={{ fontSize: '1.05rem', color: '#0c2338', fontWeight: 'normal', fontFamily: 'var(--font-heading)', marginTop: '2px' }}>
-                      {language === 'mr' ? toMarathiDigits(routeEstimate.distanceKm) : routeEstimate.distanceKm} <span style={{ fontSize: '0.72rem', fontWeight: 'normal', color: '#64748b' }}>{language === 'mr' ? 'किमी' : 'KM'}</span>
+                      {routeEstimate.distanceKm === 0 ? (
+                        <span style={{ color: '#64748b' }}>{language === 'mr' ? '०' : '0'} <span style={{ fontSize: '0.72rem', fontWeight: 'normal', color: '#94a3b8' }}>{language === 'mr' ? 'किमी' : 'KM'}</span></span>
+                      ) : (
+                        <>{language === 'mr' ? toMarathiDigits(routeEstimate.distanceKm) : routeEstimate.distanceKm} <span style={{ fontSize: '0.72rem', fontWeight: 'normal', color: '#64748b' }}>{language === 'mr' ? 'किमी' : 'KM'}</span></>
+                      )}
                     </div>
                   </div>
 
@@ -426,8 +430,8 @@ export const HomeContactSection: React.FC = () => {
                     <div style={{ fontSize: '0.68rem', color: '#64748b' }}>
                       {language === 'mr' ? '⏱️ अंदाजे प्रवास वेळ' : '⏱️ Travel Time'}
                     </div>
-                    <div style={{ fontSize: '0.96rem', color: '#0c2338', fontWeight: 'normal', fontFamily: 'var(--font-heading)', marginTop: '2px' }}>
-                      {language === 'mr' ? toMarathiDigits(routeEstimate.durationText.mr) : routeEstimate.durationText.en}
+                    <div style={{ fontSize: '0.96rem', color: routeEstimate.distanceKm === 0 ? '#94a3b8' : '#0c2338', fontWeight: 'normal', fontFamily: 'var(--font-heading)', marginTop: '2px' }}>
+                      {routeEstimate.distanceKm === 0 ? '--' : (language === 'mr' ? toMarathiDigits(routeEstimate.durationText.mr) : routeEstimate.durationText.en)}
                     </div>
                   </div>
 
@@ -437,7 +441,9 @@ export const HomeContactSection: React.FC = () => {
                       {language === 'mr' ? '🛣️ FastTag टोल (स्वतंत्र)' : '🛣️ FastTag Toll (Extra)'}
                     </div>
                     <div style={{ fontSize: '1.05rem', color: '#f97316', fontWeight: 'normal', fontFamily: 'var(--font-heading)', marginTop: '2px' }}>
-                      {routeEstimate.tollEstimate === 0 ? (
+                      {routeEstimate.distanceKm === 0 ? (
+                        <span style={{ color: '#64748b' }}>₹{language === 'mr' ? '०' : '0'} <span style={{ fontSize: '0.7rem', fontWeight: 'normal', color: '#94a3b8' }}>{language === 'mr' ? '(--)' : '(--)'}</span></span>
+                      ) : routeEstimate.tollEstimate === 0 ? (
                         <span style={{ color: '#047857' }}>₹{language === 'mr' ? '०' : '0'} <span style={{ fontSize: '0.7rem', fontWeight: 'normal', color: '#64748b' }}>{language === 'mr' ? '(टोल नाही)' : '(No Toll)'}</span></span>
                       ) : (
                         <>₹{language === 'mr' ? toMarathiDigits(totalToll) : totalToll} <span style={{ fontSize: '0.7rem', fontWeight: 'normal', color: '#64748b' }}>{language === 'mr' ? `(${toMarathiDigits(tripDays)} दिवस)` : `(${tripDays} Day${tripDays > 1 ? 's' : ''})`}</span></>
@@ -451,7 +457,11 @@ export const HomeContactSection: React.FC = () => {
                       {language === 'mr' ? '💰 अंदाजे गाडी भाडे' : '💰 Est. Cab Fare'}
                     </div>
                     <div style={{ fontSize: '1.05rem', color: '#1b4332', fontWeight: 'normal', fontFamily: 'var(--font-heading)', marginTop: '2px' }}>
-                      ₹{language === 'mr' ? toMarathiDigits(cabFare.toLocaleString('en-IN')) : cabFare.toLocaleString('en-IN')} <span style={{ fontSize: '0.7rem', fontWeight: 'normal', color: '#047857' }}>{language === 'mr' ? `(${toMarathiDigits(tripDays)} दिवस)` : `(${tripDays} Day${tripDays > 1 ? 's' : ''})`}</span>
+                      {cabFare === 0 ? (
+                        <span style={{ color: '#64748b' }}>₹{language === 'mr' ? '०' : '0'} <span style={{ fontSize: '0.7rem', fontWeight: 'normal', color: '#94a3b8' }}>{language === 'mr' ? '(ठिकाण टाका)' : '(Enter drop)'}</span></span>
+                      ) : (
+                        <>₹{language === 'mr' ? toMarathiDigits(cabFare.toLocaleString('en-IN')) : cabFare.toLocaleString('en-IN')} <span style={{ fontSize: '0.7rem', fontWeight: 'normal', color: '#047857' }}>{language === 'mr' ? `(${toMarathiDigits(tripDays)} दिवस)` : `(${tripDays} Day${tripDays > 1 ? 's' : ''})`}</span></>
+                      )}
                     </div>
                   </div>
                 </div>

@@ -10,9 +10,10 @@ import { toMarathiDigits } from '@/lib/marathiNumbers';
 export const Footer: React.FC = () => {
   const { language, t } = useLanguage();
 
-  const handleScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+  const handleScrollTo = (e: React.MouseEvent, targetId: string) => {
     e.preventDefault();
-    const element = document.getElementById(targetId);
+    const cleanId = targetId.replace('#', '');
+    const element = document.getElementById(cleanId);
     if (element) {
       const headerOffset = 72;
       const elementPosition = element.getBoundingClientRect().top;
@@ -22,6 +23,10 @@ export const Footer: React.FC = () => {
         top: offsetPosition,
         behavior: 'smooth',
       });
+    }
+
+    if (typeof window !== 'undefined') {
+      window.history.replaceState(null, '', window.location.pathname);
     }
   };
 

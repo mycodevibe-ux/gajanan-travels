@@ -174,9 +174,9 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({
         {/* Specs Pills */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
+          gridTemplateColumns: 'repeat(2, 1fr)',
           gap: '6px',
-          padding: '8px',
+          padding: '8px 12px',
           backgroundColor: '#ebf5f0',
           borderRadius: '8px',
           marginBottom: '14px',
@@ -185,19 +185,13 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px' }}>
             <Users size={14} color="#1b4332" />
             <span style={{ fontSize: '0.68rem', color: '#64748b' }}>Seats</span>
-            <span style={{ fontSize: '0.8rem', fontWeight: 'normal', color: '#0f172a' }}>{vehicle.passengerCapacity}</span>
+            <span style={{ fontSize: '0.82rem', fontWeight: 'normal', color: '#0f172a' }}>{vehicle.passengerCapacity} Seats</span>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px', borderLeft: '1px solid #c2e2d0', borderRight: '1px solid #c2e2d0' }}>
-            <Briefcase size={14} color="#1b4332" />
-            <span style={{ fontSize: '0.68rem', color: '#64748b' }}>Luggage</span>
-            <span style={{ fontSize: '0.8rem', fontWeight: 'normal', color: '#0f172a' }}>{vehicle.luggageCapacity}</span>
-          </div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px' }}>
-            <Fuel size={14} color="#1b4332" />
-            <span style={{ fontSize: '0.68rem', color: '#64748b' }}>AC</span>
-            <span style={{ fontSize: '0.8rem', fontWeight: 'normal', color: '#0f172a' }}>Dual AC</span>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px', borderLeft: '1px solid #c2e2d0' }}>
+            <Sparkles size={14} color="#1b4332" />
+            <span style={{ fontSize: '0.68rem', color: '#64748b' }}>Options</span>
+            <span style={{ fontSize: '0.82rem', fontWeight: 'normal', color: '#0f172a' }}>AC / Non-AC</span>
           </div>
         </div>
 

@@ -478,6 +478,21 @@ export function getRouteEstimate(pickup = '', destination = '', isRoundTrip = tr
   const cleanDest = (destination || '').toLowerCase().trim();
   const cleanPickup = (pickup || '').toLowerCase().trim();
 
+  // If destination is empty, default everything to 0
+  if (!cleanDest || cleanDest.length < 2) {
+    const pTitle = cleanPickup ? (pickup.charAt(0).toUpperCase() + pickup.slice(1)) : 'Pune';
+    return {
+      distanceKm: 0,
+      durationHours: 0,
+      durationText: { en: '--', mr: '--' },
+      tollEstimate: 0,
+      oneWayToll: 0,
+      roundTripToll: 0,
+      tollPlazas: 'ठिकाण प्रविष्ट करा (Enter Destination)',
+      routeTitle: cleanPickup ? `${pTitle} → ...` : 'मार्ग निवडा (Select Route)',
+    };
+  }
+
   // Helper to test if a keyword matches a search string
   const matchesKeyword = (text: string, kw: string) => {
     return text.includes(kw) || kw.includes(text);
@@ -496,22 +511,10 @@ export function getRouteEstimate(pickup = '', destination = '', isRoundTrip = tr
     }
   }
 
-  // 2. If destination didn't match and destination is Pune or empty, match pickup
-  if (!matchedData && (cleanDest.includes('pune') || cleanDest.includes('पुणे') || cleanDest === '')) {
-    for (const [key, route] of Object.entries(routesDatabase)) {
-      const isMatch = route.aliases.some(alias => matchesKeyword(cleanPickup, alias.toLowerCase()));
-      if (isMatch) {
-        matchedData = route;
-        matchedKeyName = key;
-        break;
-      }
-    }
-  }
-
-  let distanceKm = 150;
-  let durationHours = 3.5;
-  let oneWayToll = 180;
-  let roundTripToll = 360;
+  let distanceKm = 0;
+  let durationHours = 0;
+  let oneWayToll = 0;
+  let roundTripToll = 0;
   let tollPlazas = 'Highway FastTag Plazas';
 
   if (matchedData) {
@@ -520,9 +523,8 @@ export function getRouteEstimate(pickup = '', destination = '', isRoundTrip = tr
     oneWayToll = matchedData.oneWayToll;
     roundTripToll = matchedData.roundTripToll;
     tollPlazas = matchedData.tollPlazas;
-  } else if (cleanDest.length > 2) {
+  } else {
     // Intelligent heuristic estimation for unlisted destinations
-    // Average distance across Maharashtra ~280 km, average speed 50 km/h
     distanceKm = 280;
     durationHours = 5.5;
     oneWayToll = 280;
@@ -544,7 +546,7 @@ export function getRouteEstimate(pickup = '', destination = '', isRoundTrip = tr
   const isPickupLocal = puneKeywords.some(k => cleanPickup.includes(k)) || cleanPickup.includes('pune') || cleanPickup.includes('पुणे');
   const isDestLocal = puneKeywords.some(k => cleanDest.includes(k));
 
-  if (isPickupLocal && isDestLocal && cleanDest.length > 0) {
+  if (isPickupLocal && isDestLocal) {
     distanceKm = 28;
     durationHours = 1.0;
     oneWayToll = 0;
@@ -567,12 +569,15 @@ export function getRouteEstimate(pickup = '', destination = '', isRoundTrip = tr
   } else if (fullHours > 0) {
     durationEn = `~ ${fullHours} hrs`;
     durationMr = `~ ${fullHours} तास`;
-  } else {
+  } else if (minutes > 0) {
     durationEn = `~ ${minutes} mins`;
     durationMr = `~ ${minutes} मिनिटे`;
+  } else {
+    durationEn = '--';
+    durationMr = '--';
   }
 
-  const pTitle = pickup ? (pickup.charAt(0).toUpperCase() + pickup.slice(1)) : 'Katraj';
+  const pTitle = pickup ? (pickup.charAt(0).toUpperCase() + pickup.slice(1)) : 'Pune';
   const dTitle = destination ? (destination.charAt(0).toUpperCase() + destination.slice(1)) : 'Destination';
 
   return {
@@ -591,6 +596,10 @@ export function getRouteEstimate(pickup = '', destination = '', isRoundTrip = tr
  * Calculates estimated cab fare based on vehicle type, distance and number of days
  */
 export function getCabFareEstimate(vehicleType: string, distanceKm: number, days: number = 1): number {
+  if (!distanceKm || distanceKm <= 0) {
+    return 0;
+  }
+
   let ratePerKm = 12; // Sedan default
   let minKmPerDay = 300;
   let driverAllowancePerDay = 350;
