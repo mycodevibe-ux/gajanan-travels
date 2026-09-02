@@ -210,31 +210,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBookingModal }) 
               fontSize: '1rem',
               color: '#475569',
               lineHeight: 1.65,
-              marginBottom: '26px',
+              marginBottom: '24px',
               maxWidth: '520px',
             }}>
               {t.hero_subtitle}
             </p>
-
-            {/* 2 Buttons: Orange + Green */}
-            <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '28px' }}>
-              <button
-                onClick={() => onOpenBookingModal('outstation_roundtrip')}
-                className="btn btn-orange"
-                style={{ padding: '12px 26px', fontSize: '0.94rem', fontWeight: 'normal' }}
-              >
-                <span>{t.hero_btn_book}</span>
-              </button>
-
-              <a
-                href={`tel:${siteConfig.phone}`}
-                className="btn btn-green"
-                style={{ padding: '12px 24px', fontSize: '0.94rem', fontWeight: 'normal', textDecoration: 'none' }}
-              >
-                <Phone size={16} />
-                <span>{siteConfig.phone}</span>
-              </a>
-            </div>
 
             {/* 3 Feature Pill Badges matching mockup */}
             <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
