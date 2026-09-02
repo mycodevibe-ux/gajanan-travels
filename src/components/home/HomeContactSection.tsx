@@ -118,7 +118,7 @@ export const HomeContactSection: React.FC = () => {
 
     // Direct WhatsApp dispatch with route, toll & fare breakdown
     const routeSummary = hasRouteInput 
-      ? `\n🛣️ *Route:* ${routeEstimate.routeTitle} (~${routeEstimate.distanceKm} KM)\n⏱️ *Est. Time:* ${routeEstimate.durationText.en}\n💳 *FastTag Toll:* ₹${routeEstimate.tollEstimate}\n💰 *Est. Total Fare:* ₹${cabFare.toLocaleString('en-IN')} (${tripDays} Day${tripDays > 1 ? 's' : ''} Roundtrip)`
+      ? `\n🛣️ *Route:* ${routeEstimate.routeTitle} (~${routeEstimate.distanceKm} KM)\n⏱️ *Est. Time:* ${routeEstimate.durationText.en}\n💳 *FastTag Toll:* ~₹${routeEstimate.tollEstimate} (स्वतंत्र / Extra as per actuals)\n💰 *Est. Cab Fare:* ₹${cabFare.toLocaleString('en-IN')} (${tripDays} Day${tripDays > 1 ? 's' : ''} Roundtrip)`
       : '';
 
     const message = encodeURIComponent(
@@ -158,7 +158,7 @@ export const HomeContactSection: React.FC = () => {
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
           gap: '32px',
-          alignItems: 'start',
+          alignItems: 'stretch',
         }}>
           {/* Left Form */}
           <div style={{
@@ -430,17 +430,17 @@ export const HomeContactSection: React.FC = () => {
                   {/* 3. FastTag Toll */}
                   <div style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '8px', padding: '8px 10px' }}>
                     <div style={{ fontSize: '0.68rem', color: '#64748b' }}>
-                      {language === 'mr' ? '🛣️ FastTag टोल' : '🛣️ FastTag Toll'}
+                      {language === 'mr' ? '🛣️ अंदाजे टोल (स्वतंत्र)' : '🛣️ Est. Toll (Extra)'}
                     </div>
                     <div style={{ fontSize: '1.05rem', color: '#f97316', fontWeight: 'normal', fontFamily: 'var(--font-heading)', marginTop: '2px' }}>
-                      ₹{language === 'mr' ? toMarathiDigits(routeEstimate.tollEstimate) : routeEstimate.tollEstimate} <span style={{ fontSize: '0.7rem', fontWeight: 'normal', color: '#64748b' }}>{language === 'mr' ? 'अंदाजे' : 'approx.'}</span>
+                      ₹{language === 'mr' ? toMarathiDigits(routeEstimate.tollEstimate) : routeEstimate.tollEstimate} <span style={{ fontSize: '0.7rem', fontWeight: 'normal', color: '#64748b' }}>{language === 'mr' ? '(पावतीनुसार)' : '(at actuals)'}</span>
                     </div>
                   </div>
 
                   {/* 4. Estimated Fare */}
                   <div style={{ backgroundColor: '#eaf5ee', border: '1px solid #bde4ca', borderRadius: '8px', padding: '8px 10px' }}>
                     <div style={{ fontSize: '0.68rem', color: '#1b4332' }}>
-                      {language === 'mr' ? '💰 अंदाजे प्रवास भाडे' : '💰 Est. Cab Fare'}
+                      {language === 'mr' ? '💰 अंदाजे गाडी भाडे' : '💰 Est. Cab Fare'}
                     </div>
                     <div style={{ fontSize: '1.05rem', color: '#1b4332', fontWeight: 'normal', fontFamily: 'var(--font-heading)', marginTop: '2px' }}>
                       ₹{language === 'mr' ? toMarathiDigits(cabFare.toLocaleString('en-IN')) : cabFare.toLocaleString('en-IN')} <span style={{ fontSize: '0.7rem', fontWeight: 'normal', color: '#047857' }}>{language === 'mr' ? `(${toMarathiDigits(tripDays)} दिवस)` : `(${tripDays} Day${tripDays > 1 ? 's' : ''})`}</span>
@@ -449,7 +449,7 @@ export const HomeContactSection: React.FC = () => {
                 </div>
 
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.72rem', color: '#64748b' }}>
-                  <span>✓ {language === 'mr' ? 'सर्वोत्तम हायवे मार्ग व टोल समाविष्ट' : 'Best highway route & tolls included'}</span>
+                  <span>✓ {language === 'mr' ? 'किमान ३०० किमी/दिवस पॅकेज • टोल व पार्किंग स्वतंत्र (पावतीनुसार)' : 'Min. 300 KM/Day package • Toll & Parking extra at actuals'}</span>
                   <a 
                     href={googleMapsDirectionsUrl}
                     target="_blank"
@@ -486,7 +486,7 @@ export const HomeContactSection: React.FC = () => {
           </div>
 
           {/* Right Column: Info Box + Live Dynamic Map */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', height: '100%' }}>
             {/* Soft Blue Info Box */}
             <div style={{
               backgroundColor: '#eef6fc',
@@ -606,25 +606,29 @@ export const HomeContactSection: React.FC = () => {
               </div>
             </div>
 
-            {/* Embedded Live Route Map with Dynamic Path */}
+            {/* Embedded Live Route Map matching full height of Left Box */}
             <div style={{
               borderRadius: '16px',
               overflow: 'hidden',
               border: '1px solid #cbd5e1',
               backgroundColor: '#ffffff',
               boxShadow: '0 4px 16px rgba(0,0,0,0.06)',
+              display: 'flex',
+              flexDirection: 'column',
+              flex: 1,
+              minHeight: '340px',
             }}>
               <div style={{
-                padding: '10px 14px',
+                padding: '12px 16px',
                 backgroundColor: '#0c2338',
                 color: '#ffffff',
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                fontSize: '0.8rem',
+                fontSize: '0.82rem',
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <Compass size={14} color="#f97316" />
+                  <Compass size={15} color="#f97316" />
                   <span style={{ fontFamily: 'var(--font-heading)' }}>
                     {language === 'mr' ? `मार्ग नकाशा: ${routeEstimate.routeTitle}` : `Route Map: ${routeEstimate.routeTitle}`}
                   </span>
@@ -636,7 +640,7 @@ export const HomeContactSection: React.FC = () => {
                   style={{
                     color: '#f97316',
                     textDecoration: 'none',
-                    fontSize: '0.74rem',
+                    fontSize: '0.76rem',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '4px',
@@ -645,13 +649,13 @@ export const HomeContactSection: React.FC = () => {
                   <span>{language === 'mr' ? 'मॅप्स दिशा ↗' : 'Directions ↗'}</span>
                 </a>
               </div>
-              <div style={{ height: '240px', width: '100%' }}>
+              <div style={{ flex: 1, width: '100%', minHeight: '300px' }}>
                 <iframe
                   key={mapSearchQuery}
                   src={`https://www.google.com/maps?q=${encodeURIComponent(mapSearchQuery)}&output=embed`}
                   width="100%"
                   height="100%"
-                  style={{ border: 0 }}
+                  style={{ border: 0, width: '100%', height: '100%', minHeight: '300px' }}
                   allowFullScreen={false}
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"

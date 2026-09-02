@@ -28,7 +28,7 @@ export const FaqSection: React.FC = () => {
     },
     {
       question: 'Are toll and parking charges included?',
-      answer: 'Standard quotes include driver charges and fuel. Tolls, state taxes, and parking can be bundled into all-inclusive packages or billed at actuals.',
+      answer: 'No, Toll, Parking, and State Border Taxes are not included in the cab tariff. They are paid separately as per actual receipts during the journey.',
     },
   ];
 
@@ -47,7 +47,7 @@ export const FaqSection: React.FC = () => {
     },
     {
       question: 'टोल आणि पार्किंगचे शुल्क समाविष्ट आहे का?',
-      answer: 'आमच्या दरांमध्ये ड्रायव्हर भत्ता आणि इंधन समाविष्ट असते. टोल आणि पार्किंग प्रत्यक्ष पावतीनुसार किंवा सर्वसमावेशक पॅकेजमध्ये घेता येते.',
+      answer: 'नाही, टोल, पार्किंग आणि राज्य कर हे मूळ गाडी भाड्यात समाविष्ट नसतात; ते प्रवासादरम्यान प्रत्यक्ष पावतीनुसार स्वतंत्र द्यावे लागतात.',
     },
   ];
 

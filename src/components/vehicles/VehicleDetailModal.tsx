@@ -227,8 +227,8 @@ export const VehicleDetailModal: React.FC<VehicleDetailModalProps> = ({
                   <td style={{ padding: '8px 0', fontWeight: 'normal', color: '#0f172a', textAlign: 'right' }}>₹{language === 'mr' ? toMarathiDigits(vehicle.extraHourRate) : vehicle.extraHourRate} {language === 'mr' ? '/ तास' : '/ Hour'}</td>
                 </tr>
                 <tr>
-                  <td style={{ padding: '8px 0', color: '#64748b' }}>{language === 'mr' ? 'टोल, राज्य टॅक्स आणि पार्किंग' : 'Tolls, State Border Tax & Parking'}</td>
-                  <td style={{ padding: '8px 0', fontWeight: 'normal', color: '#0f172a', textAlign: 'right' }}>{language === 'mr' ? 'पारदर्शक बिलिंग (पावतीनुसार)' : 'Clear transparent billing (Actuals)'}</td>
+                  <td style={{ padding: '8px 0', color: '#64748b' }}>{language === 'mr' ? 'टोल, पार्किंग आणि राज्य कर' : 'Tolls, Parking & State Tax'}</td>
+                  <td style={{ padding: '8px 0', fontWeight: 'normal', color: '#f97316', textAlign: 'right' }}>{language === 'mr' ? 'स्वतंत्र (प्रत्यक्ष पावतीनुसार)' : 'Extra (As per actuals)'}</td>
                 </tr>
               </tbody>
             </table>

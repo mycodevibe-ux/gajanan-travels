@@ -5,7 +5,7 @@ export const faqsData: FaqItem[] = [
     id: 'faq-1',
     category: 'pricing',
     question: 'Are Toll Taxes, Parking, and State Entry Taxes included in the quote?',
-    answer: 'Yes! When you receive a package or outstation quote from us, we provide a crystal-clear breakdown. You can choose all-inclusive packages (where tolls, state border taxes, parking, and driver allowances are included) or a basic per-km rate package.',
+    answer: 'No, Toll taxes, parking fees, and state border entry taxes are not included in the cab fare. They are paid separately as per actual receipts during your journey.',
   },
   {
     id: 'faq-2',

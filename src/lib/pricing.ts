@@ -119,13 +119,13 @@ export function calculateEstimatedPrice(formData: Partial<BookingFormData>): Pri
     }
 
     case 'outstation_oneway': {
-      totalDistanceKm = Math.max(vehicle.minKmPerDay || 200, oneWayKm);
+      totalDistanceKm = Math.max(vehicle.minKmPerDay || 300, oneWayKm);
       baseAmount = totalDistanceKm * vehicle.pricePerKm;
       driverAllowance = vehicle.driverAllowancePerDay;
-      estimatedTollTaxes = Math.round(totalDistanceKm * 1.5);
+      estimatedTollTaxes = 0;
       breakdownNotes.push(`Outstation One-Way (~${totalDistanceKm} KM billed @ ₹${vehicle.pricePerKm}/km)`);
       breakdownNotes.push(`Driver Day Allowance: ₹${driverAllowance}`);
-      breakdownNotes.push(`Estimated Toll & Border Tax: ₹${estimatedTollTaxes}`);
+      breakdownNotes.push(`Toll & Parking: Extra as per actuals (टोल व पार्किंग स्वतंत्र)`);
       break;
     }
 
@@ -138,11 +138,11 @@ export function calculateEstimatedPrice(formData: Partial<BookingFormData>): Pri
 
       baseAmount = totalDistanceKm * vehicle.pricePerKm;
       driverAllowance = vehicle.driverAllowancePerDay * days;
-      estimatedTollTaxes = 350 * days;
+      estimatedTollTaxes = 0;
 
       breakdownNotes.push(`Outstation Roundtrip (${days} Day(s), ~${totalDistanceKm} KM @ ₹${vehicle.pricePerKm}/km)`);
       breakdownNotes.push(`Driver Allowance (${days} days @ ₹${vehicle.driverAllowancePerDay}/day): ₹${driverAllowance}`);
-      breakdownNotes.push(`Estimated Tolls & Taxes: ₹${estimatedTollTaxes}`);
+      breakdownNotes.push(`Toll & Parking: Extra as per actuals (टोल व पार्किंग स्वतंत्र)`);
       break;
     }
   }

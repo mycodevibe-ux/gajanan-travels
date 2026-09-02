@@ -250,13 +250,36 @@ export const OurVehiclesSection: React.FC<OurVehiclesSectionProps> = ({ onSelect
                 </div>
               </div>
 
+              {/* 300 KM / Day Package Badge */}
+              <div style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                backgroundColor: '#ebf5f0',
+                border: '1px solid #c2e2d0',
+                color: '#1b4332',
+                fontSize: '0.74rem',
+                fontWeight: 'normal',
+                padding: '3px 8px',
+                borderRadius: '6px',
+                marginBottom: '8px',
+                alignSelf: 'flex-start',
+              }}>
+                <span>🏷️</span>
+                <span>
+                  {language === 'mr' 
+                    ? `किमान ३०० किमी/दिवस पॅकेज: ₹${toMarathiDigits(vehicle.baseFarePerDay.toLocaleString('en-IN'))}` 
+                    : `Min. 300 KM/Day Package: ₹${vehicle.baseFarePerDay.toLocaleString('en-IN')}`}
+                </span>
+              </div>
+
               {/* Tagline */}
               <p style={{
                 fontSize: '0.78rem',
                 color: '#64748b',
                 lineHeight: 1.4,
-                marginBottom: '12px',
-                minHeight: '34px',
+                marginBottom: '10px',
+                minHeight: '32px',
               }}>
                 {language === 'mr' ? (vehicleTaglinesMr[vehicle.id] || vehicle.tagline) : vehicle.tagline}
               </p>

@@ -587,11 +587,11 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
                   <span style={{ color: '#94a3b8' }}>•</span>
                   <span>{language === 'mr' ? toMarathiDigits(wizardRoute.durationText.mr) : wizardRoute.durationText.en}</span>
                   <span style={{ color: '#94a3b8' }}>•</span>
-                  <span>FastTag: ₹{language === 'mr' ? toMarathiDigits(wizardRoute.tollEstimate) : wizardRoute.tollEstimate}</span>
+                  <span>FastTag: ~₹{language === 'mr' ? toMarathiDigits(wizardRoute.tollEstimate) : wizardRoute.tollEstimate} (स्वतंत्र)</span>
                 </>
               )}
             </div>
-            <span>✓ {language === 'mr' ? 'चालक व टोल समाविष्ट' : 'Includes Driver & Tolls'}</span>
+            <span>✓ {language === 'mr' ? 'किमान ३०० किमी/दिवस पॅकेज • टोल व पार्किंग स्वतंत्र' : 'Min. 300 KM/Day Package • Toll & Parking Extra'}</span>
           </div>
 
           {/* Compact Bottom Price & Action Strip */}
