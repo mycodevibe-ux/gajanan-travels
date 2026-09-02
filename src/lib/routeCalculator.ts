@@ -488,8 +488,8 @@ export function getRouteEstimate(pickup = '', destination = '', isRoundTrip = tr
       tollEstimate: 0,
       oneWayToll: 0,
       roundTripToll: 0,
-      tollPlazas: 'ठिकाण प्रविष्ट करा (Enter Destination)',
-      routeTitle: cleanPickup ? `${pTitle} → ...` : 'मार्ग निवडा (Select Route)',
+      tollPlazas: 'Enter Destination',
+      routeTitle: cleanPickup ? `${pTitle} → ...` : 'Select Route',
     };
   }
 

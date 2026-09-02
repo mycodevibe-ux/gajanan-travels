@@ -122,7 +122,7 @@ export const HomeContactSection: React.FC = () => {
 
     // Direct WhatsApp dispatch with route, toll & fare breakdown
     const routeSummary = hasRouteInput 
-      ? `\n🛣️ *Route:* ${routeEstimate.routeTitle} (~${routeEstimate.distanceKm} KM)\n⏱️ *Est. Time:* ${routeEstimate.durationText.en}\n💳 *FastTag Toll:* ~₹${totalToll} (${tripDays} Day${tripDays > 1 ? 's' : ''} - स्वतंत्र / Extra as per actuals)\n💰 *Est. Cab Fare:* ₹${cabFare.toLocaleString('en-IN')} (${tripDays} Day${tripDays > 1 ? 's' : ''} Roundtrip)`
+      ? `\n🛣️ *Route:* ${routeEstimate.routeTitle} (~${routeEstimate.distanceKm} KM)\n⏱️ *Est. Time:* ${routeEstimate.durationText.en}\n💳 *FastTag Toll:* ~₹${totalToll} (${tripDays} Day${tripDays > 1 ? 's' : ''} - Extra as per actuals)\n💰 *Est. Cab Fare:* ₹${cabFare.toLocaleString('en-IN')} (${tripDays} Day${tripDays > 1 ? 's' : ''} Roundtrip)`
       : '';
 
     const message = encodeURIComponent(
@@ -271,7 +271,7 @@ export const HomeContactSection: React.FC = () => {
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }} className="contact-grid-row">
                 <div>
                   <label style={{ display: 'block', fontSize: '0.74rem', color: '#64748b', fontWeight: 'normal', marginBottom: '4px' }}>
-                    {language === 'mr' ? 'प्रवासाची तारीख (Start Date)' : 'Start Date (Pickup)'}
+                    {language === 'mr' ? 'प्रवासाची तारीख' : 'Start Date (Pickup)'}
                   </label>
                   <input
                     type="date"
@@ -301,7 +301,7 @@ export const HomeContactSection: React.FC = () => {
                 <div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
                     <label style={{ fontSize: '0.74rem', color: '#64748b', fontWeight: 'normal' }}>
-                      {language === 'mr' ? 'परतीची तारीख (End Date)' : 'End Date (Return)'}
+                      {language === 'mr' ? 'परतीची तारीख' : 'End Date (Return)'}
                     </label>
                     <span style={{ fontSize: '0.68rem', color: '#047857', fontWeight: 'normal' }}>
                       {language === 'mr' ? `(${toMarathiDigits(tripDays)} दिवस)` : `(${tripDays} Day${tripDays > 1 ? 's' : ''})`}
@@ -615,7 +615,7 @@ export const HomeContactSection: React.FC = () => {
                 </div>
                 <div>
                   <div style={{ fontWeight: 'normal', fontSize: '0.86rem', color: '#0c2338' }}>
-                    {language === 'mr' ? 'कार्यालयीन वेळ (Hours)' : 'Hours'}
+                    {language === 'mr' ? 'कार्यालयीन वेळ' : 'Hours'}
                   </div>
                   <div style={{ fontSize: '0.84rem', color: '#475569', fontWeight: 'normal' }}>
                     {language === 'mr' ? 'सोम – रवि, स. ६:०० ते रात्री ११:००' : 'Mon – Sun, 6 AM – 11 PM'}

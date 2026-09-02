@@ -604,7 +604,7 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
                   <span style={{ color: '#94a3b8' }}>•</span>
                   <span>{language === 'mr' ? toMarathiDigits(wizardRoute.durationText.mr) : wizardRoute.durationText.en}</span>
                   <span style={{ color: '#94a3b8' }}>•</span>
-                  <span>FastTag: ~₹{language === 'mr' ? toMarathiDigits(wizardTotalToll) : wizardTotalToll} ({language === 'mr' ? `${toMarathiDigits(wizardDays)} दिवस` : `${wizardDays} Day${wizardDays > 1 ? 's' : ''}`} - स्वतंत्र)</span>
+                  <span>FastTag: ~₹{language === 'mr' ? toMarathiDigits(wizardTotalToll) : wizardTotalToll} ({language === 'mr' ? `${toMarathiDigits(wizardDays)} दिवस - स्वतंत्र` : `${wizardDays} Day${wizardDays > 1 ? 's' : ''} - Extra`})</span>
                 </>
               )}
             </div>
