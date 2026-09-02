@@ -313,10 +313,10 @@ export const Footer: React.FC = () => {
           color: '#64748b',
         }}>
           <div>
-            {language === 'mr' ? `© २०२६ गजानन ट्रॅव्हल्स. सर्व हक्क राखीव.` : `© 2026 ${siteConfig.name}. All rights reserved.`}
+            {language === 'mr' ? `© २०२६ ${siteConfig.nameMr || 'गजानन ट्रॅव्हल्स'}. सर्व हक्क राखीव.` : `© 2026 ${siteConfig.name}. All rights reserved.`}
           </div>
           <div>
-            {language === 'mr' ? 'डिझाईन: स्पायडर' : 'Designed by Spider'}
+            {language === 'mr' ? '१००% अधिकृत व सुरक्षित टूरिस्ट सेवा' : '100% Verified & Safe Tourist Cab Service'}
           </div>
         </div>
       </div>
