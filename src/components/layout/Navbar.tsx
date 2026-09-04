@@ -26,11 +26,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBookingModal }) => {
       const scrollY = window.pageYOffset || document.documentElement.scrollTop;
       setIsScrolled(scrollY > 20);
 
-      const sections = ['home', 'about', 'fleet', 'services', 'reviews', 'contact'];
+      const sections = ['about', 'fleet', 'services', 'reviews', 'contact'];
       const headerOffset = 110;
 
       if (scrollY < 120) {
-        setActiveSection('home');
+        setActiveSection('');
         return;
       }
 
@@ -54,7 +54,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBookingModal }) => {
   }, []);
 
   const navLinks = [
-    { name: t.nav_home, id: 'home' },
     { name: t.nav_about, id: 'about' },
     { name: t.nav_fleet, id: 'fleet' },
     { name: t.nav_services, id: 'services' },
@@ -85,7 +84,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBookingModal }) => {
     }
   };
 
-  const firstLetter = (siteConfig?.name || 'R').charAt(0).toUpperCase();
+  const firstLetter = (siteConfig?.name || 'G').charAt(0).toUpperCase();
 
   return (
     <>
@@ -183,7 +182,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBookingModal }) => {
             })}
           </nav>
 
-          {/* Right Action Cluster: Language Switcher + Phone Pill + Orange Book Now Button */}
+          {/* Right Action Cluster: Language Switcher + Mobile Hamburger */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             {/* Language Switcher Pill (EN | मराठी) */}
             <div style={{
@@ -230,33 +229,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBookingModal }) => {
                 मराठी
               </button>
             </div>
-
-            {/* Direct Phone Call Button */}
-            <a
-              href={`tel:${siteConfig.phone}`}
-              className="btn btn-outline-navy desktop-nav"
-              style={{
-                padding: '8px 14px',
-                fontSize: '0.8rem',
-                fontWeight: 'normal',
-                textDecoration: 'none',
-                gap: '6px',
-                display: 'inline-flex',
-                alignItems: 'center',
-              }}
-            >
-              <Phone size={13} color="#f97316" />
-              <span>{language === 'mr' ? toMarathiDigits(siteConfig.phone) : siteConfig.phone}</span>
-            </a>
-
-            {/* Orange Action CTA Button */}
-            <button
-              onClick={onOpenBookingModal}
-              className="btn btn-orange desktop-nav"
-              style={{ padding: '8px 16px', fontSize: '0.82rem', fontWeight: 'normal' }}
-            >
-              <span>{t.nav_book_now}</span>
-            </button>
 
             {/* Mobile Hamburger */}
             <button
@@ -410,27 +382,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBookingModal }) => {
                   );
                 })}
               </div>
-            </div>
-
-            <div style={{ paddingTop: '20px', borderTop: '1px solid #e2e8f0', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <a
-                href={`tel:${siteConfig.phone}`}
-                className="btn btn-outline-navy"
-                style={{ width: '100%', padding: '10px' }}
-              >
-                <Phone size={15} color="#f97316" />
-                <span>{language === 'mr' ? toMarathiDigits(siteConfig.phone) : siteConfig.phone}</span>
-              </a>
-              <button
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  if (onOpenBookingModal) onOpenBookingModal();
-                }}
-                className="btn btn-orange"
-                style={{ width: '100%', padding: '10px' }}
-              >
-                <span>{t.nav_book_now}</span>
-              </button>
             </div>
           </div>
         </div>

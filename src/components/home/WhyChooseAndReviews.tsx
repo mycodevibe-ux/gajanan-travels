@@ -25,7 +25,7 @@ export const WhyChooseAndReviews: React.FC = () => {
       name: 'Sneha Kulkarni',
       trip: 'Pune to Goa',
       avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80',
-      comment: 'Very good experience with Rideway. Clean car and polite driver. Will book again.',
+      comment: 'Very good experience with Gajanan Tours & Travels. Clean car and polite driver. Will book again.',
       rating: 5,
     },
     {

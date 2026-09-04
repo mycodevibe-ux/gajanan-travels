@@ -50,7 +50,7 @@ export const MobileBottomBar: React.FC<MobileBottomBarProps> = ({ onOpenBookingM
 
       {/* WhatsApp Button */}
       <a
-        href={`https://wa.me/${siteConfig.whatsappNumber}?text=Hello%20RIDEWAY,%20I%20want%20to%20inquire%20about%20a%20cab`}
+        href={`https://wa.me/${siteConfig.whatsappNumber}?text=Hello%20Gajanan%20Tours%20and%20Travels,%20I%20want%20to%20inquire%20about%20a%20cab`}
         target="_blank"
         rel="noopener noreferrer"
         style={{

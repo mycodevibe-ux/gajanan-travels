@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { HeroSection } from '@/components/home/HeroSection';
 import { AboutStorySection } from '@/components/home/AboutStorySection';
@@ -23,19 +23,51 @@ export default function HomePage() {
 interface HomeContentProps {
   onOpenBookingModal?: (type?: TripType, vehicleId?: string, initialData?: Partial<BookingFormData>) => void;
   onSelectVehicle?: (vehicle: Vehicle) => void;
-  onOpenVehicleDetails?: (vehicle: Vehicle) => void;
+  bookingInitialTripType?: TripType;
+  bookingVehicleId?: string;
+  bookingInitialData?: Partial<BookingFormData>;
 }
 
 function HomeContent({
-  onOpenBookingModal = () => {},
-  onSelectVehicle = () => {},
-  onOpenVehicleDetails = () => {},
+  onOpenBookingModal,
+  onSelectVehicle,
+  bookingInitialTripType,
+  bookingVehicleId,
+  bookingInitialData,
 }: HomeContentProps) {
+  const [activeTripType, setActiveTripType] = useState<TripType | undefined>(bookingInitialTripType || 'outstation_roundtrip');
+  const [activeVehicleId, setActiveVehicleId] = useState<string | undefined>(bookingVehicleId);
+  const [activeData, setActiveData] = useState<Partial<BookingFormData> | undefined>(bookingInitialData);
+
+  const scrollToBooking = (type: TripType = 'outstation_roundtrip', vehicleId?: string, initialData?: Partial<BookingFormData>) => {
+    setActiveTripType(type);
+    if (vehicleId) setActiveVehicleId(vehicleId);
+    if (initialData) setActiveData(initialData);
+
+    const el = document.getElementById('booking-section') || document.getElementById('contact');
+    if (el) {
+      const headerOffset = 70;
+      const elementPosition = el.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  const handleVehicleSelect = (vehicle: Vehicle) => {
+    scrollToBooking('outstation_roundtrip', vehicle.id, {
+      selectedVehicleId: vehicle.id,
+      passengers: vehicle.passengerCapacity,
+    });
+  };
+
   return (
     <div style={{ scrollBehavior: 'smooth' }}>
-      {/* 1. Hero Section & "Plan your ride" Search Bar (#home) */}
+      {/* 1. Hero Section (#home) */}
       <section id="home">
-        <HeroSection onOpenBookingModal={onOpenBookingModal} />
+        <HeroSection onOpenBookingModal={() => scrollToBooking()} />
       </section>
 
       {/* 2. "Built by drivers who love the road" About Story (#about) */}
@@ -45,12 +77,12 @@ function HomeContent({
 
       {/* 3. "Our fleet" Vehicles Section (#fleet) */}
       <section id="fleet">
-        <OurVehiclesSection onSelectVehicle={onSelectVehicle} />
+        <OurVehiclesSection onSelectVehicle={handleVehicleSelect} />
       </section>
 
       {/* 4. "What we offer" Services Grid (#services) */}
       <section id="services">
-        <HomeServicesSection onOpenBookingModal={onOpenBookingModal} />
+        <HomeServicesSection onOpenBookingModal={(type) => scrollToBooking(type)} />
       </section>
 
       {/* 5. "Why choose us" Dark Navy Trust Strip (#why-us) */}
@@ -68,9 +100,13 @@ function HomeContent({
         <FaqSection />
       </section>
 
-      {/* 8. "Plan your trip" Contact Form & Google Map (#contact) */}
+      {/* 8. Dedicated Live Booking Section & Contact / Map (#contact / #booking-section) */}
       <section id="contact">
-        <HomeContactSection />
+        <HomeContactSection 
+          initialTripType={activeTripType} 
+          initialVehicleId={activeVehicleId} 
+          initialData={activeData} 
+        />
       </section>
     </div>
   );

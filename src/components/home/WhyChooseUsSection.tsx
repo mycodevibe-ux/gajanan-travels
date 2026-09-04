@@ -89,7 +89,7 @@ export const WhyChooseUsSection: React.FC = () => {
           marginBottom: '38px',
           letterSpacing: '0.3px',
         }}>
-          {language === 'mr' ? 'गजानन ट्रॅव्हल्स का निवडावे?' : `Why choose ${siteConfig.name}`}
+          {language === 'mr' ? 'गजानन टूर्स अँड ट्रॅव्हल्स का निवडावे?' : `Why choose ${siteConfig.name}`}
         </h2>
 
         {/* 5 Circular Badges Strip matching mockup */}

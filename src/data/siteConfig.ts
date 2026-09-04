@@ -1,7 +1,7 @@
 import { SiteConfig } from '@/types';
 
 export const siteConfig: SiteConfig = {
-  name: 'Gajanan Travels',
+  name: 'Gajanan Tours & Travels',
   legalName: 'Gajanan Tours & Travels Pune',
   tagline: 'Your Journey, Our Responsibility',
   description: 'Pune’s premier tourist taxi and bus rental service for outstation tours, local city travel, airport drops, and group travel.',

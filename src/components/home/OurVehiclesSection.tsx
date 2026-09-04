@@ -26,9 +26,12 @@ export const OurVehiclesSection: React.FC<OurVehiclesSectionProps> = ({ onSelect
     'swift-dzire': 'लहान कुटुंबासाठी आरामदायी व किफायतशीर एसी सेडान.',
     'ertiga': '६-७ व्यक्तींसाठी प्रशस्त, आरामदायी आणि भरपूर जागेसह दर्जेदार गाडी.',
     'innova-crysta': 'लांबच्या आऊटस्टेशन व कौटुंबिक प्रवासासाठी सर्वोत्तम लक्झरी गाडी.',
-    'tata-17-seater': 'ग्रुप व तीर्थक्षेत्र सहलींसाठी १७ सीटर लक्झरी टेम्पो ट्रॅव्हलर.',
-    'tata-20-seater': 'कौटुंबिक कार्यक्रम व ग्रुप सहलींसाठी २० सीटर टूरिस्ट बस.',
-    'urbania': 'अत्याधुनिक इंटिरिअर असलेली अल्ट्रा-लक्झरी एक्झिक्युटिव्ह व्हॅन.',
+    'tempo-17-seater-nonac': 'ग्रुप व तीर्थक्षेत्र सहलींसाठी १७ सीटर किफायतशीर नॉन-एसी टेम्पो ट्रॅव्हलर.',
+    'tempo-17-seater-ac': 'आरामदायी ग्रुप प्रवासासाठी १७ सीटर लक्झरी एसी टेम्पो ट्रॅव्हलर.',
+    'bus-20-seater-nonac': 'कौटुंबिक कार्यक्रम व ग्रुप सहलींसाठी २० सीटर नॉन-एसी टूरिस्ट बस.',
+    'bus-20-seater-ac': 'लग्नकार्ये व कॉर्पोरेट टूरसाठी २० सीटर लक्झरी एसी कोच.',
+    'bus-32-seater-nonac': 'मोठ्या ग्रुप सहली व विवाह सोहळ्यांसाठी ३२ सीटर टूरिस्ट बस.',
+    'bus-40-seater-nonac': 'मोठ्या ग्रुप व तीर्थयात्रांसाठी ४० सीटर हेवी ड्युटी टूरिस्ट कोच.',
   };
 
   return (
@@ -304,7 +307,11 @@ export const OurVehiclesSection: React.FC<OurVehiclesSectionProps> = ({ onSelect
                 <span style={{ color: '#cbd5e1' }}>|</span>
                 <span style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', fontWeight: 'normal', color: '#1b4332' }}>
                   <Sparkles size={14} color="#1b4332" />
-                  <span>{language === 'mr' ? 'एसी / नॉन-एसी' : 'AC / Non-AC'}</span>
+                  <span>
+                    {vehicle.ac 
+                      ? (language === 'mr' ? 'एसी (AC)' : 'AC') 
+                      : (language === 'mr' ? 'नॉन-एसी (Non-AC)' : 'Non-AC')}
+                  </span>
                 </span>
               </div>
 

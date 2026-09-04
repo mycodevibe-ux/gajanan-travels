@@ -156,7 +156,7 @@ export const translations: Record<Language, Translations> = {
     search_btn: 'Search',
 
     // About Story
-    about_tag: 'ABOUT GAJANAN TRAVELS',
+    about_tag: 'ABOUT GAJANAN TOURS & TRAVELS',
     about_title: 'Built by drivers who love the road.',
     about_desc: 'Founded with a passion for punctuality, safety, and transparent fares. We take pride in spotless AC cabs, well-mannered chauffeurs, and 24/7 dedicated support across Maharashtra.',
     about_feat_1_title: 'Honest transparent pricing',
@@ -169,7 +169,7 @@ export const translations: Record<Language, Translations> = {
     // Vehicles Fleet
     fleet_tag: 'OUR VEHICLES',
     fleet_title: 'Our Fleet',
-    fleet_subtitle: 'Sedans to 20-seater buses — all cleaned, serviced, and AC ready.',
+    fleet_subtitle: 'Sedans to 40-seater luxury buses — all cleaned, serviced, and AC ready.',
     fleet_tab_all: 'All vehicles',
     fleet_tab_sedan: 'Sedans',
     fleet_tab_suv: 'SUVs & MUVs',
@@ -192,7 +192,7 @@ export const translations: Record<Language, Translations> = {
     service_local_title: 'Local rental',
     service_local_desc: 'Flexible hourly or full-day sanitized cab rentals within Pune.',
     service_group_title: 'Group travel',
-    service_group_desc: '17 to 20 seater luxury tempo travellers & buses for group tours.',
+    service_group_desc: '17 to 40 seater luxury tempo travellers & buses for group tours.',
     service_corporate_title: 'Corporate travel',
     service_corporate_desc: 'Reliable executive employee transit and VIP corporate travel.',
     service_family_title: 'Family tours',
@@ -277,7 +277,7 @@ export const translations: Record<Language, Translations> = {
     search_btn: 'शोधा',
 
     // About Story
-    about_tag: 'गजानन ट्रॅव्हल्स बद्दल',
+    about_tag: 'गजानन टूर्स अँड ट्रॅव्हल्स बद्दल',
     about_title: 'रस्त्यांची उत्तम माहिती असलेल्या चालकांनी सुरू केलेले.',
     about_desc: 'वेळेचे काटेकोर नियोजन, सुरक्षितता आणि पारदर्शक दर हीच आमची ओळख. संपूर्ण महाराष्ट्रात दर्जेदार एसी गाड्या आणि २४ तास तत्पर सेवेचा विश्वास.',
     about_feat_1_title: 'पारदर्शक आणि योग्य दर',
@@ -290,12 +290,12 @@ export const translations: Record<Language, Translations> = {
     // Vehicles Fleet
     fleet_tag: 'आमचा ताफा',
     fleet_title: 'आमच्या उपलब्ध गाड्या',
-    fleet_subtitle: 'सेडान पासून २०-सीटर लक्झरी बसेस — सर्व सुस्थितीत आणि एसी सज्ज.',
+    fleet_subtitle: 'सेडान पासून ४०-सीटर लक्झरी बसेस — सर्व सुस्थितीत आणि सज्ज.',
     fleet_tab_all: 'सर्व गाड्या',
     fleet_tab_sedan: 'सेडान (Dzire)',
     fleet_tab_suv: 'एसयूव्ही (Ertiga/Innova)',
     fleet_tab_tempo: 'टेम्पो ट्रॅव्हलर (१७ सीटर)',
-    fleet_tab_bus: 'टूरिस्ट बस (२० सीटर)',
+    fleet_tab_bus: 'टूरिस्ट बसेस (२०-४० सीटर)',
     fleet_per_km: '/ किमी',
     fleet_starting_at: 'सुरुवातीचे दर',
     fleet_seating: 'आसने',
@@ -313,7 +313,7 @@ export const translations: Record<Language, Translations> = {
     service_local_title: 'स्थानिक पुणे प्रवास',
     service_local_desc: 'तास किंवा संपूर्ण दिवसासाठी पुण्यात सोयीस्कर कॅब.',
     service_group_title: 'ग्रुप व कौटुंबिक प्रवास',
-    service_group_desc: '१७ ते २० सीटर लक्झरी टेम्पो ट्रॅव्हलर व टूरिस्ट बसेस.',
+    service_group_desc: '१७ ते ४० सीटर लक्झरी टेम्पो ट्रॅव्हलर व टूरिस्ट बसेस.',
     service_corporate_title: 'कॉर्पोरेट प्रवास',
     service_corporate_desc: 'कंपन्या आणि व्हीआयपी पाहुण्यांसाठी दर्जेदार कार सेवा.',
     service_family_title: 'कौटुंबिक सहली',
@@ -322,7 +322,7 @@ export const translations: Record<Language, Translations> = {
     service_support_desc: 'त्वरित बुकिंग आणि २४ तास तत्पर फोन सपोर्ट.',
 
     // Why Choose Us
-    why_tag: 'गजानन ट्रॅव्हल्स का निवडावे?',
+    why_tag: 'गजानन टूर्स अँड ट्रॅव्हल्स का निवडावे?',
     why_title: 'विश्वासू आणि सुरक्षित प्रवासाची हमी',
     why_card_1_title: 'वाजवी व निश्चित दर',
     why_card_1_desc: 'कोणतीही छुपी दरवाढ नाही, स्पष्ट व पारदर्शक दरपत्रक.',

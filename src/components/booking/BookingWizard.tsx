@@ -42,14 +42,14 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
   const { language, t } = useLanguage();
   const [formData, setFormData] = useState<BookingFormData>({
     tripType: initialTripType === 'tour_package' ? 'outstation_roundtrip' : initialTripType,
-    pickupCity: initialData?.pickupCity || 'Pune',
-    dropCity: initialData?.dropCity || 'Mahabaleshwar',
+    pickupCity: initialData?.pickupCity || '',
+    dropCity: initialData?.dropCity || '',
     pickupDate: initialData?.pickupDate || new Date(Date.now() + 86400000).toISOString().split('T')[0],
     pickupTime: '08:00',
-    returnDate: initialData?.returnDate || new Date(Date.now() + 86400000 * 3).toISOString().split('T')[0],
+    returnDate: initialData?.returnDate || initialData?.pickupDate || new Date(Date.now() + 86400000).toISOString().split('T')[0],
     rentalPackageHours: '8hr80km',
     selectedVehicleId: initialData?.selectedVehicleId || initialVehicleId || vehiclesData[0].id,
-    passengers: initialData?.passengers || 4,
+    passengers: initialData?.passengers || vehiclesData[0].passengerCapacity || 4,
     luggage: 2,
     fullName: '',
     phone: '',
@@ -71,7 +71,12 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
         selectedVehicleId: initialData.selectedVehicleId || initialVehicleId || prev.selectedVehicleId,
       }));
     } else if (initialVehicleId) {
-      setFormData((prev) => ({ ...prev, selectedVehicleId: initialVehicleId }));
+      const v = vehiclesData.find(veh => veh.id === initialVehicleId);
+      setFormData((prev) => ({ 
+        ...prev, 
+        selectedVehicleId: initialVehicleId,
+        passengers: v?.passengerCapacity || prev.passengers 
+      }));
     }
   }, [initialData, initialVehicleId]);
 
@@ -110,35 +115,11 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
     return (wizardRoute.tollEstimate || 0) * wizardDays;
   }, [wizardRoute.tollEstimate, wizardDays]);
 
-  // Auto-switch vehicle when passenger count changes
-  const handlePassengersChange = (count: number) => {
-    const validCount = Math.max(1, count);
-    let autoVehicleId = formData.selectedVehicleId;
-
-    if (validCount <= 4) {
-      autoVehicleId = 'swift-dzire';
-    } else if (validCount <= 7) {
-      autoVehicleId = 'ertiga';
-    } else if (validCount <= 13) {
-      autoVehicleId = 'force-urbania';
-    } else if (validCount <= 17) {
-      autoVehicleId = 'tata-17-seater';
-    } else {
-      autoVehicleId = 'tata-20-seater';
-    }
-
-    setFormData((prev) => ({
-      ...prev,
-      passengers: validCount,
-      selectedVehicleId: autoVehicleId,
-    }));
-  };
-
   const handleTripTypeChange = (type: TripType) => {
     setFormData(prev => ({
       ...prev,
       tripType: type,
-      dropCity: type === 'local_rental' ? '' : (prev.dropCity || 'Mahabaleshwar'),
+      dropCity: type === 'local_rental' ? '' : prev.dropCity,
     }));
   };
 
@@ -159,7 +140,7 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
       alert('Please provide your full name and mobile number.');
       return;
     }
-    const refNumber = 'RW-' + Math.floor(100000 + Math.random() * 900000);
+    const refNumber = 'GT-' + Math.floor(100000 + Math.random() * 900000);
     setBookingRef(refNumber);
     setIsSubmitting(true);
 
@@ -441,11 +422,11 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
           {/* Visual Vehicle Selection Strip */}
           <div style={{ marginBottom: '14px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-              <label style={{ fontSize: '0.74rem', color: '#1b4332', fontWeight: 'normal' }}>
-                {language === 'mr' ? 'पसंतीची गाडी निवडा' : 'Select Preferred Cab / Vehicle'}
+              <label style={{ fontSize: '0.76rem', color: '#1b4332', fontWeight: 600 }}>
+                {language === 'mr' ? 'पसंतीची गाडी निवडा (Select Preferred Cab):' : 'Select Preferred Cab / Vehicle:'}
               </label>
-              <span style={{ fontSize: '0.7rem', color: '#64748b' }}>
-                {selectedVehicle.name} • {language === 'mr' ? toMarathiDigits(selectedVehicle.passengerCapacity) : selectedVehicle.passengerCapacity} {language === 'mr' ? 'आसने' : 'Seats'}
+              <span style={{ fontSize: '0.74rem', color: '#047857', fontWeight: 600, backgroundColor: '#ebf5f0', padding: '2px 8px', borderRadius: '6px' }}>
+                ✓ {selectedVehicle.name} • {language === 'mr' ? toMarathiDigits(selectedVehicle.passengerCapacity) : selectedVehicle.passengerCapacity} {language === 'mr' ? 'सीट क्षमता' : 'Seats'}
               </span>
             </div>
 
@@ -462,7 +443,7 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
                   <button
                     type="button"
                     key={v.id}
-                    onClick={() => setFormData({ ...formData, selectedVehicleId: v.id })}
+                    onClick={() => setFormData(prev => ({ ...prev, selectedVehicleId: v.id, passengers: v.passengerCapacity }))}
                     style={{
                       border: isSelected ? '2px solid #1b4332' : '1px solid #e2e8f0',
                       backgroundColor: isSelected ? '#f2f9f5' : '#ffffff',
@@ -524,19 +505,20 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
                     <div style={{
                       display: 'flex',
                       alignItems: 'center',
+                      justifyContent: 'center',
                       gap: '4px',
-                      fontSize: '0.74rem',
+                      fontSize: '0.72rem',
                       fontWeight: 'normal',
                       color: isSelected ? '#1b4332' : '#0f172a',
                       lineHeight: 1.2,
+                      textAlign: 'center',
                     }}>
-                      {getVehicleIcon(v.id || v.category, 12, isSelected ? '#1b4332' : '#64748b')}
-                      <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{v.name.split(' ')[0]}</span>
+                      <span style={{ whiteSpace: 'normal', wordBreak: 'break-word' }}>{v.name}</span>
                     </div>
 
                     {/* Rate & Capacity */}
                     <div style={{ fontSize: '0.68rem', color: isSelected ? '#047857' : '#64748b', fontWeight: 'normal', marginTop: '2px' }}>
-                      ₹{language === 'mr' ? toMarathiDigits(v.pricePerKm) : v.pricePerKm}{language === 'mr' ? '/किमी' : '/km'} • {language === 'mr' ? toMarathiDigits(v.passengerCapacity) : v.passengerCapacity}{language === 'mr' ? 'सीट' : 'S'}
+                      ₹{language === 'mr' ? toMarathiDigits(v.pricePerKm) : v.pricePerKm}{language === 'mr' ? '/किमी' : '/km'} • {language === 'mr' ? toMarathiDigits(v.passengerCapacity) : v.passengerCapacity} {language === 'mr' ? 'सीट' : 'Seats'}
                     </div>
                   </button>
                 );
@@ -544,71 +526,112 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
             </div>
           </div>
 
-          {/* Passengers Input with Auto Vehicle Matching */}
+          {/* Live Transparent Pricing Calculation Breakdown Box */}
           <div style={{
+            backgroundColor: '#f8fafc',
+            border: '1px solid #cbd5e1',
+            borderRadius: '10px',
+            padding: '10px 14px',
             marginBottom: '12px',
           }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
-              <label style={{ fontSize: '0.74rem', color: '#475569', fontWeight: 'normal' }}>
-                {language === 'mr' ? 'एकूण प्रवासी संख्या' : 'Total Passengers'}
-              </label>
-              <span style={{ fontSize: '0.72rem', color: '#047857', fontWeight: 'normal' }}>
-                ✓ {language === 'mr' ? `निवडलेली गाडी: ${selectedVehicle.name}` : `Matched Cab: ${selectedVehicle.name}`}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px', borderBottom: '1px dashed #cbd5e1', paddingBottom: '5px' }}>
+              <span style={{ fontSize: '0.76rem', color: '#1b4332', fontWeight: 600 }}>
+                {language === 'mr' ? '📊 भाड्याचे अचूक व पारदर्शक गणित:' : '📊 Transparent Calculation Breakdown:'}
+              </span>
+              <span style={{ fontSize: '0.72rem', color: '#64748b', fontWeight: 500 }}>
+                {isRound 
+                  ? `${language === 'mr' ? toMarathiDigits(wizardDays) : wizardDays} ${language === 'mr' ? 'दिवस पॅकेज' : 'Day(s) Trip'}` 
+                  : (formData.tripType === 'local_rental' ? (language === 'mr' ? 'स्थानिक पॅकेज' : 'Local Package') : (language === 'mr' ? 'वन-वे ड्रॉप' : 'One-Way Drop'))}
               </span>
             </div>
-            <div style={{ position: 'relative' }}>
-              <input
-                type="number"
-                min="1"
-                max="50"
-                value={formData.passengers}
-                onChange={(e) => handlePassengersChange(parseInt(e.target.value, 10) || 1)}
-                style={{
-                  width: '100%',
-                  padding: '9px 12px 9px 32px',
-                  borderRadius: '8px',
-                  border: '1px solid #cbd5e1',
-                  fontSize: '0.88rem',
-                  fontWeight: 'normal',
-                  outline: 'none',
-                  color: '#0f172a',
-                  backgroundColor: '#ffffff',
-                }}
-              />
-              <Users size={15} color="#1b4332" style={{ position: 'absolute', left: '10px', top: '11px' }} />
-            </div>
-          </div>
 
-          {/* Calculation Info Strip */}
-          <div style={{
-            backgroundColor: '#ebf5f0',
-            border: '1px solid #c2e2d0',
-            borderRadius: '8px',
-            padding: '8px 14px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            fontSize: '0.78rem',
-            color: '#1b4332',
-            fontWeight: 'normal',
-            marginBottom: '14px',
-            flexWrap: 'wrap',
-            gap: '6px',
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-              <span>📍 {language === 'mr' ? 'मार्ग:' : 'Route:'} <span style={{ fontWeight: 'normal' }}>{formData.pickupCity} → {formData.dropCity || (formData.tripType === 'local_rental' ? (language === 'mr' ? 'पुणे स्थानिक' : 'Pune Local') : 'City')}</span></span>
-              {formData.tripType !== 'local_rental' && (
-                <>
-                  <span style={{ color: '#94a3b8' }}>•</span>
-                  <span>~{language === 'mr' ? toMarathiDigits(wizardRoute.distanceKm) : wizardRoute.distanceKm} {language === 'mr' ? 'किमी' : 'KM'}</span>
-                  <span style={{ color: '#94a3b8' }}>•</span>
-                  <span>{language === 'mr' ? toMarathiDigits(wizardRoute.durationText.mr) : wizardRoute.durationText.en}</span>
-                  <span style={{ color: '#94a3b8' }}>•</span>
-                  <span>FastTag: ~₹{language === 'mr' ? toMarathiDigits(wizardTotalToll) : wizardTotalToll} ({language === 'mr' ? `${toMarathiDigits(wizardDays)} दिवस - स्वतंत्र` : `${wizardDays} Day${wizardDays > 1 ? 's' : ''} - Extra`})</span>
-                </>
-              )}
+            {formData.tripType === 'outstation_roundtrip' ? (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '6px', fontSize: '0.76rem', color: '#334155' }}>
+                <div>
+                  <span style={{ color: '#64748b' }}>{language === 'mr' ? 'किमान पॅकेज अंतर:' : 'Package Distance:'}</span>{' '}
+                  <strong style={{ color: '#0f172a' }}>{language === 'mr' ? toMarathiDigits(priceResult.estimatedDistanceKm) : priceResult.estimatedDistanceKm} KM</strong>{' '}
+                  <span style={{ fontSize: '0.7rem', color: '#64748b' }}>({language === 'mr' ? `${toMarathiDigits(wizardDays)} × ३००` : `${wizardDays} × 300`} KM/Day)</span>
+                </div>
+                <div>
+                  <span style={{ color: '#64748b' }}>{language === 'mr' ? 'गाडी दर:' : 'Vehicle Rate:'}</span>{' '}
+                  <strong style={{ color: '#0f172a' }}>₹{language === 'mr' ? toMarathiDigits(selectedVehicle.pricePerKm) : selectedVehicle.pricePerKm}/KM</strong>{' '}
+                  <span style={{ fontSize: '0.7rem', color: '#64748b' }}>({selectedVehicle.name})</span>
+                </div>
+                <div>
+                  <span style={{ color: '#64748b' }}>{language === 'mr' ? 'गाडीचे भाडे:' : 'Base Vehicle Fare:'}</span>{' '}
+                  <strong style={{ color: '#1b4332' }}>₹{language === 'mr' ? toMarathiDigits(priceResult.baseAmount.toLocaleString('en-IN')) : priceResult.baseAmount.toLocaleString('en-IN')}</strong>{' '}
+                  <span style={{ fontSize: '0.7rem', color: '#64748b' }}>({priceResult.estimatedDistanceKm} × ₹{selectedVehicle.pricePerKm})</span>
+                </div>
+                <div>
+                  <span style={{ color: '#64748b' }}>{language === 'mr' ? 'चालक रोज भत्ता:' : 'Driver Allowance:'}</span>{' '}
+                  <strong style={{ color: '#1b4332' }}>+ ₹{language === 'mr' ? toMarathiDigits(priceResult.driverAllowance.toLocaleString('en-IN')) : priceResult.driverAllowance.toLocaleString('en-IN')}</strong>{' '}
+                  <span style={{ fontSize: '0.7rem', color: '#64748b' }}>({wizardDays} × ₹{selectedVehicle.driverAllowancePerDay})</span>
+                </div>
+              </div>
+            ) : formData.tripType === 'outstation_oneway' ? (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '6px', fontSize: '0.76rem', color: '#334155' }}>
+                <div>
+                  <span style={{ color: '#64748b' }}>{language === 'mr' ? 'बिलिंग अंतर:' : 'Billed Distance:'}</span>{' '}
+                  <strong style={{ color: '#0f172a' }}>{priceResult.estimatedDistanceKm} KM</strong>{' '}
+                  <span style={{ fontSize: '0.7rem', color: '#64748b' }}>({language === 'mr' ? 'किमान ३०० किमी' : 'Min. 300 KM'})</span>
+                </div>
+                <div>
+                  <span style={{ color: '#64748b' }}>{language === 'mr' ? 'गाडीचे भाडे:' : 'Base Fare:'}</span>{' '}
+                  <strong style={{ color: '#1b4332' }}>₹{priceResult.baseAmount.toLocaleString('en-IN')}</strong>
+                </div>
+                <div>
+                  <span style={{ color: '#64748b' }}>{language === 'mr' ? 'चालक भत्ता:' : 'Driver Allowance:'}</span>{' '}
+                  <strong style={{ color: '#1b4332' }}>+ ₹{priceResult.driverAllowance.toLocaleString('en-IN')}</strong>
+                </div>
+              </div>
+            ) : (
+              <div style={{ fontSize: '0.76rem', color: '#334155' }}>
+                <span>{language === 'mr' ? 'स्थानिक पॅकेज भाडे:' : 'Local Package Fare:'}</span>{' '}
+                <strong style={{ color: '#1b4332' }}>₹{priceResult.baseAmount.toLocaleString('en-IN')}</strong> + {language === 'mr' ? 'चालक भत्ता' : 'Driver Allowance'} <strong>₹{priceResult.driverAllowance}</strong>
+              </div>
+            )}
+
+            <div style={{
+              marginTop: '8px',
+              paddingTop: '6px',
+              borderTop: '1px solid #e2e8f0',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '4px',
+              fontSize: '0.74rem',
+              color: '#475569',
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '4px' }}>
+                <span>📍 <strong>{language === 'mr' ? 'मार्ग:' : 'Route:'}</strong> {formData.pickupCity || (language === 'mr' ? 'उदा. पुणे' : 'Pickup')} → {formData.dropCity || (formData.tripType === 'local_rental' ? (language === 'mr' ? 'पुणे स्थानिक' : 'Pune Local') : (language === 'mr' ? 'गंतव्य स्थान' : 'Drop Destination'))} {wizardRoute.distanceKm > 0 ? `(~${language === 'mr' ? toMarathiDigits(wizardRoute.distanceKm) : wizardRoute.distanceKm} KM)` : ''}</span>
+                {wizardRoute.durationText.mr !== '--' && (
+                  <span style={{ color: '#0f172a' }}>⏱️ {language === 'mr' ? wizardRoute.durationText.mr : wizardRoute.durationText.en}</span>
+                )}
+              </div>
+
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                backgroundColor: '#ffffff',
+                border: '1px solid #e2e8f0',
+                padding: '6px 10px',
+                borderRadius: '6px',
+                fontSize: '0.72rem',
+                flexWrap: 'wrap',
+                gap: '4px',
+              }}>
+                <span style={{ color: '#047857', fontWeight: 600 }}>
+                  💳 {language === 'mr' ? 'फास्टटॅग टोल अंदाज:' : 'FastTag Toll Estimate:'}{' '}
+                  <strong>{wizardTotalToll > 0 ? `~₹${language === 'mr' ? toMarathiDigits(wizardTotalToll) : wizardTotalToll}` : (formData.dropCity ? (language === 'mr' ? 'टोल नाही' : 'No Toll') : (language === 'mr' ? 'गंतव्य स्थान टाका' : 'Enter drop destination'))}</strong>{' '}
+                  {wizardRoute.tollPlazas && wizardRoute.tollPlazas !== 'Enter Destination' && (
+                    <span style={{ color: '#64748b', fontWeight: 'normal' }}>({wizardRoute.tollPlazas})</span>
+                  )}
+                </span>
+                <span style={{ color: '#b45309', fontWeight: 500 }}>
+                  {language === 'mr' ? '• टोल व पार्किंग प्रत्यक्ष पावतीनुसार' : '• Toll & Parking extra as per actuals'}
+                </span>
+              </div>
             </div>
-            <span>✓ {language === 'mr' ? 'किमान ३०० किमी/दिवस पॅकेज • टोल व पार्किंग स्वतंत्र' : 'Min. 300 KM/Day Package • Toll & Parking Extra'}</span>
           </div>
 
           {/* Compact Bottom Price & Action Strip */}

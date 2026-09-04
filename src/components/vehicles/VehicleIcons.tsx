@@ -338,7 +338,7 @@ export function getVehicleIcon(vehicleIdOrCategory: string, size = 20, color = '
   if (key.includes('tempo') || key.includes('17') || key.includes('traveller')) {
     return <TempoTravellerIcon size={size} color={color} />;
   }
-  if (key.includes('bus') || key.includes('20') || key.includes('coach')) {
+  if (key.includes('bus') || key.includes('20') || key.includes('32') || key.includes('40') || key.includes('coach')) {
     return <TouristBusIcon size={size} color={color} />;
   }
   if (key.includes('urbania')) {

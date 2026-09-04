@@ -1,21 +1,16 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
-  Search, 
-  Car, 
-  UserCheck, 
-  Phone,
-  Tag,
-  ChevronLeft,
-  ChevronRight,
-  MapPin,
-  Sparkles
+  ChevronLeft, 
+  ChevronRight, 
+  MapPin, 
+  Sparkles,
+  ArrowRight
 } from 'lucide-react';
 import { TripType, BookingFormData } from '@/types';
 import { siteConfig } from '@/data/siteConfig';
 import { useLanguage } from '@/context/LanguageContext';
-import { toMarathiDigits, formatMarathiDate } from '@/lib/marathiNumbers';
 
 interface HeroSectionProps {
   onOpenBookingModal: (tripType?: TripType, vehicleId?: string, initialData?: Partial<BookingFormData>) => void;
@@ -24,7 +19,7 @@ interface HeroSectionProps {
 const tripSlidesEn = [
   {
     id: 1,
-    image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1000&q=85',
+    image: 'https://images.unsplash.com/photo-1589182373726-e4f658ab50f0?auto=format&fit=crop&w=1200&q=85',
     destination: 'Mahabaleshwar & Panchgani',
     distance: '120 KM from Pune',
     tag: 'Scenic Hillstation Roadtrip',
@@ -32,7 +27,7 @@ const tripSlidesEn = [
   },
   {
     id: 2,
-    image: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1000&q=85',
+    image: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1200&q=85',
     destination: 'Goa Coastal Highway',
     distance: '440 KM from Pune',
     tag: 'Beach & Coastal Tour',
@@ -40,7 +35,7 @@ const tripSlidesEn = [
   },
   {
     id: 3,
-    image: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1000&q=85',
+    image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=85',
     destination: 'Lonavala & Khandala Ghats',
     distance: '65 KM from Pune',
     tag: 'Monsoon Express Getaway',
@@ -48,7 +43,7 @@ const tripSlidesEn = [
   },
   {
     id: 4,
-    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=85',
+    image: 'https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=1200&q=85',
     destination: 'Shirdi Sai Darshan Route',
     distance: '185 KM from Pune',
     tag: 'Spiritual Temple Pilgrimage',
@@ -56,18 +51,18 @@ const tripSlidesEn = [
   },
   {
     id: 5,
-    image: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&w=1000&q=85',
-    destination: 'Maharashtra Outstation Network',
-    distance: '24/7 Verified Cabs',
-    tag: 'Executive Chauffeur Drive',
-    title: 'Sanitized Cabs & Road-Tested Drivers',
+    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=85',
+    destination: 'Konkan & Ganpatipule Coast',
+    distance: '320 KM from Pune',
+    tag: 'Coastal Beach Getaway',
+    title: 'Pristine Beaches & Coconut Groves',
   },
 ];
 
 const tripSlidesMr = [
   {
     id: 1,
-    image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1000&q=85',
+    image: 'https://images.unsplash.com/photo-1589182373726-e4f658ab50f0?auto=format&fit=crop&w=1200&q=85',
     destination: 'महाबळेश्वर व पाचगणी',
     distance: 'पुण्यापासून १२० किमी',
     tag: 'निसर्गरम्य थंड हवेचे ठिकाण',
@@ -75,7 +70,7 @@ const tripSlidesMr = [
   },
   {
     id: 2,
-    image: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1000&q=85',
+    image: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1200&q=85',
     destination: 'गोवा सागरी महामार्ग',
     distance: 'पुण्यापासून ४४० किमी',
     tag: 'समुद्रकिनारा व निसर्ग सफर',
@@ -83,7 +78,7 @@ const tripSlidesMr = [
   },
   {
     id: 3,
-    image: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1000&q=85',
+    image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=85',
     destination: 'लोणावळा व खंडाळा घाट',
     distance: 'पुण्यापासून ६५ किमी',
     tag: 'पावसाळी वीकेंड सहल',
@@ -91,7 +86,7 @@ const tripSlidesMr = [
   },
   {
     id: 4,
-    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=85',
+    image: 'https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=1200&q=85',
     destination: 'शिर्डी साई दर्शन मार्ग',
     distance: 'पुण्यापासून १८५ किमी',
     tag: 'पवित्र तीर्थक्षेत्र यात्रा',
@@ -99,35 +94,17 @@ const tripSlidesMr = [
   },
   {
     id: 5,
-    image: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&w=1000&q=85',
-    destination: 'महाराष्ट्र आऊटस्टेशन नेटवर्क',
-    distance: '२४/७ सॅनिटाईझ्ड गाड्या',
-    tag: 'विश्वासू चालक सेवा',
-    title: 'स्वच्छ गाड्या आणि अनुभवी चालकांचा ताफा',
+    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=85',
+    destination: 'कोकण व गणपतीपुळे समुद्रकिनारा',
+    distance: 'पुण्यापासून ३२० किमी',
+    tag: 'सागरी निसर्ग सहल',
+    title: 'शांत समुद्रकिनारा आणि नारळीच्या बागा',
   },
 ];
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBookingModal }) => {
   const { language, t } = useLanguage();
   const tripSlides = language === 'mr' ? tripSlidesMr : tripSlidesEn;
-  const [pickupLocation, setPickupLocation] = useState('');
-  const [dropLocation, setDropLocation] = useState('');
-  const [pickupDate, setPickupDate] = useState(
-    new Date(Date.now() + 86400000).toISOString().split('T')[0]
-  );
-  const [dropDate, setDropDate] = useState(
-    new Date(Date.now() + 172800000).toISOString().split('T')[0]
-  );
-  const [passengers, setPassengers] = useState('1-4');
-  const [vehicleType, setVehicleType] = useState('Sedan');
-
-  const handlePassengerSelect = (val: string) => {
-    setPassengers(val);
-    if (val === '1-4') setVehicleType('Sedan');
-    else if (val === '5-7') setVehicleType('SUV (Ertiga)');
-    else if (val === '8-17') setVehicleType('Tempo (17 Seater)');
-    else if (val === '18-20+') setVehicleType('Bus (20 Seater)');
-  };
 
   // Hero Trip Slider State
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -151,33 +128,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBookingModal }) 
     setCurrentSlide((prev) => (prev + 1) % tripSlides.length);
   };
 
-  const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const vehicleMapping: Record<string, string> = {
-      'Sedan': 'swift-dzire',
-      'SUV (Ertiga)': 'ertiga',
-      'Luxury SUV (Innova)': 'innova-crysta',
-      'Tempo (17 Seater)': 'tata-17-seater',
-      'Bus (20 Seater)': 'tata-20-seater',
-      'Luxury Van (Urbania)': 'urbania',
-    };
-
-    const numPassengers = passengers === '1-4' ? 4 : passengers === '5-7' ? 7 : passengers === '8-17' ? 17 : 20;
-
-    onOpenBookingModal('outstation_roundtrip', vehicleMapping[vehicleType] || 'swift-dzire', {
-      pickupCity: pickupLocation || 'Pune',
-      dropCity: dropLocation || 'Mahabaleshwar',
-      pickupDate: pickupDate,
-      returnDate: dropDate,
-      passengers: numPassengers,
-    });
-  };
-
   return (
     <div style={{
-      backgroundColor: '#f0f7fc',
-      padding: '50px 0 45px 0',
+      backgroundColor: '#ffffff',
+      padding: '70px 0 65px 0',
       position: 'relative',
       borderBottom: '1px solid #e2e8f0',
     }}>
@@ -186,19 +140,18 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBookingModal }) 
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-          gap: '36px',
+          gap: '44px',
           alignItems: 'center',
-          marginBottom: '38px',
         }}>
           {/* Left Text Block */}
           <div>
             <h1 style={{
-              fontSize: 'clamp(2.8rem, 5.5vw, 4.2rem)',
+              fontSize: 'clamp(2.8rem, 5.5vw, 4.4rem)',
               fontWeight: 'normal',
-              lineHeight: 1.05,
+              lineHeight: 1.06,
               color: '#0c2338',
               letterSpacing: '0.3px',
-              marginBottom: '18px',
+              marginBottom: '20px',
               fontFamily: 'var(--font-heading)',
               textTransform: 'uppercase',
             }}>
@@ -207,31 +160,42 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBookingModal }) 
             </h1>
 
             <p style={{
-              fontSize: '1rem',
+              fontSize: '1.05rem',
               color: '#475569',
-              lineHeight: 1.65,
-              marginBottom: '24px',
-              maxWidth: '520px',
+              lineHeight: 1.7,
+              marginBottom: '32px',
+              maxWidth: '540px',
             }}>
               {t.hero_subtitle}
             </p>
 
-            {/* 3 Feature Pill Badges matching mockup */}
-            <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-              <div className="hero-pill-badge">
-                <Car size={15} color="#f97316" />
-                <span>{t.hero_pill_clean}</span>
-              </div>
+            {/* CTA Buttons */}
+            <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap', alignItems: 'center' }}>
+              <button
+                type="button"
+                onClick={() => onOpenBookingModal('outstation_roundtrip')}
+                className="btn btn-orange"
+                style={{
+                  padding: '13px 32px',
+                  fontSize: '1rem',
+                  fontWeight: 'normal',
+                }}
+              >
+                <span>{t.hero_btn_book}</span>
+                <ArrowRight size={17} />
+              </button>
 
-              <div className="hero-pill-badge">
-                <UserCheck size={15} color="#f97316" />
-                <span>{t.hero_pill_drivers}</span>
-              </div>
-
-              <div className="hero-pill-badge">
-                <Tag size={15} color="#f97316" />
-                <span>{t.hero_pill_inclusive}</span>
-              </div>
+              <a
+                href="#fleet"
+                className="btn btn-secondary"
+                style={{
+                  padding: '13px 28px',
+                  fontSize: '1rem',
+                  fontWeight: 'normal',
+                }}
+              >
+                <span>{language === 'mr' ? 'गाड्यांचे दर पहा' : 'View Fleet & Rates'}</span>
+              </a>
             </div>
           </div>
 
@@ -245,7 +209,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBookingModal }) 
                 position: 'relative',
                 width: '100%',
                 maxWidth: '540px',
-                height: '350px',
+                height: '380px',
                 borderRadius: '24px',
                 overflow: 'hidden',
                 boxShadow: '0 24px 50px -10px rgba(12, 35, 56, 0.22)',
@@ -481,213 +445,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBookingModal }) 
               </div>
             </div>
           </div>
-        </div>
-
-        {/* "Plan your ride" Search Bar Card with Drop date and full width balanced layout */}
-        <div style={{
-          backgroundColor: '#ffffff',
-          borderRadius: '16px',
-          border: '1px solid #e2e8f0',
-          padding: '24px 28px',
-          boxShadow: '0 8px 30px rgba(12, 35, 56, 0.08)',
-          width: '100%',
-        }}>
-          <h2 style={{
-            fontSize: '1.25rem',
-            fontWeight: 'normal',
-            color: '#0c2338',
-            marginBottom: '16px',
-            fontFamily: 'var(--font-heading)',
-            letterSpacing: '0.3px',
-          }}>
-            {t.search_title}
-          </h2>
-
-          <form onSubmit={handleSearchSubmit}>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(6, 1fr) 115px',
-              gap: '14px',
-              alignItems: 'flex-end',
-              width: '100%',
-            }} className="plan-ride-grid">
-              {/* 1. Pickup location */}
-              <div>
-                <label style={{ display: 'block', fontSize: '0.78rem', color: '#64748b', fontWeight: 'normal', marginBottom: '5px' }}>
-                  {t.search_pickup}
-                </label>
-                <input
-                  type="text"
-                  placeholder={t.search_pickup_placeholder}
-                  value={pickupLocation}
-                  onChange={(e) => setPickupLocation(e.target.value)}
-                  style={{
-                    width: '100%',
-                    padding: '10px 12px',
-                    borderRadius: '8px',
-                    border: '1px solid #cbd5e1',
-                    fontSize: '0.86rem',
-                    fontWeight: 'normal',
-                    outline: 'none',
-                    backgroundColor: '#ffffff',
-                    color: '#0c2338',
-                  }}
-                  required
-                />
-              </div>
-
-              {/* 2. Drop location */}
-              <div>
-                <label style={{ display: 'block', fontSize: '0.78rem', color: '#64748b', fontWeight: 'normal', marginBottom: '5px' }}>
-                  {t.search_drop}
-                </label>
-                <input
-                  type="text"
-                  placeholder={t.search_drop_placeholder}
-                  value={dropLocation}
-                  onChange={(e) => setDropLocation(e.target.value)}
-                  style={{
-                    width: '100%',
-                    padding: '10px 12px',
-                    borderRadius: '8px',
-                    border: '1px solid #cbd5e1',
-                    fontSize: '0.86rem',
-                    fontWeight: 'normal',
-                    outline: 'none',
-                    backgroundColor: '#ffffff',
-                    color: '#0c2338',
-                  }}
-                  required
-                />
-              </div>
-
-              {/* 3. Pickup date */}
-              <div>
-                <label style={{ display: 'block', fontSize: '0.78rem', color: '#64748b', fontWeight: 'normal', marginBottom: '5px' }}>
-                  {t.search_pickup_date}
-                </label>
-                <input
-                  type="date"
-                  value={pickupDate}
-                  min={new Date().toISOString().split('T')[0]}
-                  onChange={(e) => setPickupDate(e.target.value)}
-                  style={{
-                    width: '100%',
-                    padding: '10px 12px',
-                    borderRadius: '8px',
-                    border: '1px solid #cbd5e1',
-                    fontSize: '0.86rem',
-                    fontWeight: 'normal',
-                    outline: 'none',
-                    backgroundColor: '#ffffff',
-                    color: '#0c2338',
-                  }}
-                  required
-                />
-              </div>
-
-              {/* 4. Drop date (NEW) */}
-              <div>
-                <label style={{ display: 'block', fontSize: '0.78rem', color: '#64748b', fontWeight: 'normal', marginBottom: '5px' }}>
-                  {t.search_drop_date}
-                </label>
-                <input
-                  type="date"
-                  value={dropDate}
-                  min={pickupDate || new Date().toISOString().split('T')[0]}
-                  onChange={(e) => setDropDate(e.target.value)}
-                  style={{
-                    width: '100%',
-                    padding: '10px 12px',
-                    borderRadius: '8px',
-                    border: '1px solid #cbd5e1',
-                    fontSize: '0.86rem',
-                    fontWeight: 'normal',
-                    outline: 'none',
-                    backgroundColor: '#ffffff',
-                    color: '#0c2338',
-                  }}
-                  required
-                />
-              </div>
-
-              {/* 5. Passengers */}
-              <div>
-                <label style={{ display: 'block', fontSize: '0.78rem', color: '#64748b', fontWeight: 'normal', marginBottom: '5px' }}>
-                  {t.search_passengers}
-                </label>
-                <select
-                  value={passengers}
-                  onChange={(e) => handlePassengerSelect(e.target.value)}
-                  style={{
-                    width: '100%',
-                    padding: '10px 12px',
-                    borderRadius: '8px',
-                    border: '1px solid #cbd5e1',
-                    fontSize: '0.86rem',
-                    fontWeight: 'normal',
-                    outline: 'none',
-                    backgroundColor: '#ffffff',
-                    color: '#0c2338',
-                    cursor: 'pointer',
-                  }}
-                >
-                  <option value="1-4">{language === 'mr' ? '१ - ४' : '1-4'}</option>
-                  <option value="5-7">{language === 'mr' ? '५ - ७' : '5-7'}</option>
-                  <option value="8-17">{language === 'mr' ? '८ - १७' : '8-17'}</option>
-                  <option value="18-20+">{language === 'mr' ? '१८ - २०+' : '18-20+'}</option>
-                </select>
-              </div>
-
-              {/* 6. Vehicle type */}
-              <div>
-                <label style={{ display: 'block', fontSize: '0.78rem', color: '#64748b', fontWeight: 'normal', marginBottom: '5px' }}>
-                  {t.search_vehicle_type}
-                </label>
-                <select
-                  value={vehicleType}
-                  onChange={(e) => setVehicleType(e.target.value)}
-                  style={{
-                    width: '100%',
-                    padding: '10px 12px',
-                    borderRadius: '8px',
-                    border: '1px solid #cbd5e1',
-                    fontSize: '0.86rem',
-                    fontWeight: 'normal',
-                    outline: 'none',
-                    backgroundColor: '#ffffff',
-                    color: '#0c2338',
-                    cursor: 'pointer',
-                  }}
-                >
-                  <option value="Sedan">Sedan (Dzire)</option>
-                  <option value="SUV (Ertiga)">SUV (Ertiga)</option>
-                  <option value="Luxury SUV (Innova)">Luxury SUV (Innova)</option>
-                  <option value="Tempo (17 Seater)">Tempo (17 Seater)</option>
-                  <option value="Bus (20 Seater)">Bus (20 Seater)</option>
-                  <option value="Luxury Van (Urbania)">Luxury Van (Urbania)</option>
-                </select>
-              </div>
-
-              {/* 7. Orange Search Button */}
-              <div>
-                <button
-                  type="submit"
-                  className="btn btn-orange"
-                  style={{
-                    width: '100%',
-                    height: '42px',
-                    fontSize: '0.92rem',
-                    fontWeight: 'normal',
-                    borderRadius: '8px',
-                  }}
-                >
-                  <Search size={15} />
-                  <span>{t.search_btn}</span>
-                </button>
-              </div>
-            </div>
-          </form>
         </div>
       </div>
     </div>

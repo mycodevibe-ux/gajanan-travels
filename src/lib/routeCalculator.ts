@@ -710,17 +710,22 @@ export function getCabFareEstimate(
       } else if (v.includes('innova') || v.includes('luxury suv')) {
         // Innova Crysta
         return Math.max(700, Math.min(3200, Math.round(650 + distanceKm * 38)));
-      } else if (v.includes('tempo') || v.includes('17')) {
-        // Tempo 17
-        return Math.max(1500, Math.min(4800, Math.round(1400 + distanceKm * 55)));
-      } else if (v.includes('bus') || v.includes('20')) {
-        // Bus 20
-        return Math.max(2200, Math.min(6500, Math.round(2000 + distanceKm * 75)));
-      } else if (v.includes('urbania')) {
-        // Urbania
-        return Math.max(1800, Math.min(5500, Math.round(1600 + distanceKm * 65)));
+      } else if (v.includes('17')) {
+        // 17 Seater
+        const baseRate = v.includes('non') ? 50 : 60;
+        return Math.max(1500, Math.min(4800, Math.round(1400 + distanceKm * baseRate)));
+      } else if (v.includes('20')) {
+        // 20 Seater
+        const baseRate = v.includes('non') ? 60 : 70;
+        return Math.max(2200, Math.min(6500, Math.round(2000 + distanceKm * baseRate)));
+      } else if (v.includes('32')) {
+        // 32 Seater Bus
+        return Math.max(3000, Math.min(8500, Math.round(2800 + distanceKm * 85)));
+      } else if (v.includes('40')) {
+        // 40 Seater Coach
+        return Math.max(4000, Math.min(11000, Math.round(3800 + distanceKm * 105)));
       } else {
-        // Sedan (Swift Dzire) point to point
+        // Swift Dzire (Sedan)
         return Math.max(400, Math.min(1800, Math.round(300 + distanceKm * 25)));
       }
     }
@@ -731,18 +736,20 @@ export function getCabFareEstimate(
       localPerDay = 2400; // Ertiga
     } else if (v.includes('innova') || v.includes('luxury suv')) {
       localPerDay = 3200; // Innova Crysta
-    } else if (v.includes('tempo') || v.includes('17')) {
-      localPerDay = 4800; // Tempo 17
-    } else if (v.includes('bus') || v.includes('20')) {
-      localPerDay = 6500; // Bus 20
-    } else if (v.includes('urbania')) {
-      localPerDay = 5200; // Urbania
+    } else if (v.includes('17')) {
+      localPerDay = v.includes('non') ? 4500 : 5200; // 17 Seater Non-AC / AC
+    } else if (v.includes('20')) {
+      localPerDay = v.includes('non') ? 5500 : 6500; // 20 Seater Non-AC / AC
+    } else if (v.includes('32')) {
+      localPerDay = 7500; // 32 Seater Bus
+    } else if (v.includes('40')) {
+      localPerDay = 9500; // 40 Seater Coach
     }
     return localPerDay * validDays;
   }
 
   // Outstation Trip Calculation (Standard 300 KM/Day minimum package)
-  let ratePerKm = 12; // Sedan default
+  let ratePerKm = 12; // Swift Dzire default
   let minKmPerDay = 300;
   let driverAllowancePerDay = 350;
 
@@ -752,15 +759,18 @@ export function getCabFareEstimate(
   } else if (v.includes('innova') || v.includes('luxury suv')) {
     ratePerKm = 18; // Innova Crysta
     driverAllowancePerDay = 400;
-  } else if (v.includes('tempo') || v.includes('17')) {
-    ratePerKm = 26; // Tempo 17
+  } else if (v.includes('17')) {
+    ratePerKm = v.includes('non') ? 23 : 27; // 17 Seater Non-AC (23) / AC (27)
     driverAllowancePerDay = 500;
-  } else if (v.includes('bus') || v.includes('20')) {
-    ratePerKm = 32; // Bus 20
+  } else if (v.includes('20')) {
+    ratePerKm = v.includes('non') ? 25 : 30; // 20 Seater Non-AC (25) / AC (30)
+    driverAllowancePerDay = 500;
+  } else if (v.includes('32')) {
+    ratePerKm = 35; // 32 Seater Non-AC (35)
     driverAllowancePerDay = 600;
-  } else if (v.includes('urbania')) {
-    ratePerKm = 28; // Urbania
-    driverAllowancePerDay = 500;
+  } else if (v.includes('40')) {
+    ratePerKm = 42; // 40 Seater Non-AC (42)
+    driverAllowancePerDay = 600;
   }
 
   const minBillableKm = minKmPerDay * validDays;

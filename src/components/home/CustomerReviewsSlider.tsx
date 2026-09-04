@@ -13,7 +13,7 @@ export const CustomerReviewsSlider: React.FC = () => {
 
   useEffect(() => {
     try {
-      const saved = localStorage.getItem('rideway_customer_reviews');
+      const saved = localStorage.getItem('gajanan_customer_reviews');
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length >= initialReviewsData.length) {
@@ -24,11 +24,11 @@ export const CustomerReviewsSlider: React.FC = () => {
           setReviewsList(merged);
         } else {
           setReviewsList(initialReviewsData);
-          localStorage.setItem('rideway_customer_reviews', JSON.stringify(initialReviewsData));
+          localStorage.setItem('gajanan_customer_reviews', JSON.stringify(initialReviewsData));
         }
       } else {
         setReviewsList(initialReviewsData);
-        localStorage.setItem('rideway_customer_reviews', JSON.stringify(initialReviewsData));
+        localStorage.setItem('gajanan_customer_reviews', JSON.stringify(initialReviewsData));
       }
     } catch (e) {
       setReviewsList(initialReviewsData);
@@ -100,7 +100,7 @@ export const CustomerReviewsSlider: React.FC = () => {
     const updated = [newReview, ...reviewsList];
     setReviewsList(updated);
     try {
-      localStorage.setItem('rideway_customer_reviews', JSON.stringify(updated));
+      localStorage.setItem('gajanan_customer_reviews', JSON.stringify(updated));
     } catch (e) {
       console.error(e);
     }

@@ -138,7 +138,6 @@ export const Footer: React.FC = () => {
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.86rem' }}>
               {[
-                { name: t.nav_home, id: 'home' },
                 { name: t.nav_about, id: 'about' },
                 { name: t.nav_fleet, id: 'fleet' },
                 { name: t.nav_services, id: 'services' },

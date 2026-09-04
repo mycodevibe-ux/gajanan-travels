@@ -100,7 +100,7 @@ button, input, select, textarea {
   padding-right: 24px;
 }
 
-/* Buttons */
+/* Clean Classic Button Styles */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -193,10 +193,16 @@ button, input, select, textarea {
   box-shadow: 0 6px 18px rgba(37, 211, 102, 0.35);
 }
 
-.btn-outline-navy {
-  background-color: transparent;
+.btn-outline-navy, .btn-secondary {
+  background-color: #ffffff;
   border: 1.5px solid #cbd5e1;
   color: var(--primary-navy);
+}
+
+.btn-outline-navy:hover, .btn-secondary:hover {
+  border-color: var(--primary-navy);
+  background-color: #f1f5f9;
+  transform: translateY(-2px);
 }
 
 .btn-outline-navy:hover {

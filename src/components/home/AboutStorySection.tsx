@@ -10,9 +10,10 @@ export const AboutStorySection: React.FC = () => {
 
   return (
     <section id="about" style={{
-      backgroundColor: '#f0f7fc',
-      padding: '75px 0 70px 0',
-      borderBottom: '1px solid #e2e8f0',
+      backgroundColor: '#f1f6fa',
+      padding: '80px 0 75px 0',
+      borderTop: '1px solid #dce8f3',
+      borderBottom: '1px solid #dce8f3',
     }}>
       <div className="container-custom">
         <div style={{
@@ -137,8 +138,8 @@ export const AboutStorySection: React.FC = () => {
               backgroundColor: '#e2e8f0',
             }}>
               <img
-                src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=800&q=80"
-                alt="Luxury blue tourist sedan"
+                src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=1000&q=85"
+                alt="Gajanan Tours and Travels Fleet"
                 style={{
                   width: '100%',
                   height: '100%',
